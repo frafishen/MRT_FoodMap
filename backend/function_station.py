@@ -11,4 +11,9 @@ db_settings = {
     }
 
 def new_event():
-    pass
+    try:
+        conn = pymysql.connect(db_settings)
+        
+    except Exception as ex:
+        print(ex)
+        
