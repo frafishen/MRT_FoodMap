@@ -22,7 +22,7 @@ def register(name, password, location='臺北市'):
             name_list = [name_list_res[i][0] for i in range(len(name_list_res))]
             # print(name_list)
             if name in name_list: #名稱需唯一
-                return (False ,'This name already exists')
+                return False # This name already exists
             command_get_pID = "SELECT Max(PersonID) FROM person;"
             cursor.execute(command_get_pID)
             # PersonID 設置以及格式調整
@@ -73,5 +73,5 @@ def log_in(name, password):
         print(ex)
     # return pID
 
-# register('candy', '000098')
+print(register('candy', '000098'))
 print(log_in('candy', '000098'))
