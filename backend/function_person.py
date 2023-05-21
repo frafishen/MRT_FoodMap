@@ -5,9 +5,9 @@ db_settings = {
         "host": "localhost",
         "port": 3306,
         "user": "root",
-        "password": "221003red",
+        "password": "xX@0180368905",
         "db": "mrt_foodmap",
-        "charset": "utf8"
+        "charset": "utf8mb4"
     }
 
 def register(name, password, location='臺北市'):
@@ -20,7 +20,13 @@ def register(name, password, location='臺北市'):
             
             # PersonID 設置以及格式調整
             pID = cursor.fetchall()[0][0]
-            pID = str(1 + int(pID))
+
+            # Check if the max PersonID returned from the query is None
+            if pID is None:
+                pID = '1001'
+            else:
+                pID = str(1 + int(pID))
+
             pID = pID.zfill(8)
             
             # 將使用者資料匯入資料庫
@@ -31,6 +37,7 @@ def register(name, password, location='臺北市'):
     except Exception as ex:
         print('Error Message:', ex)
         return False
+
 
 
 def log_in(name, password):
