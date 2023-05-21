@@ -1,6 +1,6 @@
 CREATE TABLE Person(
 	PersonID varchar(50) NOT NULL,
-    Name varchar(50) NOT NULL,
+    Name varchar(50) NOT NULL UNIQUE,
     Password varchar(12) NOT NULL,
     Location varchar(50),
     PRIMARY KEY (PersonID)
