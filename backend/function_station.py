@@ -8,12 +8,18 @@ db_settings = {
         "password": "221003red",
         "db": "mrt_foodmap",
         "charset": "utf8"
-    }
+}
 
-def new_event():
+# 00000000: null person ID  #, p2_ID = "00000000"
+def new_event(p1_ID, time, food_type, station):
     try:
         conn = pymysql.connect(db_settings)
         
+        with conn.cursor() as cursor:            
+            command = f'''INSERT INTO event(P1_ID, P2_ID, Time, FoodType, StationID) 
+	VALUES("{p1_ID}", "00000000", "{time}", "{food_type}", "{station}")'''
+            
     except Exception as ex:
         print(ex)
-        
+
+# "2023-05-20 12:00:00"

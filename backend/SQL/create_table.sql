@@ -23,7 +23,7 @@ CREATE TABLE Store(
 );
 
 CREATE TABLE Event(
-	EventID varchar(50) NOT NULL,
+	EventID int NOT NULL AUTO_INCREMENT,
     P1_ID varchar(50) NOT NULL,
     P2_ID varchar(50) NOT NULL,
     Time DATETIME NOT NULL,
