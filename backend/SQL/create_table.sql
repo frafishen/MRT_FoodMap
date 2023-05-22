@@ -36,7 +36,7 @@ CREATE TABLE Event(
 );
 
 CREATE TABLE MealPal(
-	MealPalID int NOT NULL AUTO_INCREMENT,
+	MealPalID varchar(50) NOT NULL,
     P1_ID varchar(50) NOT NULL,
     P2_ID varchar(50) NOT NULL,
     PRIMARY KEY (MealPalID),
@@ -45,8 +45,8 @@ CREATE TABLE MealPal(
 );
 
 CREATE TABLE ChatRecord(
-	ChatID int NOT NULL AUTO_INCREMENT,
-    MealPalID int NOT NULL,
+	ChatID varchar(50) NOT NULL,
+    MealPalID varchar(50) NOT NULL,
     P_ID varchar(50) NOT NULL,
     Time DATETIME NOT NULL,
     Content varchar(50) NOT NULL,
