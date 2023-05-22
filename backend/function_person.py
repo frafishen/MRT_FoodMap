@@ -5,7 +5,7 @@ db_settings = {
     "host": "localhost",
     "port": 3306,
     "user": "root",
-    "password": "221003red",
+    "password": "",
     "db": "mrt_foodmap",
     "charset": "utf8"
 }

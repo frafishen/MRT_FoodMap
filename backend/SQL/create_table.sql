@@ -45,8 +45,8 @@ CREATE TABLE MealPal(
 );
 
 CREATE TABLE ChatRecord(
-	ChatID varchar(50) NOT NULL,
-    MealPalID varchar(50) NOT NULL,
+	ChatID int NOT NULL AUTO_INCREMENT,
+    MealPalID int NOT NULL,
     P_ID varchar(50) NOT NULL,
     Time DATETIME NOT NULL,
     Content varchar(50) NOT NULL,
