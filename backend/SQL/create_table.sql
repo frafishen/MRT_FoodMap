@@ -36,7 +36,7 @@ CREATE TABLE Event(
 );
 
 CREATE TABLE MealPal(
-	MealPalID varchar(50) NOT NULL,
+	MealPalID int NOT NULL AUTO_INCREMENT,
     P1_ID varchar(50) NOT NULL,
     P2_ID varchar(50) NOT NULL,
     PRIMARY KEY (MealPalID),
