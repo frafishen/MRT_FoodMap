@@ -5,13 +5,10 @@ db_settings = {
     "host": "localhost",
     "port": 3306,
     "user": "root",
-    "password": "221003red",
+    "password": "",
     "db": "mrt_foodmap",
-    "charset": "utf8"
+    "charset": "utfmb4"
 }
-
-# 00000000: null person ID
-
 
 def new_event(p1_ID, time, food_type, station):
     try:
