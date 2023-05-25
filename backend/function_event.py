@@ -11,15 +11,11 @@ db_settings = {
     "charset": "utf8"
 }
 
-def new_event(p1_Name, time, food_type, station):
+def new_event(p1_ID, time, food_type, station):
     try:
         conn = pymysql.connect(**db_settings)
 
         with conn.cursor() as cursor:
-            command_getID = f'SELECT PersonID FROM person WHERE Name = "{p1_Name}"'
-            cursor.execute(command_getID)
-            p1_ID = cursor.fetchall()[0][0]
-            # print(p1_ID)
             # 確認這個人在一小時以內有沒有尚未配對的event
             command_time = f"select date_sub('{time}', interval 1 hour);"  # 時間
             cursor.execute(command_time)
@@ -46,14 +42,11 @@ VALUES("{p1_ID}", "00000000", "{time}", "{food_type}", "{station}")'''
         return False
 
 
-def random_pair(p2_Name, time, food_type='All', station='All'):
+def random_pair(p2_ID, time, food_type='All', station='All'):
     try:
         conn = pymysql.connect(**db_settings)
 
         with conn.cursor() as cursor:
-            command_getID = f'SELECT PersonID FROM person WHERE Name = "{p2_Name}"'
-            cursor.execute(command_getID)
-            p2_ID = cursor.fetchall()[0][0]
             # p2_ID = 00000000, 發起時間在一小時以內，食物種類跟站
             command = f'''SELECT * FROM event
 WHERE P2_ID = "00000000"
@@ -74,18 +67,11 @@ AND P1_ID != "{p2_ID}"'''
         print(ex)
         return False
 
-def successfully_pair(p1_Name, p2_Name, new_event_time): #時間錯了會回傳True但資料庫不會更新
+def successfully_pair(p1_ID, p2_ID, new_event_time): #時間錯了會回傳True但資料庫不會更新
     try:
         conn = pymysql.connect(**db_settings)
 
         with conn.cursor() as cursor:
-            command_getID = f'SELECT PersonID FROM person WHERE Name = "{p1_Name}"'
-            cursor.execute(command_getID)
-            p1_ID = cursor.fetchall()[0][0]
-            command_getID = f'SELECT PersonID FROM person WHERE Name = "{p2_Name}"'
-            cursor.execute(command_getID)
-            p2_ID = cursor.fetchall()[0][0]
-            
             # event 配對成功
             command_updateID = f'''UPDATE event
 SET P2_ID = "{p2_ID}"
