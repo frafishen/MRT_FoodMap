@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from urllib.parse import quote_plus
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import text
 
 #password = quote_plus("xX@0180368905")
 password = quote_plus("00000")
@@ -44,7 +45,8 @@ class Event(db.Model):
         self.FoodType = FoodType
         self.StationID = StationID
 
-CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+CORS(app)
+# CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
 
 
@@ -78,7 +80,55 @@ def get_station(id):
     station_dict = {'StationID': station.StationID, 'Name': station.Name} 
     return jsonify(station_dict)
 
-
+# add station, need to add stationID and name
+@app.route('/api/addStation', methods=['POST'])
+def add_station():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        print(request.json)
+        _stationID = _json['StationID']
+        _name = _json['Name']
+        if _stationID and _name and request.method == 'POST':
+            sql = text("INSERT INTO Station(StationID, Name) VALUES(:stationID, :name)")
+            data = {"stationID": _stationID, "name": _name}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Station added!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
+    
+# delete station, need to add stationID
+@app.route('/api/deleteStation', methods=['POST'])
+def delete_station():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        _stationID = _json['StationID']
+        if _stationID and request.method == 'POST':
+            sql = text("DELETE FROM Station WHERE StationID = :stationID")
+            data = {"stationID": _stationID}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Station deleted!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
 
 @app.route('/api/event', methods=['GET'])
 def get_events():
@@ -93,8 +143,6 @@ def get_event(id):
         return 'No such event', 404
     event_dict = {'EventID': event.EventID, 'P1_ID': event.P1_ID, 'P2_ID': event.P2_ID, 'Time': event.Time, 'FoodType': event.FoodType, 'StationID':event.StationID}
     return jsonify(event_dict)
-
-
 
 if __name__ == '__main__':
     app.run(port=5000)
