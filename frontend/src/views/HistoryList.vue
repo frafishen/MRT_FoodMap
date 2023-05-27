@@ -1,13 +1,6 @@
 <template>
   <div class="history">
     History List
-
-    <button @click="goHome" class="homeButton" type="button" name="home"><img class="home" src="../assets/home.png"></button>
-
-    <button class="userButton" type="button" name="user" @click="goPersonal">
-      <img class="user1" src="../assets/user.png"/>
-    </button>
-
     <div class="history-list">
       <div v-for="history in histories" :key="history.id">
         <span>{{ history.name }}</span>
@@ -33,13 +26,6 @@ export default {
     }
   },
   methods: {
-
-    goHome () {
-      this.$router.push('/')
-    },
-    goPersonal () {
-      this.$router.push('/person')
-    }
   }
 }
 </script>

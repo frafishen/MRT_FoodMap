@@ -1,12 +1,6 @@
 <template>
   <div class="favorite">
     Favorite List
-
-    <button @click="goHome" class="homeButton" type="button" name="home"><img class="home" src="../assets/home.png"></button>
-    <button class="userButton" type="button" name="user" @click='goPersonal'>
-      <img class="user1" src="../assets/user.png"/>
-    </button>
-
     <div class="favorite-list">
       <div v-for="favorite in favorites" :key="favorite.id">
         <span class="favorite-name">{{ favorite.name }}</span>
@@ -42,12 +36,6 @@ export default {
     }
   },
   methods: {
-    goHome () {
-      this.$router.push('/')
-    },
-    goPersonal () {
-      this.$router.push('/person')
-    }
   }
 }
 </script>

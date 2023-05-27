@@ -1,18 +1,49 @@
 <template>
-  <div>
-    <div class="login">
-      <img alt="logo" src="../assets/login_logo.png" class="fork1">
-      <h2>Regist</h2>
-      <form @submit.prevent="regist">
-        <div>
-          <label for="username">Username:</label>
-          <input placeholder="Enter email here" type="text" id="username" v-model="username" required>
+   <div class="hero min-h-[80vh] bg-base-200">
+    <div class="w-4/5 hero-content flex-col lg:flex-row-reverse lg:w-2/3">
+      <div class="text-center p-8 lg:text-left">
+        <div class="flex justify-center lg:justify-start">
+          <img class="h-40 w-auto md-4" src="../assets/login_logo.png" alt="logo" />
         </div>
-        <div>
-          <label for="password">Password:</label>
-          <input placeholder="Enter password here" type="password" id="password" v-model="password" required>
+        <h1 class="text-5xl font-bold">Sign up now!</h1>
+        <p class="py-6">Siup up an new account and start your food trip now!</p>
+        <div class="mt-2 text-center text-sm text-gray-500 lg:text-left">
+          Have an account already?
+          {{ ' ' }}
+          <router-link to="/login" class="font-semibold leading-6 text-primary hover:text-secondary">
+                            Log in
+          </router-link>
         </div>
-        <button type="submit">Regist</button>
+      </div>
+      <form class="w-full lg:w-1/2" action="#" method="POST" @submit.prevent="submitLogin">
+        <div class="card flex-shrink-0 w-full shadow-2xl bg-base-100">
+          <div class="card-body">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Account</span>
+              </label>
+              <input id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Password</span>
+              </label>
+              <input id="password" name="password" type="password" autocomplete="cyourpassword" class="input input-bordered" required=""/>
+              <label class="label">
+                <a href="#" class="label-text-alt link link-hover text-primary hover:text-secondary">Forgot password?</a>
+              </label>
+              <div class="form-control">
+                <label class="label cursor-pointer">
+                  <span class="label-text">Remember me</span>
+                  <input type="checkbox" checked="checked" class="checkbox" />
+                </label>
+              </div>
+            </div>
+            <div class="form-control mt-6">
+              <button class="btn btn-primary">Sign up</button>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -40,46 +71,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.fork1 {
-  height: 100px;
-  width: 100px;
-}
-
-.login {
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-h2 {
-  text-align: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 5px;
-}
-
-input {
-  margin-bottom: 10px;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-button {
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+<style>
 </style>
