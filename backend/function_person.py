@@ -7,7 +7,7 @@ db_settings = {
     "user": "root",
     "password": "",
     "db": "mrt_foodmap",
-    "charset": "utf8"
+    "charset": "utf8mb4"
 }
 
 def register(name, password, location='臺北市'):

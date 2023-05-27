@@ -15,20 +15,20 @@
           </router-link>
         </div>
       </div>
-      <form class="w-1/2" action="#" method="POST" @submit.prevent="submitLogin">
+      <form class="w-1/2" action="#" method="POST" @submit.prevent="login">
         <div class="card flex-shrink-0 w-full shadow-2xl bg-base-100">
           <div class="card-body">
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Account</span>
               </label>
-              <input id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
+              <input v-model="id" id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
             </div>
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Password</span>
               </label>
-              <input id="password" name="password" type="password" autocomplete="cyourpassword" class="input input-bordered" required=""/>
+              <input v-model="password" id="password" name="password" type="password" autocomplete="cyourpassword" class="input input-bordered" required=""/>
               <label class="label">
                 <a href="#" class="label-text-alt link link-hover text-primary hover:text-secondary">Forgot password?</a>
               </label>
@@ -40,7 +40,7 @@
               </div>
             </div>
             <div class="form-control mt-6">
-              <button class="btn btn-primary">Log in</button>
+              <button class="btn btn-primary" type="submit">Log in</button>
             </div>
           </div>
         </div>
@@ -49,27 +49,43 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+
+async function login () {
+  try {
+    const response = await axios.get(`http://127.0.0.1:5000/api/login/${this.id}/${this.password}`)
+    console.log(response.data)
+    this.goHomePage()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function goMealpal () {
+  this.$router.push('/mealpal')
+}
+
+function goRegist () {
+  this.$router.push('/regist')
+}
+
+function goHomePage () {
+  this.$router.push('/homepage')
+}
+
 export default {
   name: 'LoginPage',
   data () {
     return {
-      username: '',
+      id: '',
       password: ''
     }
   },
   methods: {
-    submitLogin () {
-      // 在這裡處理登入邏輯
-      console.log('Username:', this.username)
-      console.log('Password:', this.password)
-      // 可以向後端發送登入請求或執行其他相關操作
-    },
-    goMealpal () {
-      this.$router.push('/mealpal')
-    },
-    goRegist () {
-      this.$router.push('/regist')
-    }
+    goMealpal: goMealpal,
+    goRegist: goRegist,
+    goHomePage: goHomePage,
+    login: login
   }
 }
 </script>

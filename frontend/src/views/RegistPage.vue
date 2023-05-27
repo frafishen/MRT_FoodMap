@@ -15,58 +15,92 @@
           </router-link>
         </div>
       </div>
-      <form class="w-full lg:w-1/2" action="#" method="POST" @submit.prevent="submitLogin">
+      <form class="w-full lg:w-1/2" action="#" method="POST" @submit.prevent="addPerson">
         <div class="card flex-shrink-0 w-full shadow-2xl bg-base-100">
           <div class="card-body">
             <div class="form-control">
               <label class="label">
+                <span class="label-text">Name</span>
+              </label>
+              <input v-model="name" id="name" name="name" type="text" class="input input-bordered" required=""/>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Location</span>
+              </label>
+              <input v-model="location" id="location" name="location" type="text" class="input input-bordered" required=""/>
+            </div>
+            <div class="form-control">
+              <label class="label">
                 <span class="label-text">Account</span>
               </label>
-              <input id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
+              <input v-model="id" id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
             </div>
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Password</span>
               </label>
-              <input id="password" name="password" type="password" autocomplete="cyourpassword" class="input input-bordered" required=""/>
+              <input v-model="password" id="password" name="password" type="password" autocomplete="your password" class="input input-bordered" required=""/>
               <label class="label">
                 <a href="#" class="label-text-alt link link-hover text-primary hover:text-secondary">Forgot password?</a>
               </label>
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Remember me</span>
-                  <input type="checkbox" checked="checked" class="checkbox" />
-                </label>
-              </div>
+            </div>
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Remember me</span>
+                <input type="checkbox" checked="checked" class="checkbox" />
+              </label>
             </div>
             <div class="form-control mt-6">
-              <button class="btn btn-primary">Sign up</button>
+              <button class="btn btn-primary" type="submit">Sign up</button>
             </div>
           </div>
         </div>
-      </form>
+    </form>
+
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
+function goToLogin () {
+  this.$router.push('/login')
+}
+
+function regist () {
+  console.log('Username:', this.username)
+  console.log('Password:', this.password)
+  // 可以向後端發送登入請求或執行其他相關操作
+}
+
+async function addPerson () {
+  console.log(this.id, this.name, this.password, this.location)
+  try {
+    const config = { headers: { 'Content-Type': 'application/json' } }
+    const response = await axios.post('http://127.0.0.1:5000/api/addPerson', { PersonID: this.id, Name: this.name, Password: this.password, Location: this.location }, config)
+    console.log(response.data)
+    this.goToLogin()
+  } catch (error) {
+    console.error('An error occurred:', error)
+  }
+}
+
 export default {
   name: 'RegistPage',
   data () {
     return {
-      username: '',
-      password: ''
+      id: '',
+      password: '',
+      name: '',
+      location: ''
     }
   },
   methods: {
-    regist () {
-      console.log('Username:', this.username)
-      console.log('Password:', this.password)
-      // 可以向後端發送登入請求或執行其他相關操作
-    },
-    goToLogin () {
-      this.$router.push('/login')
-    }
+    regist: regist,
+    goToLogin: goToLogin,
+    addPerson: addPerson
   }
 }
 </script>

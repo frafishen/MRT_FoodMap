@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy import text
 
-# password = quote_plus("xX@0180368905")
-password = quote_plus("00000")
+password = quote_plus("xX@0180368905")
+# password = quote_plus("00000")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
@@ -48,6 +48,14 @@ class Event(db.Model):
 CORS(app)
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
+
+@app.route("/api/login/<id>/<password>", methods=["GET"])
+def login(id, password):
+    person = db.session.query(Person).filter_by(PersonID=id, Password=password).first()
+    if person is None:
+        return 'No such person', 404
+    person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
+    return jsonify(person_dict)
 
 
 @app.route('/api/person', methods=['GET'])
@@ -129,6 +137,33 @@ def delete_station():
         response_object['status'] = 'failed'
         app.logger.error(str(e))
         return jsonify(response_object)
+    
+@app.route('/api/addPerson', methods=['POST'])
+def add_person():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        _PersonID = _json['PersonID']
+        _Name = _json['Name']
+        _Password = _json['Password']
+        _Location = _json['Location']
+        if _PersonID and _Name and _Password and _Location and request.method == 'POST':
+            sql = text("INSERT INTO Person(PersonID, Name, Password, Location) VALUES(:PersonID, :Name, :Password, :Location)")
+            data = {"PersonID": _PersonID, "Name": _Name, "Password": _Password, "Location": _Location}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Person added!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
+
 
 @app.route('/api/event', methods=['GET'])
 def get_events():
