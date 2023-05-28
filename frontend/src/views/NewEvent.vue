@@ -70,10 +70,10 @@ export default {
   },
   methods: {
     cancel () {
-      this.$router.push('/mealpal')
+      this.$router.push('/findMealPal')
     },
     submit () {
-      this.$router.push('/mealpal')
+      this.$router.push('/findMealPal')
     }
   }
 }

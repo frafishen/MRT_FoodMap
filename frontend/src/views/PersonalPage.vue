@@ -4,11 +4,11 @@
       <div class="hero-content flex-col lg:flex-row">
         <img src="../assets/personal_image_sample.jpg" class="max-w-sm rounded-lg shadow-2xl" />
         <div class="px-6">
-          <h1 class="text-5xl font-bold py-6">{{'My '}}Personal Page</h1>
+          <h1 class="text-5xl font-bold py-6"><span class="text-primary">{{'My '}}</span>Personal Page</h1>
           <div class="py-6">
-            Location: {{ 'Taipei City' }}<br>
-            Usually appears at: {{ 'Taipei Main Station' }} <br>
-            Meal time: {{ '12:00 - 13:00' }}<br>
+            <span class="font-bold mr-2">Location: </span> {{ 'Taipei City' }} <br>
+            <span class="font-bold mr-2">Usually at: </span> {{ 'Taipei Main Station' }} <br>
+            <span class="font-bold mr-2">Meal time: </span> {{ '12:00 - 13:00' }} <br>
           </div>
           <div class="flex justify-between py-6">
             <div class="flex">
@@ -33,15 +33,6 @@
 export default {
   name: 'PersonalPage',
   methods: {
-    backToFirst () {
-      this.$router.push('/')
-    },
-    goToHistory () {
-      this.$router.push('/history')
-    },
-    goToFavorite () {
-      this.$router.push('/favorite')
-    }
   }
 }
 </script>

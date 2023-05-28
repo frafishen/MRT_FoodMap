@@ -8,7 +8,7 @@
                     </a>
                 </div>
                 <div class="p-4">
-                    <p>MRT Food Map</p>
+                    <p>MRT <span class="text-primary">F.o^o.d</span> Map</p>
                 </div>
             </div>
             <div class="flex lg:jusitify-end">
@@ -23,7 +23,7 @@
                     </router-link>
                 </div>
                 <div class="p-4 lg:justify-end">
-                    <router-link to="/homepage" class="text-sm font-semibold leading-6 text-gray-900">
+                    <router-link to="/" class="text-sm font-semibold leading-6 text-gray-900">
                         <img class="h-8 w-auto" src="../assets/home.png">
                     </router-link>
                 </div>

@@ -1,146 +1,109 @@
 <template>
- <div class="parentContainer">
-   <header>
-     <h3>TAIPEI MRT FOOD MAP SYSTEM</h3>
-   </header>
-
-   <button @click='backTofirst' type="button" name="backToFirstPage" class="backToFirst">
-     <img src="../assets/home.png" width="100" height="100"/>
-   </button>
-
-   <h1>Find Tasy Food</h1>
-   <img alt="MRT route map" class="mapImage" src="https://web.metro.taipei/pages/assets/images/routemap2023n.png" width="576" height="768" />
-   <div class="info">
-
-   </div>
-
-   <h5 >food kind</h5>
-   <div class="form-row">
-     <label for="types">Types</label>
-     <select name="types" id="types" v-model="type">
-       <option v-for="type in types" :key="type.value">
-         {{ type.text }}
-       </option>
-     </select>
-   </div>
-
-   <button @click='showOtherData' type="button" name="BR11Button" class="StationButton" >
-     <img src="../assets/BR11G16.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="BR10Button" class="StationButton" >
-     <img src="../assets/BR10BL15.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="BR09Button" class="StationButton" >
-     <img src="../assets/BR09R05.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="O8Button" class="StationButton" >
-     <img src="../assets/O08G15.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="O7Button" class="StationButton" >
-     <img src="../assets/O07BL14.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="O6Button" class="StationButton" >
-     <img src="../assets/O06R07.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="R11Button" class="StationButton" >
-     <img src="../assets/R11G14.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="R10Button" class="StationButton" >
-     <img src="../assets/R10BL12.png" width="22" height="12"/>
-   </button>
-   <button @click='showOtherData' type="button" name="R08Button" class="StationButton" >
-     <img src="../assets/R08G10.png" width="22" height="12"/>
-   </button>
- </div>
-
+  <div>
+    <div class="hero min-h-[80vh] bg-base-200">
+      <div class="hero-content flex-col lg:flex-row-reverse">
+        <div class="px-6">
+          <h1 class="text-5xl font-bold py-6">Find Tasty <span class="text-primary">F.o^o.d </span></h1>
+          <div class="w-full flex flex-row justify-between">
+            <!-- construct a button with a arror point to left -->
+            <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white"><p>&larr;</p></button>
+            <!-- selection bar -->
+            <select class="flex justify-end select select-primary w-full max-w-xs">
+              <option disabled selected class="text-primary">What .u. want to eat today?</option>
+              <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+                {{ value }}
+              </option>
+            </select>
+          </div>
+          <!-- table component -->
+          <div class="overflow-x-auto w-full mt-4">
+            <table class="table w-full">
+              <!-- head -->
+              <tbody>
+                <!-- row 1 -->
+                <tr v-for="(row, index) in tableRows" :key="index">
+                  <td>
+                    <div class="flex items-center space-x-3">
+                      <div>
+                        <div class="font-bold">{{ row.storeName }}</div>
+                        <div class="rating rating-xs">
+                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
+                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" checked />
+                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
+                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
+                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {{ row.address }}
+                    <br />
+                    <button class="badge badge-ghost badge-sm" type="submit">{{ 'Details' }}</button>
+                  </td>
+                  <th>
+                    <button class="btn btn-ghost btn-xs">comment</button>
+                  </th>
+                  <th>
+                    <button
+                      name="add fav"
+                      type="submit"
+                      class="btn btn-sm mask mask-heart transition-colors duration-200"
+                      :class="{ 'bg-red-400': row.isClicked, 'bg-gray-400': !row.isClicked }"
+                      @click="toggleColor(index)"
+                    ></button>
+                  </th>
+                </tr>
+                <!-- row end -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="px-6 w-4/5 lg:w-1/2 p-4">
+          <!-- left conponent -->
+          <FoodMap />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
+// import Store Table component
+import FoodMap from '@/components/FoodMap.vue'
+
 export default {
   name: 'findTastyFood',
   data () {
     return {
-      date: '',
-      time: '',
-      station: '',
-      type: 'BBQ',
-      types: [
-        { text: 'BBQ', value: 'BBQ' },
-        { text: 'Hot Pot', value: 'hotpot' },
-        { text: 'Ramen', value: 'ramen' }
-      ],
-      showData: false
+      foodTypes: {
+        BBQ: 'BBQ',
+        hotpot: 'Hot Pot',
+        ramen: 'Ramen'
+      },
+      // todo: get data from db
+      tableRows: [
+        {
+          storeName: 'Store 1',
+          address: 'Address 1',
+          isClicked: false
+        },
+        {
+          storeName: 'Store 2',
+          address: 'Address 2',
+          isClicked: false
+        }
+      ]
     }
   },
+  components: {
+    FoodMap
+  },
   methods: {
-    backTofirst () {
-      this.$router.push('/')
-    },
-    showOtherData () {
-      // 在這裡處理顯示其他資料的邏輯
-      this.showData = true // 設置showData為true以顯示其他資料
+    toggleColor (index) {
+      this.tableRows[index].isClicked = !this.tableRows[index].isClicked
     }
   }
 }
 </script>
-<style scoped>
- /* .parentContainer {
- position: absolute;
- } */
-.mapImage {
- position: absolute;
- left: 70px;
- top: 300px;
- /* display: flex; 將圖片容器設定為彈性盒子
- justify-content: flex-start; 將圖片容器內的內容靠左對齊 */
-}
-
-.info{
-  position: absolute;
- left: 700px;
- top: 300px;
- width:576px;
- height:768px;
- border:2px solid black;
- background-color: #F5F5F5;
- border-radius: 20px;
-}
-
-.backToFirst{
- position: absolute;
- right: 0;
- top: 0px;
-}
-.foodKindinp{
- position: absolute;
- left: 1000px; /* 調整圖片與左側的距離，您可以根據需要調整此值 */
- top: 300px;
-}
-.StationButton{
- background-color:white;
- border: none; /* 移除邊框 */
-}
-
-header {
- line-height: 1.5;
-}
- .logo {
- display: block;
- margin: 0 auto 2rem;
-}
- @media (min-width: 1024px) {
- header {
-   display: flex;
-   place-items: center;
-   padding-right: calc(var(--section-gap) / 2);
- }
-    .logo {
-     margin: 0 2rem 0 0;
-   }
-    header .wrapper {
-     display: flex;
-     place-items: flex-start;
-     flex-wrap: wrap;
-   }
- }
+<style>
 </style>

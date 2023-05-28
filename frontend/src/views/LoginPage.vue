@@ -15,20 +15,20 @@
           </router-link>
         </div>
       </div>
-      <form class="w-1/2" action="#" method="POST" @submit.prevent="login">
+      <form class="w-full lg:w-1/2" action="#" method="POST" @submit.prevent="login">
         <div class="card flex-shrink-0 w-full shadow-2xl bg-base-100">
           <div class="card-body">
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Account</span>
               </label>
-              <input v-model="id" id="text" name="text" type="text" autocomplete="your account" class="input input-bordered" required=""/>
+              <input v-model="id" id="text" name="text" type="text" autocomplete="userid" class="input input-bordered" required=""/>
             </div>
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Password</span>
               </label>
-              <input v-model="password" id="password" name="password" type="password" autocomplete="cyourpassword" class="input input-bordered" required=""/>
+              <input v-model="password" id="password" name="password" type="password" autocomplete="current-password" class="input input-bordered" required=""/>
               <label class="label">
                 <a href="#" class="label-text-alt link link-hover text-primary hover:text-secondary">Forgot password?</a>
               </label>

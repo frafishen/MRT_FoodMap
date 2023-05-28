@@ -64,7 +64,7 @@ export default {
       })
     },
     goMealpal () {
-      this.$router.push('/mealpal')
+      this.$router.push('/findMealPal')
     }
   }
 }

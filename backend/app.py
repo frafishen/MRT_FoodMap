@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy import text
 
-password = quote_plus("xX@0180368905")
-# password = quote_plus("00000")
+# password = quote_plus("xX@0180368905")
+password = quote_plus("00000")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI

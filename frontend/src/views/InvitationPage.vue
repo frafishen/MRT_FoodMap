@@ -43,7 +43,7 @@ export default {
       })
     },
     reject () {
-      this.$router.push('/mealpal')
+      this.$router.push('/findMealPal')
     }
   },
   mounted () {
