@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'NewEvent',
   data () {
@@ -69,11 +71,25 @@ export default {
     }
   },
   methods: {
-    cancel () {
+    cancel: function () {
       this.$router.push('/findMealPal')
     },
-    submit () {
+    submit: function () {
+      this.addEvent()
       this.$router.push('/findMealPal')
+    },
+    addEvent: async function () {
+      const P1_ID = this.$store.state.P1_ID
+      console.log(this.$store)
+      console.log(P1_ID, this.time, this.date, this.station, this.type)
+      try {
+        const config = { headers: { 'Content-Type': 'application/json' } }
+        const timeDate = this.date + ' ' + this.time + ':00'
+        const response = await axios.post('http://127.0.0.1:5000/api/addEvent', { EventID: '10002', P1_ID: P1_ID, P2_ID: '00000000', Time: timeDate, FoodType: this.type, StationID: this.station }, config)
+        console.log(response.data)
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
     }
   }
 }

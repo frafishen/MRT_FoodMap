@@ -20,6 +20,7 @@ const routes = [
     component: HomePage
   },
   { path: '/login', name: 'LoginPage', component: LoginPage },
+  { path: '/homepage', name: 'HomePage', component: HomePage },
   { path: '/invite', name: 'InvitationPage', component: InvitationPage },
   { path: '/randomPair', name: 'RandomPair', component: RandomPair },
   { path: '/favorite', name: 'FavoriteList', component: FavoriteList },

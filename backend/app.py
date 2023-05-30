@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy import text
 
-# password = quote_plus("xX@0180368905")
-password = quote_plus("00000")
+password = quote_plus("xX@0180368905")
+# password = quote_plus("00000")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
@@ -178,6 +178,36 @@ def get_event(id):
         return 'No such event', 404
     event_dict = {'EventID': event.EventID, 'P1_ID': event.P1_ID, 'P2_ID': event.P2_ID, 'Time': event.Time, 'FoodType': event.FoodType, 'StationID':event.StationID}
     return jsonify(event_dict)
+
+
+@app.route('/api/addEvent', methods=['POST'])
+def add_event():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        _P1_ID = _json['P1_ID']
+        _P2_ID = "00000000"
+        _Time = _json['Time']
+        _FoodType = _json['FoodType']
+        _StationID = _json['StationID']
+
+        if _P1_ID and _Time and _FoodType and _StationID and request.method == 'POST':
+            sql = text("INSERT INTO Event(P1_ID, P2_ID, Time, FoodType, StationID) VALUES(:P1_ID, :P2_ID, :Time, :FoodType, :StationID)")
+            data = {"P1_ID": _P1_ID, "P2_ID": _P2_ID, "Time": _Time, "FoodType": _FoodType, "StationID": _StationID}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Event added!'
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+
+    return jsonify(response_object)
+
 
 if __name__ == '__main__':
     app.run(port=5000)

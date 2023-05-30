@@ -4,7 +4,8 @@ const store = createStore({
   state () {
     return {
       favorites: [],
-      histories: []
+      histories: [],
+      P1_ID: ''
     }
   },
   mutations: {
@@ -18,6 +19,9 @@ const store = createStore({
     },
     addHistory (state, history) {
       state.histories.push(history)
+    },
+    setP1_ID (state, id) {
+      state.P1_ID = id
     }
   },
   actions: {
