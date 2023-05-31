@@ -56,6 +56,7 @@ async function login () {
     const response = await axios.get(`http://127.0.0.1:5000/api/login/${this.id}/${this.password}`)
     console.log(response.data)
     this.$store.commit('setP1_ID', this.id)
+    const P1_ID = this.$store.state.P1_ID
     this.goHomePage()
   } catch (error) {
     console.error(error)

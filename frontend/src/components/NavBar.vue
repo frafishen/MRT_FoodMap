@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="flex lg:jusitify-end">
-                <div class="p-4 lg:justify-end">
+                <div class="p-4 lg:justify-end" v-if="$store.state.P1_ID.length === 0">
                     <router-link to="/login" class="text-sm font-semibold leading-6 text-gray-900">
                             Log in
                     </router-link>
@@ -37,7 +37,12 @@ export default {
   data () {
   },
   methods: {
-  }
+  },
+//   created () {
+//     const P1_ID = this.$store.state.P1_ID
+//     console.log('p1_ID::::', P1_ID, '---')
+//     console.log(P1_ID.length)
+//   }
 }
 </script>
 <style>
