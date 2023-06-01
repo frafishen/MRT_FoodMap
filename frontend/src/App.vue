@@ -26,4 +26,8 @@ export default {
 }
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500;800&display=swap');
+body {
+  font-family: 'Source Code Pro', monospace;
+}
 </style>

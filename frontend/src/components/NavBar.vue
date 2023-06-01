@@ -37,7 +37,7 @@ export default {
   data () {
   },
   methods: {
-  },
+  }
 //   created () {
 //     const P1_ID = this.$store.state.P1_ID
 //     console.log('p1_ID::::', P1_ID, '---')

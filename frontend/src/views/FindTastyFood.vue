@@ -6,16 +6,16 @@
           <h1 class="text-5xl font-bold py-6">Find Tasty <span class="text-primary">F.o^o.d </span></h1>
           <div class="w-full flex flex-row justify-between">
             <!-- construct a button with a arror point to left -->
-            <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white"><p>&larr;</p></button>
+            <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white" @click="toggleMap"><p>&larr;</p></button>
             <!-- selection bar -->
             <select class="flex justify-end select select-primary w-full max-w-xs">
-              <option disabled selected class="text-primary">What .u. want to eat today?</option>
+              <option disabled selected class="text-primary">What do .u. want to eat today?</option>
               <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
                 {{ value }}
               </option>
             </select>
           </div>
-          <!-- table component -->
+          <!-- ========== table component ========== -->
           <div class="overflow-x-auto w-full mt-4">
             <table class="table w-full">
               <!-- head -->
@@ -39,10 +39,10 @@
                   <td>
                     {{ row.address }}
                     <br />
-                    <button class="badge badge-ghost badge-sm" type="submit">{{ 'Details' }}</button>
+                    <a role="button" class="badge badge-ghost badge-sm" href="https://www.google.com/">Go to Map</a>
                   </td>
                   <th>
-                    <button class="btn btn-ghost btn-xs">comment</button>
+                    <button class="btn btn-ghost btn-xs">Details</button>
                   </th>
                   <th>
                     <button
@@ -58,10 +58,16 @@
               </tbody>
             </table>
           </div>
+          <!-- ========== table component end ========== -->
         </div>
         <div class="px-6 w-4/5 lg:w-1/2 p-4">
           <!-- left conponent -->
-          <FoodMap />
+          <div class="w-full" v-if="showMap">
+            <FoodMap />
+          </div>
+          <div class="w-full" v-if="!showMap">
+            <StoreDetailArea />
+          </div>
         </div>
       </div>
     </div>
@@ -70,6 +76,7 @@
 <script>
 // import Store Table component
 import FoodMap from '@/components/FoodMap.vue'
+import StoreDetailArea from '@/components/StoreDetailArea.vue'
 
 export default {
   name: 'findTastyFood',
@@ -80,6 +87,7 @@ export default {
         hotpot: 'Hot Pot',
         ramen: 'Ramen'
       },
+      showMap: true,
       // todo: get data from db
       tableRows: [
         {
@@ -96,11 +104,15 @@ export default {
     }
   },
   components: {
-    FoodMap
+    FoodMap,
+    StoreDetailArea
   },
   methods: {
     toggleColor (index) {
       this.tableRows[index].isClicked = !this.tableRows[index].isClicked
+    },
+    toggleMap () {
+      this.showMap = !this.showMap
     }
   }
 }
