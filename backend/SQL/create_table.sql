@@ -1,39 +1,41 @@
--- CREATE TABLE Person(
--- 	PersonID varchar(50) NOT NULL,
---     Name varchar(50) NOT NULL UNIQUE,
---     Password varchar(12) NOT NULL,
---     Location varchar(50),
---     PRIMARY KEY (PersonID)
--- );
+CREATE TABLE Person(
+	PersonID varchar(50) NOT NULL,
+    Name varchar(50) NOT NULL UNIQUE,
+    Password varchar(12) NOT NULL,
+    Location varchar(50),
+    PRIMARY KEY (PersonID)
+);
 
--- CREATE TABLE Station(
--- 	StationID varchar(50) NOT NULL,
---     Name varchar(50) NOT NULL,
---     PRIMARY KEY (StationID)
--- );
+CREATE TABLE Station(
+	StationID varchar(50) NOT NULL,
+    Name varchar(50) NOT NULL,
+    PRIMARY KEY (StationID)
+);
 
--- CREATE TABLE Store(
--- 	StoreID varchar(50) NOT NULL,
---     Name varchar(50) NOT NULL,
---     Location varchar(50) NOT NULL,
---     Category varchar(50) NOT NULL,
---     URL varchar(50) NOT NULL,
---     Distance varchar(50) NOT NULL,
---     PRIMARY KEY (StoreID)
--- );
+CREATE TABLE Store(
+	StoreID varchar(50) NOT NULL,
+    Name varchar(50) NOT NULL,
+    Location varchar(50) NOT NULL,
+    Category varchar(50) NOT NULL,
+    URL varchar(50) NOT NULL,
+    Distance varchar(50) NOT NULL,
+    StationID varchar(50) NOT NULL,
+    PRIMARY KEY (StoreID),
+    FOREIGN KEY (StationID) REFERENCES Station(StationID)
+);
 
--- CREATE TABLE Event(
--- 	EventID int NOT NULL AUTO_INCREMENT,
---     P1_ID varchar(50) NOT NULL,
---     P2_ID varchar(50) NOT NULL,
---     Time DATETIME NOT NULL,
---     FoodType varchar(50) NOT NULL,
---     StationID varchar(50) NOT NULL,
---     PRIMARY KEY (EventID),
---     FOREIGN KEY (P1_ID) REFERENCES Person(PersonID),
---     FOREIGN KEY (P2_ID) REFERENCES Person(PersonID),
---     FOREIGN KEY (StationID) REFERENCES Station(StationID)
--- );
+CREATE TABLE Event(
+	EventID int NOT NULL AUTO_INCREMENT,
+    P1_ID varchar(50) NOT NULL,
+    P2_ID varchar(50) NOT NULL,
+    Time DATETIME NOT NULL,
+    FoodType varchar(50) NOT NULL,
+    StationID varchar(50) NOT NULL,
+    PRIMARY KEY (EventID),
+    FOREIGN KEY (P1_ID) REFERENCES Person(PersonID),
+    FOREIGN KEY (P2_ID) REFERENCES Person(PersonID),
+    FOREIGN KEY (StationID) REFERENCES Station(StationID)
+);
 
 CREATE TABLE MealPal(
 	MealPalID int NOT NULL AUTO_INCREMENT,
