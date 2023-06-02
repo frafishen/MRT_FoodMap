@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'RandomPair',
   data () {
@@ -52,7 +54,19 @@ export default {
     }
   },
   methods: {
+    fetchPerson: async function () {
+      const P1_ID = this.$store.state.P1_ID
+      console.log(P1_ID)
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/api/person/${P1_ID}`)
+        this.person = response.data
+      } catch (error) {
+        console.error(error)
+        this.person = null
+      }
+    },
     submitForm () {
+      this.randomPair()
       this.$router.push({
         path: '/invite',
         query: {
@@ -65,7 +79,25 @@ export default {
     },
     goMealpal () {
       this.$router.push('/findMealPal')
+    },
+    randomPair: async function () {
+      try {
+        const params = new URLSearchParams({
+          p2_ID: this.person.PersonID, // Use current person's ID as P2_ID
+          time: this.time, // Add your time here
+          food_type: 'All', // Add your food type here
+          station: 'All' // Add your station here
+        })
+
+        const response = await axios.get(`http://127.0.0.1:5000/api/randomEvent?${params.toString()}`)
+        console.log(response.data)
+      } catch (error) {
+        console.error(error)
+      }
     }
+  },
+  async mounted () {
+    await this.fetchPerson()
   }
 }
 </script>

@@ -4,11 +4,10 @@
       <div class="hero-content flex-col lg:flex-row">
         <img src="../assets/personal_image_sample.jpg" class="max-w-sm rounded-lg shadow-2xl" />
         <div class="px-6">
-          <h1 class="text-5xl font-bold py-6"><span class="text-primary">{{'My '}}</span>Personal Page</h1>
+          <h1 class="text-5xl font-bold py-6"><span class="text-primary" v-if="person">{{person.Name}}</span>'s Personal Page</h1>
           <div class="py-6">
-            <span class="font-bold mr-2">Location: </span> {{ 'Taipei City' }} <br>
-            <span class="font-bold mr-2">Usually at: </span> {{ 'Taipei Main Station' }} <br>
-            <span class="font-bold mr-2">Meal time: </span> {{ '12:00 - 13:00' }} <br>
+            <span class="font-bold mr-2">User's id: </span><span v-if="person"> {{ person.PersonID }} </span><br>
+            <span class="font-bold mr-2">Location: </span> <span v-if="person"> {{ person.Location }} </span><br>
           </div>
           <div class="flex justify-between py-6">
             <div class="flex">
@@ -30,11 +29,33 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   name: 'PersonalPage',
+  data () {
+    return {
+      person: null
+    }
+  },
   methods: {
+    fetchPerson: async function () {
+      const P1_ID = this.$store.state.P1_ID
+      console.log(P1_ID)
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/api/person/${P1_ID}`)
+        this.person = response.data
+      } catch (error) {
+        console.error(error)
+        this.person = null
+      }
+    }
+  },
+  async mounted () {
+    await this.fetchPerson()
   }
 }
 </script>
+
 <style>
 </style>

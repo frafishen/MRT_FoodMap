@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
 from urllib.parse import quote_plus
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy,text, or_, and_
+from sqlalchemy.sql.expression import between
 from flask_cors import CORS
-from sqlalchemy import text
 
-# password = quote_plus("xX@0180368905")
+import random
+from datetime import datetime, timedelta
+
+
+password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-password = quote_plus("221003red")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
@@ -208,6 +212,50 @@ def add_event():
         app.logger.error(str(e))
 
     return jsonify(response_object)
+
+
+@app.route('/api/randomEvent', methods=['GET'])
+def random_event():
+    p2_ID = request.args.get('p2_ID')
+    time_str = request.args.get('time')
+    food_type = request.args.get('food_type', 'All')
+    station = request.args.get('station', 'All')
+
+    time = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+    time_upper = time + timedelta(hours=1)
+    time_lower = time - timedelta(hours=1)
+
+    filters = [
+        Event.P2_ID == "00000000",
+        Event.Time.between(time_lower, time_upper),
+        Event.P1_ID != p2_ID
+    ]
+
+    if food_type != 'All':
+        filters.append(Event.FoodType == food_type)
+    
+    if station != 'All':
+        filters.append(Event.StationID == station)
+
+    result = Event.query.filter(and_(*filters)).all()
+
+    if result:
+        random_event = random.choice(result)
+        random_event.P2_ID = p2_ID
+        db.session.commit()
+        return jsonify({
+            'EventID': random_event.EventID,
+            'P1_ID': random_event.P1_ID,
+            'P2_ID': random_event.P2_ID,
+            'Time': random_event.Time,
+            'FoodType': random_event.FoodType,
+            'StationID': random_event.StationID
+        })
+
+    return 'No suitable event found', 404
+
+
+
 
 
 if __name__ == '__main__':
