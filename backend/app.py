@@ -8,9 +8,9 @@ import random
 from datetime import datetime, timedelta
 
 
-password = quote_plus("xX@0180368905")
+# password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-# password = quote_plus("221003red")
+password = quote_plus("221003red")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
@@ -50,6 +50,35 @@ class Event(db.Model):
         self.FoodType = FoodType
         self.StationID = StationID
 
+class FavoriteList(db.Model):
+    __tablename__ = 'FavoriteList'
+    FListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    PersonID = db.Column(db.String(50), db.ForeignKey('person.PersonID'), nullable=False)
+    StoreID = db.Column(db.String(50), db.ForeignKey('store.StoreID'), nullable=False)
+    person = db.relationship('person', foreign_keys=[PersonID])
+    store = db.relationship('store', foreign_keys=[StoreID])
+
+    def __init__(self, PersonID, StoreID):
+        self.PersonID = PersonID
+        self.StoreID = StoreID
+
+class Store(db.Model):
+    __tablename__ = 'Store'
+    StoreID = db.Column(db.String(50), primary_key=True)
+    Name = db.Column(db.String(50), nullable=False)
+    Location = db.Column(db.String(50), nullable=False)
+    Category = db.Column(db.String(50), nullable=False)
+    URL = db.Column(db.String(50), nullable=False)
+    Distance = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, StoreID, Name, Location, Category, URL, Distance):
+        self.StoreID = StoreID
+        self.Name = Name
+        self.Location = Location
+        self.Category = Category
+        self.URL = URL
+        self.Distance = Distance
+
 CORS(app)
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
@@ -61,7 +90,6 @@ def login(id, password):
         return 'No such person', 404
     person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
     return jsonify(person_dict)
-
 
 @app.route('/api/person', methods=['GET'])
 def get_persons():
@@ -76,8 +104,6 @@ def get_person(id):
         return 'No such person', 404
     person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
     return jsonify(person_dict)
-
-
 
 @app.route('/api/station', methods=['GET'])
 def get_stations():
@@ -254,7 +280,20 @@ def random_event():
 
     return 'No suitable event found', 404
 
-
+@app.route('/api/favorite/<person_id>', methods=['GET'])
+def get_favorite(person_id):
+    favorite_list = db.session.query(FavoriteList).filter_by(PersonID=person_id).all()
+    
+    if not favorite_list:
+        return 'No favorite list found', 404
+    
+    favorites = []
+    for favorite in favorite_list:
+        store = db.session.query(Store).get(favorite.StoreID)
+        if store is not None:
+            favorites.append({'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
+    
+    return jsonify(favorites)
 
 
 
