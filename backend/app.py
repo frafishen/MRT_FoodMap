@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from urllib.parse import quote_plus
-from flask_sqlalchemy import SQLAlchemy,text, or_, and_
+# from flask_sqlalchemy import SQLAlchemy,text, or_, and_
 from sqlalchemy.sql.expression import between
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text, or_, and_
 
 import random
 from datetime import datetime, timedelta
@@ -53,10 +55,12 @@ class Event(db.Model):
 class FavoriteList(db.Model):
     __tablename__ = 'FavoriteList'
     FListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    PersonID = db.Column(db.String(50), db.ForeignKey('person.PersonID'), nullable=False)
-    StoreID = db.Column(db.String(50), db.ForeignKey('store.StoreID'), nullable=False)
-    person = db.relationship('person', foreign_keys=[PersonID])
-    store = db.relationship('store', foreign_keys=[StoreID])
+    PersonID = db.Column(db.String(50), nullable=False)
+    StoreID = db.Column(db.String(50), nullable=False)
+    # PersonID = db.Column(db.String(50), db.ForeignKey('person.PersonID'), nullable=False)
+    # StoreID = db.Column(db.String(50), db.ForeignKey('store.StoreID'), nullable=False)
+    # person = db.relationship('person', foreign_keys=[PersonID])
+    # store = db.relationship('store', foreign_keys=[StoreID])
 
     def __init__(self, PersonID, StoreID):
         self.PersonID = PersonID
