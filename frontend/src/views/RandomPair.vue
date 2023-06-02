@@ -81,18 +81,18 @@ export default {
       this.$router.push('/findMealPal')
     },
     randomPair: async function () {
-      try {
-        const params = new URLSearchParams({
-          p2_ID: this.person.PersonID, // Use current person's ID as P2_ID
-          time: this.time, // Add your time here
-          food_type: 'All', // Add your food type here
-          station: 'All' // Add your station here
-        })
-
-        const response = await axios.get(`http://127.0.0.1:5000/api/randomEvent?${params.toString()}`)
-        console.log(response.data)
-      } catch (error) {
-        console.error(error)
+      const data = {
+        P2_ID: this.person.PersonID,
+        Time: this.date + ' ' + this.time + ':00',
+        FoodType: this.type,
+        StationID: this.station
+      }
+      console.log(data.Time)
+      const response = await axios.post('http://localhost:5000/api/randomPair', data)
+      if (response.data.status === 'success') {
+        console.log(response.data.event)
+      } else {
+        console.error(response.data.message)
       }
     }
   },

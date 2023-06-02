@@ -10,15 +10,20 @@ import random
 from datetime import datetime, timedelta
 
 
-# password = quote_plus("xX@0180368905")
+password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-password = quote_plus("221003red")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
+app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
-
+@app.errorhandler(500)
+def handle_500(error):
+    app.logger.error(f"500 error: {error}")  # Log the error
+    return jsonify({"status": "failed", "message": "Internal server error"}), 500
 
 class Person(db.Model):
     __tablename__ = 'Person'  # 確保table name與你的SQL table相同
@@ -227,7 +232,7 @@ def add_event():
     try:
         _json = request.json
         _P1_ID = _json['P1_ID']
-        _P2_ID = "00000000"
+        _P2_ID = "0"
         _Time = _json['Time']
         _FoodType = _json['FoodType']
         _StationID = _json['StationID']
@@ -250,45 +255,43 @@ def add_event():
     return jsonify(response_object)
 
 
-@app.route('/api/randomEvent', methods=['GET'])
-def random_event():
-    p2_ID = request.args.get('p2_ID')
-    time_str = request.args.get('time')
-    food_type = request.args.get('food_type', 'All')
-    station = request.args.get('station', 'All')
+@app.route('/api/randomPair', methods=['POST'])
+def pair_event():
+    try:
+        data = request.get_json()
+        data['Time'] = datetime.strptime(data['Time'], '%Y-%m-%d %H:%M:%S')
 
-    time = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
-    time_upper = time + timedelta(hours=1)
-    time_lower = time - timedelta(hours=1)
+        query = text("""
+            SELECT EventID, P1_ID, P2_ID, Time, FoodType, StationID FROM Event
+            WHERE P2_ID = "0"
+            AND ABS(TIMESTAMPDIFF(MINUTE, Time, :Time)) <= 60
+            AND FoodType = :FoodType
+            AND StationID = :StationID
+            ORDER BY RAND()
+            LIMIT 1
+        """)
 
-    filters = [
-        Event.P2_ID == "00000000",
-        Event.Time.between(time_lower, time_upper),
-        Event.P1_ID != p2_ID
-    ]
+        # Execute the query
+        result = db.session.execute(query, data).fetchone()
+        result_dict = dict(result._asdict())  # Convert the result tuple to a dictionary
+        # print(data)
+        
 
-    if food_type != 'All':
-        filters.append(Event.FoodType == food_type)
-    
-    if station != 'All':
-        filters.append(Event.StationID == station)
+        if result:
+            # Change the P2_ID of the selected event to the passed P2_ID
+            update_query = text("""
+                UPDATE Event SET P2_ID = :P2_ID WHERE EventID = :id
+            """)
+            db.session.execute(update_query, {"P2_ID": data['P2_ID'], "id": result_dict['EventID']})
+            
+            db.session.commit()
+            return jsonify({"status": "success", "event": result_dict}), 200
+        else:
+            return jsonify({"status": "failed", "message": "No available pair"}), 404
 
-    result = Event.query.filter(and_(*filters)).all()
-
-    if result:
-        random_event = random.choice(result)
-        random_event.P2_ID = p2_ID
-        db.session.commit()
-        return jsonify({
-            'EventID': random_event.EventID,
-            'P1_ID': random_event.P1_ID,
-            'P2_ID': random_event.P2_ID,
-            'Time': random_event.Time,
-            'FoodType': random_event.FoodType,
-            'StationID': random_event.StationID
-        })
-
-    return 'No suitable event found', 404
+    except Exception as e:
+        app.logger.error(str(e))
+        return jsonify({"status": "failed", "message": str(e)}), 500
 
 @app.route('/api/favorite/<person_id>', methods=['GET'])
 def get_favorite(person_id):
