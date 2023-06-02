@@ -1,1 +1,1 @@
-log
+/api/favorite/<person_id>'

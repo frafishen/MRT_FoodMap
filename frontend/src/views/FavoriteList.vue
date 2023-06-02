@@ -2,41 +2,70 @@
   <div class="favorite">
     Favorite List
     <div class="favorite-list">
-      <div v-for="favorite in favorites" :key="favorite.id">
+      <table>
+        <tbody>
+          <tr v-for="favorite in this.favoriteList" :key="favorite.FListID">
+            <td>{{ favorite.Name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div v-for="favorite in favorites" :key="favorite.id">
         <span class="favorite-name">{{ favorite.name }}</span>
         <button
           class="heart-button"
           :class="{ 'active': favorite.isFavorite }"
           @click="toggleFavorite(favorite)"
         ></button>
-      </div>
+      </div> -->
     </div>
     <!-- <button @click="goTo">添加最愛</button> -->
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import axios from 'axios'
+// import { computed } from 'vue'
+// import { useStore } from 'vuex'
 
 export default {
   name: 'FavoriteList',
-  setup () {
-    const store = useStore()
-    const favorites = computed(() => store.getters.favorites)
-
-    const toggleFavorite = (favorite) => {
-      favorite.isFavorite = !favorite.isFavorite
-      store.dispatch('removeFavorite', favorite.id)
-    }
-
+  data () {
     return {
-      favorites,
-      toggleFavorite
+      favoriteList: null
     }
   },
   methods: {
+    fetchFavoriteList: async function () {
+      const P1_ID = this.$store.state.P1_ID
+      // console.log(P1_ID)
+      try {
+        console.log('start fetching', P1_ID)
+        const response = await axios.get(`http://127.0.0.1:5000/api/favorite/${P1_ID}`)
+        console.log('get response')
+        this.favoriteList = response.data
+      } catch (error) {
+        console.error(error)
+        this.favoriteList = null
+      }
+    }
+  },
+  async mounted () {
+    await this.fetchFavoriteList()
   }
+  // setup () {
+  //   const store = useStore()
+  //   const favorites = computed(() => store.getters.favorites)
+  //   console.log(store.Name)
+  //   const toggleFavorite = (favorite) => {
+  //     favorite.isFavorite = !favorite.isFavorite
+  //     store.dispatch('removeFavorite', favorite.id)
+  //   }
+
+  //   return {
+  //     favorites,
+  //     toggleFavorite
+  //   }
+  // }
 }
 </script>
 

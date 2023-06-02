@@ -57,10 +57,16 @@ class FavoriteList(db.Model):
     FListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     PersonID = db.Column(db.String(50), nullable=False)
     StoreID = db.Column(db.String(50), nullable=False)
-    # PersonID = db.Column(db.String(50), db.ForeignKey('person.PersonID'), nullable=False)
-    # StoreID = db.Column(db.String(50), db.ForeignKey('store.StoreID'), nullable=False)
-    # person = db.relationship('person', foreign_keys=[PersonID])
-    # store = db.relationship('store', foreign_keys=[StoreID])
+
+    def __init__(self, PersonID, StoreID):
+        self.PersonID = PersonID
+        self.StoreID = StoreID
+
+class HistoryList(db.Model):
+    __tablename__ = 'HistoryList'
+    HListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    PersonID = db.Column(db.String(50), nullable=False)
+    StoreID = db.Column(db.String(50), nullable=False)
 
     def __init__(self, PersonID, StoreID):
         self.PersonID = PersonID
@@ -295,10 +301,24 @@ def get_favorite(person_id):
     for favorite in favorite_list:
         store = db.session.query(Store).get(favorite.StoreID)
         if store is not None:
-            favorites.append({'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
+            favorites.append({'FListID': favorite.FListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
     
     return jsonify(favorites)
 
+@app.route('/api/history/<person_id>', methods=['GET'])
+def get_history(person_id):
+    history_list = db.session.query(HistoryList).filter_by(PersonID=person_id).all()
+    
+    if not history_list:
+        return 'No favorite list found', 404
+    
+    histories = []
+    for history in history_list:
+        store = db.session.query(Store).get(history.StoreID)
+        if store is not None:
+            histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
+    
+    return jsonify(histories)
 
 
 if __name__ == '__main__':

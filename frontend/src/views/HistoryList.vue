@@ -2,31 +2,61 @@
   <div class="history">
     History List
     <div class="history-list">
-      <div v-for="history in histories" :key="history.id">
+      <table>
+        <tbody>
+          <tr v-for="history in this.historyList" :key="history.HListID">
+            <td>{{ history.Name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div v-for="history in histories" :key="history.id">
         <span>{{ history.name }}</span>
-      </div>
+      </div> -->
     </div>
 
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import axios from 'axios'
+// import { computed } from 'vue'
+// import { useStore } from 'vuex'
 
 export default {
   name: 'HistoryList',
-
-  setup () {
-    const store = useStore()
-    const histories = computed(() => store.getters.histories)
-
+  data () {
     return {
-      histories
+      historyList: null
     }
   },
   methods: {
+    fetchHistoryList: async function () {
+      const P1_ID = this.$store.state.P1_ID
+      // console.log(P1_ID)
+      try {
+        console.log('start fetching', P1_ID)
+        const response = await axios.get(`http://127.0.0.1:5000/api/history/${P1_ID}`)
+        console.log('get response')
+        this.historyList = response.data
+      } catch (error) {
+        console.error(error)
+        this.historyList = null
+      }
+    }
+  },
+  async mounted () {
+    await this.fetchHistoryList()
   }
+  // setup () {
+  //   const store = useStore()
+  //   const histories = computed(() => store.getters.histories)
+
+  //   return {
+  //     histories
+  //   }
+  // },
+  // methods: {
+  // }
 }
 </script>
 
