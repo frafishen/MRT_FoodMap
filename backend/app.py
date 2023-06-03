@@ -15,6 +15,7 @@ password = quote_plus("xX@0180368905")
 # password = quote_plus("221003red")
 
 app = Flask(__name__)
+# CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
 app.config['DEBUG'] = True
@@ -25,6 +26,9 @@ def handle_500(error):
     app.logger.error(f"500 error: {error}")  # Log the error
     return jsonify({"status": "failed", "message": "Internal server error"}), 500
 
+
+
+# ========== create tables ========== 
 class Person(db.Model):
     __tablename__ = 'Person'  # 確保table name與你的SQL table相同
     PersonID = db.Column(db.String(50), primary_key=True)
@@ -40,6 +44,15 @@ class Station(db.Model):
     def __init__(self, StationID, Name):
         self.StationID = StationID
         self.Name = Name
+
+class Store(db.Model):
+    __tablename__ = 'Store'
+    StoreID = db.Column(db.String(50), primary_key=True)
+    Name = db.Column(db.String(50), nullable=False)
+    Location = db.Column(db.String(50), nullable=False)
+    Category = db.Column(db.String(50), nullable=False)
+    URL = db.Column(db.String(50), nullable=False)
+    Distance = db.Column(db.String(50), nullable=False)
 
 class Event(db.Model):
     __tablename__ = 'Event'
@@ -57,6 +70,12 @@ class Event(db.Model):
         self.FoodType = FoodType
         self.StationID = StationID
 
+class MealPal(db.Model):
+    __tablename__ = 'MealPal'
+    MealPalID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    P1_ID = db.Column(db.String(50), nullable=False)
+    P2_ID = db.Column(db.String(50), nullable=False)
+
 class FavoriteList(db.Model):
     __tablename__ = 'FavoriteList'
     FListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -66,6 +85,14 @@ class FavoriteList(db.Model):
     def __init__(self, PersonID, StoreID):
         self.PersonID = PersonID
         self.StoreID = StoreID
+
+class ChatRecord(db.Model):
+    __tablename__ = 'ChatRecord'
+    ChatID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    MealPalID = db.Column(db.Integer, nullable=False)
+    P_ID = db.Column(db.String(50), nullable=False)
+    Time = db.Column(db.DateTime, nullable=False)
+    Content = db.Column(db.String(50), nullable=False)
 
 class HistoryList(db.Model):
     __tablename__ = 'HistoryList'
@@ -77,25 +104,13 @@ class HistoryList(db.Model):
         self.PersonID = PersonID
         self.StoreID = StoreID
 
-class Store(db.Model):
-    __tablename__ = 'Store'
-    StoreID = db.Column(db.String(50), primary_key=True)
-    Name = db.Column(db.String(50), nullable=False)
-    Location = db.Column(db.String(50), nullable=False)
-    Category = db.Column(db.String(50), nullable=False)
-    URL = db.Column(db.String(50), nullable=False)
-    Distance = db.Column(db.String(50), nullable=False)
+class Comment(db.Model):
+    _tablename__ = 'Comment'
+    CommentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    PersonID = db.Column(db.String(50), nullable=False)
+    StoreID = db.Column(db.String(50), nullable=False)
+    Content = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, StoreID, Name, Location, Category, URL, Distance):
-        self.StoreID = StoreID
-        self.Name = Name
-        self.Location = Location
-        self.Category = Category
-        self.URL = URL
-        self.Distance = Distance
-
-CORS(app)
-# CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
 
 @app.route("/api/login/<id>/<password>", methods=["GET"])
@@ -119,6 +134,8 @@ def get_person(id):
         return 'No such person', 404
     person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
     return jsonify(person_dict)
+
+
 
 @app.route('/api/station', methods=['GET'])
 def get_stations():
@@ -183,7 +200,9 @@ def delete_station():
         response_object['status'] = 'failed'
         app.logger.error(str(e))
         return jsonify(response_object)
-    
+
+
+
 @app.route('/api/addPerson', methods=['POST'])
 def add_person():
     response_object = {'status': 'success'}
@@ -211,6 +230,7 @@ def add_person():
         return jsonify(response_object)
 
 
+
 @app.route('/api/event', methods=['GET'])
 def get_events():
     events = db.session.query(Event).all()
@@ -224,7 +244,6 @@ def get_event(id):
         return 'No such event', 404
     event_dict = {'EventID': event.EventID, 'P1_ID': event.P1_ID, 'P2_ID': event.P2_ID, 'Time': event.Time, 'FoodType': event.FoodType, 'StationID':event.StationID}
     return jsonify(event_dict)
-
 
 @app.route('/api/addEvent', methods=['POST'])
 def add_event():
@@ -253,7 +272,6 @@ def add_event():
         app.logger.error(str(e))
 
     return jsonify(response_object)
-
 
 @app.route('/api/randomPair', methods=['POST'])
 def pair_event():
@@ -293,6 +311,7 @@ def pair_event():
         app.logger.error(str(e))
         return jsonify({"status": "failed", "message": str(e)}), 500
 
+# get fav list with specific personID
 @app.route('/api/favorite/<person_id>', methods=['GET'])
 def get_favorite(person_id):
     favorite_list = db.session.query(FavoriteList).filter_by(PersonID=person_id).all()
@@ -308,6 +327,7 @@ def get_favorite(person_id):
     
     return jsonify(favorites)
 
+# get histroy list with specific personID
 @app.route('/api/history/<person_id>', methods=['GET'])
 def get_history(person_id):
     history_list = db.session.query(HistoryList).filter_by(PersonID=person_id).all()
@@ -322,6 +342,22 @@ def get_history(person_id):
             histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
     
     return jsonify(histories)
+
+# getStores API with foodType and stationID
+@app.route('/api/store/<foodType>/<stationID>', methods=['GET'])
+def get_stores(foodType,stationID):
+    stores = db.session.query(Store).filter_by(Category=foodType).filter(Store.StationID==stationID).join(Station, Store.StationID==Station.StationID).all()
+    stores = db.session.query(Store).join(Station, Store.StationID==Station.StationID).limit(4)
+    stores_list = [{'Name': store.Name, 'Location': store.Location, 'Category': store.Category, 'URL': store.URL, 'Distance': store.Distance, 'StationName': store.StationName} for store in stores]
+    stores_list = [{'StoreID': store.Store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Category': store.Category, 'URL': store.URL, 'Distance': store.Distance, 'StationID': store.StationID} for store in stores]
+    return jsonify(stores_list)
+
+# getStores API, without foodType and stationID
+@app.route('/api/store', methods=['GET'])
+def get_stores_top4():
+    stores = db.session.query(Store, Station.Name.label('StationName')).join(Station, Store.StationID==Station.StationID).limit(4)
+    stores_list = [{'Name': store.Store.Name, 'Location': store.Store.Location, 'Category': store.Store.Category, 'URL': store.Store.URL, 'Distance': store.Store.Distance, 'StationName': store.StationName} for store in stores]
+    return jsonify(stores_list)
 
 
 if __name__ == '__main__':

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
-      <div class="hero-content flex-col lg:flex-row-reverse">
-        <div class="px-6">
-          <h1 class="text-5xl font-bold py-6">Find Tasty <span class="text-primary">F.o^o.d </span></h1>
+      <div class="w-5/6 hero-content flex-col lg:flex-row-reverse">
+        <div class="px-6 w-full lg:w-1/2">
+          <h1 class="text-center text-5xl font-bold py-6">Find Tasty <span class="text-primary">F.o^o.d </span></h1>
           <div class="w-full flex flex-row justify-between">
-            <!-- construct a button with a arror point to left -->
-            <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white" @click="toggleMap"><p>&larr;</p></button>
+            <!-- button with a arror point to left -->
+            <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white" @click="showMap = true"><p>&larr;</p></button>
             <!-- selection bar -->
             <select class="flex justify-end select select-primary w-full max-w-xs">
               <option disabled selected class="text-primary">What do .u. want to eat today?</option>
@@ -42,7 +42,7 @@
                     <a role="button" class="badge badge-ghost badge-sm" href="https://www.google.com/">Go to Map</a>
                   </td>
                   <th>
-                    <button class="btn btn-ghost btn-xs">Details</button>
+                    <button class="btn btn-ghost btn-xs" @click="toggleMap">Details</button>
                   </th>
                   <th>
                     <button
@@ -60,12 +60,12 @@
           </div>
           <!-- ========== table component end ========== -->
         </div>
-        <div class="px-6 w-4/5 lg:w-1/2 p-4">
+        <div class="px-6 w-full py-4 lg:w-1/2">
           <!-- left conponent -->
-          <div class="w-full" v-if="showMap">
+          <div class="max-w-full" v-if="showMap">
             <FoodMap />
           </div>
-          <div class="w-full" v-if="!showMap">
+          <div class="max-w-full" v-if="!showMap">
             <StoreDetailArea />
           </div>
         </div>
@@ -77,6 +77,28 @@
 // import Store Table component
 import FoodMap from '@/components/FoodMap.vue'
 import StoreDetailArea from '@/components/StoreDetailArea.vue'
+// import axios from 'axios'
+
+// async function modifyFavorite (id, isClicked) {
+//   try {
+//     var config = { headers: { 'Content-Type': 'application/json' } }
+//     if(isClicked) { // already in fav list
+//       // delete from fav list
+//       const response = await axios.delete('http://localhost:5000/api/deleteFavorite', { PersonID: this.personID, StationID: this.stationName }, config)
+//       console.log(response.data)
+//       this.modifyFavoriteStatus = response.data
+//     } else  {// not in fav list
+//       // add to fav list
+//       const response = await axios.post('http://localhost:5000/api/addFavorite', { PersonID: this.personID, StationID: this.stationName }, config)
+//       console.log(response.data)
+//       this.modifyFavoriteStatus = response.data
+//     }
+//   } catch (error) {
+//     console.error('An error occurred:', error)
+//   }
+// }
+
+// get store with food type
 
 export default {
   name: 'findTastyFood',
@@ -99,8 +121,19 @@ export default {
           storeName: 'Store 2',
           address: 'Address 2',
           isClicked: false
+        },
+        {
+          storeName: 'Store 3',
+          address: 'Address 3',
+          isClicked: false
+        },
+        {
+          storeName: 'Store 4',
+          address: 'Address 4',
+          isClicked: false
         }
-      ]
+      ],
+      modifyFavoriteStatus: null
     }
   },
   components: {
@@ -112,7 +145,8 @@ export default {
       this.tableRows[index].isClicked = !this.tableRows[index].isClicked
     },
     toggleMap () {
-      this.showMap = !this.showMap
+      this.showMap = false
+      console.log(this.showMap)
     }
   }
 }

@@ -1,8 +1,10 @@
 <template>
   <div>
     <nav class =" mx-auto max-w-7xl justify-between p-2 lg:px-8">
-      <router-link to="/homepage" class="p-6">Taipei MRT Food Map System</router-link>|
-      <router-link to="/testpage" class="p-6">TestPage</router-link>
+      <router-link to="/homepage" class="p-6">MRT Food Map System</router-link>|
+      <router-link to="/testpage" class="p-6">Test Page</router-link> |
+      <router-link to="/findTastyFood" class="p-6">Find Tasty Food</router-link> |
+      <router-link to="/findMealPal" class="p-6">Find MealPal</router-link>
       <!-- vendor NavBar component -->
       <NavBar />
     </nav>

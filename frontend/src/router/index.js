@@ -11,7 +11,7 @@ import NewEvent from '../views/NewEvent.vue'
 import IntersectionPage from '../views/IntersectionPage.vue'
 import PersonalPage from '../views/PersonalPage.vue'
 import RegistPage from '../views/RegistPage.vue'
-import HelloWorld from '../views/HelloWorld.vue'
+import HomeView from '../views/HomeView.vue'
 
 const routes = [
   {
@@ -31,7 +31,7 @@ const routes = [
   { path: '/intersection', name: 'IntersectionPage', component: IntersectionPage },
   { path: '/person', name: 'PersonalPage', component: PersonalPage },
   { path: '/regist', name: 'RegistPage', component: RegistPage },
-  { path: '/testpage', name: 'TestPage', component: HelloWorld }
+  { path: '/testpage', name: 'TestPage', component: HomeView }
 ]
 
 const router = createRouter({

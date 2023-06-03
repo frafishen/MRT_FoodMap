@@ -5,7 +5,7 @@
       <div class="max-w-md my-8 ld: w-full">
         <div class="my-8">
           <h1 class="text-5xl font-bold mt-6">MRT <span class="text-primary"> F.o^o.d</span> Map</h1>
-          <p class="py-4 md-6 text-natural">Enjoy your f.o^o.d trip with meal:pals in Taipei city!</p>
+          <p class="py-4 md-6 text-natural">Enjoy your f.o^o.d trip with meal:Pals in Taipei city!</p>
         </div>
         <div class="flex flex-col w-full my-8 lg:flex-row">
           <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" @click="goFindFood">Find F.o^o.d</div>

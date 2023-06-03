@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="hello">
-      <div class="query">
+    <!-- ========== 1st row ========== -->
+    <div class="flex p-6">
+      <!-- find a person with specific id -->
+      <div class="w-1/3 flex-col">
         <div class="form-control">
           <div class="input-group">
-            <input type="text" placeholder="00001002" class="input input-bordered" v-model="person_input"/>
+            <input type="text" placeholder="00001002" class="input input-bordered" v-model.lazy="person_input"/>
             <button class="btn btn-square"  @click="fetchPerson(person_input)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -13,21 +15,22 @@
             </button>
           </div>
         </div>
-        <div v-if="person" class="result">
-          ID: {{ person.PersonID }}<br>
-          Name: {{ person.Name }}<br>
-          Password: {{ person.Password }}<br>
-          Location: {{ person.Location }}<br>
+        <div v-if="person" class="max-w-full">
+          ID: {{ person.PersonID }} <br>
+          Name: {{ person.Name }} <br>
+          Password: {{ person.Password }} <br>
+          Location: {{ person.Location }}
         </div>
-        <div v-else class="result">
+        <div v-else class="max-w-full">
           Person (ID: {{ person_input }}) not found.
         </div>
       </div>
 
-      <div class="query">
+      <!-- find a station with specific station -->
+      <div class="w-1/3 flex-col">
         <div class="form-control">
           <div class="input-group">
-            <input type="text" placeholder="R10" class="input input-bordered" v-model="station_input"/>
+            <input type="text" placeholder="R10" class="input input-bordered" v-model.lazy="station_input"/>
             <button class="btn btn-square"  @click="fetchStation(station_input)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,10 +48,11 @@
         </div>
       </div>
 
-      <div class="query">
+      <!-- find a event with specific id -->
+      <div class="w-1/3 flex-col">
         <div class="form-control">
           <div class="input-group">
-            <input type="text" placeholder="3" class="input input-bordered" v-model="event_input"/>
+            <input type="text" placeholder="3" class="input input-bordered" v-model.lazy="event_input"/>
             <button class="btn btn-square"  @click="fetchEvent(event_input)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -70,25 +74,28 @@
         </div>
       </div>
     </div>
-
-    <div class="hello">
-      <div class="query">
-        <button class="btn btn-outline" @click="getPersons()">Get PersonList</button>
-        <div v-for="(person, index) in persons" :key="index" class="result">
+    <!-- ========== second row ========== -->
+    <div class="flex p-6">
+      <!-- get all people -->
+      <div class="w-1/3 flex-col">
+        <button class="btn btn-outline" @click="getPeople()">Get PersonList</button>
+        <div v-for="(person, index) in people" :key="index" class="result">
           ID: {{ person.PersonID }}<br>
           Name: {{ person.Name }}<br>
           Password: {{ person.Password }}<br>
           Location: {{ person.Location }}<br>
         </div>
       </div>
-      <div class="query">
+      <!-- get all station -->
+      <div class="w-1/3 flex-col">
         <button class="btn btn-outline" @click="getStations()">Get Stations</button>
         <div v-for="(station, index) in stations" :key="index" class="result">
           ID: {{ station.StationID }}<br>
           Name: {{ station.Name }}<br>
         </div>
       </div>
-      <div class="query">
+      <!-- get all event -->
+      <div class="w-1/3 flex-col">
         <button class="btn btn-outline" @click="getEvents()">Get Events</button>
         <div v-for="(event, index) in events" :key="index" class="result">
           ID: {{ event.EventID }}<br>
@@ -100,26 +107,62 @@
         </div>
       </div>
     </div>
-    <div>
-      <form @submit.prevent="addStation">
-        <input type="text" placeholder="R10" v-model="stationID" class="input input-bordered" />
-        <input type="text" v-model="stationName" placeholder="Station Name" class="input input-bordered" />
-        <button class=" btn btn-outline" type="submit">Add Station</button>
-      </form>
+    <!-- ========== third part ========== -->
+    <!-- add/delete station -->
+    <div class="flex py-6">
       <div>
-        <div v-if="addStationStatus" :key="index" class="result">
-          msg: {{ addStationStatus.message }}<br>
+        <form @submit.prevent="addStation">
+          <input type="text" placeholder="R10" v-model="stationID" class="input input-bordered" />
+          <input type="text" v-model="stationName" placeholder="Station Name" class="input input-bordered" />
+          <button class=" btn btn-outline" type="submit">Add Station</button>
+        </form>
+        <div>
+          <div v-if="addStationStatus" :key="index" class="result">
+            msg: {{ addStationStatus.message }}<br>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form @submit.prevent="deleteStation">
+          <input type="text" placeholder="R10" v-model="dstationID" class="input input-bordered" />
+          <button class=" btn btn-outline" type="submit">Delete Station</button>
+        </form>
+        <div>
+          <div v-if="deleteStationStatus" :key="index" class="result">
+            msg: {{ deleteStationStatus.message }}<br>
+          </div>
         </div>
       </div>
     </div>
-    <div>
-      <form @submit.prevent="deleteStation">
-        <input type="text" placeholder="R10" v-model="dstationID" class="input input-bordered" />
-        <button class=" btn btn-outline" type="submit">Delete Station</button>
+    <!-- ========== fourth part ========== -->
+    <div class="py-6">
+      <form @submit.prevent="addFavorite">
+        <input type="text" placeholder="R10" v-model="person_input" class="input input-bordered" />
+        <input type="text" v-model="stationID" placeholder="Station ID" class="input input-bordered" />
+        <button class=" btn btn-outline" type="submit">Add Favorite</button>
       </form>
       <div>
-        <div v-if="deleteStationStatus" :key="index" class="result">
-          msg: {{ deleteStationStatus.message }}<br>
+        <div v-if="addFavoriteStatus" :key="index" class="result">
+          msg: {{ addFavoriteStatus.message }}<br>
+        </div>
+      </div>
+    </div>
+    <!-- ========== fifth part ========== -->
+    <div class="py-6">
+      <form @submit.prevent="getStore">
+        <input type="text" v-model="foodtype" placeholder="foodtype" class="input input-bordered" />
+        <button class=" btn btn-outline" type="submit">Get Store</button>
+      </form>
+      <div>
+        <div v-for="(store, index) in stores" :key="index" class="result">
+          Store Name: {{ store.Name }}<br>
+          Station Name: {{ store.StoreName }}<br>
+          Address: {{ store.Location }}<br>
+          Distance: {{ store.Distance }}<br>
+          <a v-bind:href=store.URL>Go to Map</a>
+          <button class="btn btn-ghost btn-xs" @click="toggleMap">Details</button>
+          IsFavorite: {{ store.IsFavorite }}<br>
+
         </div>
       </div>
     </div>
@@ -129,25 +172,29 @@
 <script>
 import axios from 'axios'
 
+// find a person with specific id
 async function fetchPerson (personInput) {
   try {
     const response = await axios.get(`http://127.0.0.1:5000/api/person/${personInput}`)
     this.person = response.data
   } catch (error) {
     console.error(error)
+    console.log('This person: ', this.person)
     this.person = null
   }
 }
-async function getPersons () {
+// get all people
+async function getPeople () {
   try {
     const response = await axios.get('http://127.0.0.1:5000/api/person')
-    this.persons = response.data
+    this.people = response.data
   } catch (error) {
     console.error(error)
-    this.persons = []
+    this.people = []
   }
 }
 
+// find a station with specific station
 async function fetchStation (stationInput) {
   try {
     const response = await axios.get(`http://127.0.0.1:5000/api/station/${stationInput}`)
@@ -157,6 +204,8 @@ async function fetchStation (stationInput) {
     this.station = null
   }
 }
+
+// get all station
 async function getStations () {
   try {
     const response = await axios.get('http://127.0.0.1:5000/api/station')
@@ -191,6 +240,7 @@ async function deleteStation () {
   }
 }
 
+// find a event with specific id
 async function fetchEvent (eventInput) {
   try {
     const response = await axios.get(`http://127.0.0.1:5000/api/event/${eventInput}`)
@@ -200,6 +250,7 @@ async function fetchEvent (eventInput) {
     this.event = null
   }
 }
+// get all event
 async function getEvents () {
   try {
     const response = await axios.get('http://127.0.0.1:5000/api/event')
@@ -210,60 +261,78 @@ async function getEvents () {
   }
 }
 
+// add a favorite store with specific person_id and station_id
+async function addFavorite () {
+  console.log(this.person_input, this.stationID)
+  try {
+    const response = await axios.post(`http://127.0.0.1:5000/api/favorite/${this.person_input}/${this.stationID}`)
+    this.addFavoriteStatus = response.data
+  } catch (error) {
+    console.error(error)
+    this.addFavoriteStatus = null
+  }
+}
+// get all store
+async function getStore (foodtype) {
+  try {
+    if (foodtype !== '') {
+      // get top 4 stores without specific foodtype
+      const response = await axios.get('http://127.0.0.1:5000/api/store')
+      this.stores = response.data
+    } else {
+      // get stores with specific foodtype
+      const response = await axios.get(`http://127.0.0.1:5000/api/store/${foodtype}`)
+      this.stores = response.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       person_input: '00001002',
       person: null,
-      persons: [],
+      people: [],
+
       station_input: 'R10',
       station: null,
       stations: [],
+
       event_input: '3',
       event: null,
       events: [],
+
       stationID: '2345',
       stationName: 'zz',
       dstationID: '2345',
       addStationStatus: null,
-      deleteStationStatus: null
+      deleteStationStatus: null,
+
+      foodtype: 'BBQ',
+      stores: []
     }
   },
   methods: {
     fetchPerson: fetchPerson,
-    getPersons: getPersons,
+    getPeople: getPeople,
+
     fetchStation: fetchStation,
     getStations: getStations,
+
     fetchEvent: fetchEvent,
     getEvents: getEvents,
+
     addStation: addStation,
-    deleteStation: deleteStation
+    deleteStation: deleteStation,
+
+    addFavorite: addFavorite,
+
+    getStore: getStore
   }
 }
 </script>
-
-<style scoped>
-h1,
-h2 {
-  font-weight: normal;
-}
-
-.hello {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 5%;
-  margin-left: 5%;
-}
-
-.query {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-.result {
-  text-align: left;
-  margin-top: 10px;
-  flex: 1;
-}</style>
+<style>
+</style>

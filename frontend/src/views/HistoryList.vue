@@ -1,23 +1,24 @@
 <template>
-  <div class="history">
-    History List
-    <div class="history-list">
-      <table>
-        <tbody>
-          <tr v-for="history in this.historyList" :key="history.HListID">
-            <td>{{ history.Name }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- <div v-for="history in histories" :key="history.id">
-        <span>{{ history.name }}</span>
-      </div> -->
+  <div>
+    <div class="hero min-h-[80vh] bg-base-200">
+      <div class=" w-5/6 hero-content flex-col lg:flex-row-reverse">
+        <div class="px-6 w-4/5 lg:w-1/2">
+          <h1 class="text-5xl font-bold py-6 h-1/3"><span class="text-primary">H.i.story </span> List </h1>
+          <p class="py-4 md-6 text-natural h-2/3">People who love to eat are always the best people :></p>
+        </div>
+        <div class="px-6 w-4/5 lg:w-1/2">
+          <!-- left component -->
+          <div class="max-w-full">
+            <!-- ========== table component ========== -->
+            <StoreTable />
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
 </template>
-
 <script>
+import StoreTable from '@/components/StoreTable.vue'
 import axios from 'axios'
 // import { computed } from 'vue'
 // import { useStore } from 'vuex'
@@ -26,8 +27,33 @@ export default {
   name: 'HistoryList',
   data () {
     return {
-      historyList: null
+      // todo: get data from db
+      tableRows: [
+        {
+          storeName: 'Store 1',
+          address: 'Address 1',
+          isClicked: false
+        },
+        {
+          storeName: 'Store 2',
+          address: 'Address 2',
+          isClicked: false
+        },
+        {
+          storeName: 'Store 3',
+          address: 'Address 3',
+          isClicked: false
+        },
+        {
+          storeName: 'Store 4',
+          address: 'Address 4',
+          isClicked: false
+        }
+      ]
     }
+  },
+  components: {
+    StoreTable
   },
   methods: {
     fetchHistoryList: async function () {
@@ -59,88 +85,5 @@ export default {
   // }
 }
 </script>
-
 <style>
-.history {
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 64px;
-    line-height: 77px;
-    align-items: center;
-    text-align: center;
-    color: #363636;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-.homeButton
-{
-background-color: transparent;
-border-color: lightgray;
-height:76px;
-width:76px;
-padding:0px;
-left:1180px;
-top:34px;
-position:absolute;
-
-}
-
-.userButton{
-  background-color: transparent;
-  border-color: lightgray;
-  width: 76px;
-  height: 76px;
-  left: 1072px;
-  top: 34px;
-  position: absolute;
-}
-.home
-{
-background-color:#ffffff;
-height:65px;
-width:65px;
-
-}
-
-.user1
-{
-height:65px;
-width:65px;
-}
-.border{
-  margin: 0 auto;
-   width: 800px;
-   height: 600px;
-    padding:50px;
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 50px;
-}
-.history-list {
- margin: 0 auto;
-  width: 800px;
- height: 500px;
-    padding:50px;
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 50px;
-  overflow-y: auto; /* 啟用垂直滾動條 */
-}
-.heart-button {
-  width: 40px;
-  height: 40px;
-  background-image: url('../assets/redHeart.png'); /* 白色愛心圖片的路徑 */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-
-.active {
-  background-image: url('../assets/whiteHeart.png'); /* 紅色愛心圖片的路徑 */
-}
-
 </style>

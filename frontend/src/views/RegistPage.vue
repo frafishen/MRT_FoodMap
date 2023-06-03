@@ -6,7 +6,7 @@
           <img class="h-40 w-auto md-4" src="../assets/login_logo.png" alt="logo" />
         </div>
         <h1 class="text-5xl font-bold">Sign up now!</h1>
-        <p class="py-6">Siup up an new account and start your food trip now!</p>
+        <p class="py-6">Siup up an new account and start your f.o^o.d trip now!</p>
         <div class="mt-2 text-center text-sm text-gray-500 lg:text-left">
           Have an account already?
           {{ '   ' }}

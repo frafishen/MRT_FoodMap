@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="max-w-screen h-auto">
+    <HelloWorld />
   </div>
 </template>
 
