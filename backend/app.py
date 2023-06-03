@@ -15,8 +15,9 @@ from datetime import datetime, timedelta
 password = quote_plus("221003red")
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
-CORS(app)
+# CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
 app.config['DEBUG'] = True
 db = SQLAlchemy(app)
@@ -53,6 +54,14 @@ class Store(db.Model):
     Category = db.Column(db.String(50), nullable=False)
     URL = db.Column(db.String(50), nullable=False)
     Distance = db.Column(db.String(50), nullable=False)
+    
+    def __init__(self, StoreID, Name, Location, Category, URL, Distance):
+        self.StoreID = StoreID
+        self.Name = Name
+        self.Location = Location
+        self.Category = Category
+        self.URL = URL
+        self.Distance = Distance
 
 class Event(db.Model):
     __tablename__ = 'Event'
@@ -134,7 +143,6 @@ def get_person(id):
         return 'No such person', 404
     person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
     return jsonify(person_dict)
-
 
 
 @app.route('/api/station', methods=['GET'])
@@ -327,6 +335,56 @@ def get_favorite(person_id):
     
     return jsonify(favorites)
 
+# add Favorite
+@app.route('/api/addFavorite', methods=['POST'])
+def add_favorite():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        # print(request.json)
+        _StoreID = _json['StoreID']['data'][0]['StoreID'] #為甚麼回傳的json這麼複雜...
+        _P1_ID = _json['P1_ID']
+        if _StoreID and request.method == 'POST':
+            sql = text("INSERT INTO FavoriteList(PersonID, StoreID) VALUES(:PersonID, :StoreID)")
+            data = {"PersonID": _P1_ID, "StoreID": _StoreID}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Station added!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
+    
+# delete station, need to add stationID
+# @app.route('/api/deleteStation', methods=['POST'])
+# def delete_station():
+#     response_object = {'status': 'success'}
+#     try:
+#         _json = request.json
+#         _stationID = _json['StationID']
+#         if _stationID and request.method == 'POST':
+#             sql = text("DELETE FROM Station WHERE StationID = :stationID")
+#             data = {"stationID": _stationID}
+#             db.session.execute(sql, data)
+#             db.session.commit()
+#             response_object['message'] = 'Station deleted!'
+#             return jsonify(response_object)
+#         else:
+#             response_object['message'] = 'Invalid data'
+#             response_object['status'] = 'failed'
+#             return jsonify(response_object)
+#     except Exception as e:
+#         response_object['error'] = str(e)
+#         response_object['status'] = 'failed'
+#         app.logger.error(str(e))
+#         return jsonify(response_object)
+
 # get histroy list with specific personID
 @app.route('/api/history/<person_id>', methods=['GET'])
 def get_history(person_id):
@@ -359,6 +417,13 @@ def get_stores_top4():
     stores_list = [{'Name': store.Store.Name, 'Location': store.Store.Location, 'Category': store.Store.Category, 'URL': store.Store.URL, 'Distance': store.Store.Distance, 'StationName': store.StationName} for store in stores]
     return jsonify(stores_list)
 
+@app.route('/api/storeID/<storeName>', methods=['GET'])
+def get_storeID(storeName):
+    print(storeName)
+    store = db.session.query(Store).filter_by(Name=storeName).all()
+    print('Get storeID: ', store[0].StoreID)
+    store_list = [{'StoreID': store[0].StoreID }]
+    return jsonify(store_list)
 
 if __name__ == '__main__':
     app.run(port=5000)
