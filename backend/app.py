@@ -361,29 +361,31 @@ def add_favorite():
         app.logger.error(str(e))
         return jsonify(response_object)
     
-# delete station, need to add stationID
-# @app.route('/api/deleteStation', methods=['POST'])
-# def delete_station():
-#     response_object = {'status': 'success'}
-#     try:
-#         _json = request.json
-#         _stationID = _json['StationID']
-#         if _stationID and request.method == 'POST':
-#             sql = text("DELETE FROM Station WHERE StationID = :stationID")
-#             data = {"stationID": _stationID}
-#             db.session.execute(sql, data)
-#             db.session.commit()
-#             response_object['message'] = 'Station deleted!'
-#             return jsonify(response_object)
-#         else:
-#             response_object['message'] = 'Invalid data'
-#             response_object['status'] = 'failed'
-#             return jsonify(response_object)
-#     except Exception as e:
-#         response_object['error'] = str(e)
-#         response_object['status'] = 'failed'
-#         app.logger.error(str(e))
-#         return jsonify(response_object)
+# delete favorite
+@app.route('/api/deleteFavorite', methods=['POST'])
+def delete_favorite():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        # print(request.json)
+        _StoreID = _json['StoreID']['data'][0]['StoreID']
+        _P1_ID = _json['P1_ID']
+        if _StoreID and request.method == 'POST':
+            sql = text("DELETE FROM FavoriteList WHERE PersonID = :PersonID and StoreID = :StoreID")
+            data = {"PersonID": _P1_ID, "StoreID": _StoreID}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Station deleted!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
 
 # get histroy list with specific personID
 @app.route('/api/history/<person_id>', methods=['GET'])

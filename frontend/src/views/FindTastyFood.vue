@@ -145,6 +145,8 @@ export default {
       this.tableRows[index].isClicked = !this.tableRows[index].isClicked
       if (this.tableRows[index].isClicked) { // 被按喜歡
         this.addFavorite(this.tableRows[index].storeName)
+      } else {
+        this.deleteFavorite(this.tableRows[index].storeName)
       }
     },
     toggleMap () {
@@ -157,6 +159,17 @@ export default {
       const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
       try {
         const response = await axios.post('http://127.0.0.1:5000/api/addFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
+        console.log(response.data)
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
+    },
+    deleteFavorite: async function (storeName) {
+      const config = { headers: { 'Content-Type': 'application/json' } }
+      const P1_ID = this.$store.state.P1_ID
+      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/api/deleteFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
