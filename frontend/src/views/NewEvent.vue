@@ -1,25 +1,24 @@
 <template>
   <div>
-    <h2 class="head">Find Mealpal</h2>
+    <!-- <h2 class="head">Find Mealpal</h2> -->
     <div class="text">
       <p>New Event</p>
     </div>
     <div class="form">
       <form class="form-text" name="event">
         <div class="form-row">
-          <label for="date">Date</label>
-          <input type="date" name="date" v-model="date">
+          <label for="date">Date: </label><span>{{this.date}}</span>
         </div>
         <div class="form-row">
-          <label for="time">Time</label>
+          <label for="time">Time </label>
           <input type="time" name="time" v-model="time">
         </div>
         <div class="form-row">
-          <label for="station">MRT Station</label>
+          <label for="station">MRT Station </label>
           <input type="text" name="station" v-model="station">
         </div>
         <div class="form-row">
-          <label for="types">Types</label>
+          <label for="types">Types </label>
           <select name="types" id="types" v-model="type">
             <option v-for="type in types" :key="type.value">
               {{ type.text }}
@@ -27,7 +26,7 @@
           </select>
         </div>
         <div class="form-row">
-          <label for="gender">Gender</label>
+          <label for="gender">Gender </label>
           <select name="gender" id="gender" v-model="gender">
             <option v-for="gender in genders" :key="gender.value">
               {{ gender.text }}
@@ -70,6 +69,9 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getDate()
+  },
   methods: {
     cancel: function () {
       this.$router.push('/findMealPal')
@@ -87,6 +89,16 @@ export default {
         const timeDate = this.date + ' ' + this.time + ':00'
         const response = await axios.post('http://127.0.0.1:5000/api/addEvent', { EventID: '10002', P1_ID: P1_ID, P2_ID: '00000000', Time: timeDate, FoodType: this.type, StationID: this.station }, config)
         console.log(response.data)
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
+    },
+    getDate: function () {
+      try {
+        const currentDate = new Date()
+        // 設定日期格式選項
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+        this.date = currentDate.toLocaleDateString(undefined, options)
       } catch (error) {
         console.error('An error occurred:', error)
       }
@@ -123,7 +135,7 @@ export default {
     color: #363636;
     margin-left: 25%;
     margin-right: 25%;
-    border-radius: 100px;
+    border-radius: 10px;
   }
 
   .form {
@@ -131,32 +143,43 @@ export default {
     padding: 50px;
     background: #FFFFFF;
     border: 1px solid #000000;
-    border-radius: 136px;
+    border-radius: 100px;
   }
 
   .form-text {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 40px;
+    font-size: 32px;
     line-height: 58px;
     color: #363636;
   }
 
-  input,
-  select {
+  .form-row{
+    font-size: 32px;
+  }
+
+  input {
     height: 40px;
     width: 300px;
     margin: 10px;
-    font-size: 30px;
+    font-size: 24px;
   }
 
   .button-container1 {
-    margin-right: 50px;
-    margin-top: 20px;
+    margin-left: 100px;
+    margin-top: 30px;
+    font-size: 26px;
+    background-color: #FFEDED;
+    border-radius: 20px;
+    padding: 10px;
   }
   .button-container2 {
-    margin-left: 50px;
-    margin-top: 20px;
+    margin-left: 100px;
+    margin-top: 30px;
+    font-size: 26px;
+    background-color: #FFEDED;
+    border-radius: 20px;
+    padding: 10px;
   }
 </style>
