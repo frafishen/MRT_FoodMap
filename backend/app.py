@@ -259,7 +259,7 @@ def add_event():
     try:
         _json = request.json
         _P1_ID = _json['P1_ID']
-        _P2_ID = "0"
+        _P2_ID = "00000000"
         _Time = _json['Time']
         _FoodType = _json['FoodType']
         _StationID = _json['StationID']

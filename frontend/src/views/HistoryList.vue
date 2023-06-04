@@ -86,4 +86,14 @@ export default {
 }
 </script>
 <style>
+.listItem {
+  width: 700px;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 30px;
+  /* background-color: rgb(255, 239, 186); */
+  margin: 0px;
+}
 </style>
