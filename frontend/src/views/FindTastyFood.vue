@@ -42,7 +42,7 @@
                       name="add fav"
                       type="submit"
                       class="btn btn-sm mask mask-heart transition-colors duration-200"
-                      :class="{ 'bg-red-400': row.is_Fav, 'bg-gray-400': !row.is_Fav }"
+                      :class="{ 'bg-red-400': row.isFav, 'bg-gray-400': !row.isFav }"
                       @click="toggleColor(index)"
                     ></button>
                   </th>
@@ -94,11 +94,12 @@ export default {
   },
   methods: {
     toggleColor (index) {
-      this.tableRows[index].isClicked = !this.tableRows[index].isClicked
-      if (this.tableRows[index].isClicked) { // 被按喜歡
-        this.addFavorite(this.tableRows[index].storeName)
+      // this.tableRows[index].isClicked = !this.tableRows[index].isClicked
+      this.stores[index].isFav = !this.stores[index].isFav
+      if (this.stores[index].isFav) { // 被按喜歡
+        this.addFavorite(this.stores[index].Name)
       } else {
-        this.deleteFavorite(this.tableRows[index].storeName)
+        this.deleteFavorite(this.stores[index].Name)
       }
     },
     toggleMap () {
@@ -141,7 +142,7 @@ export default {
         let P1_ID = this.$store.state.P1_ID
         console.log('P1_ID: ', P1_ID)
         if (this.stationID === '' | this.foodType === '') {
-          const response = await axios.get('http://127.0.0.1:5000/api/stores', config)
+          const response = await axios.get(`http://127.0.0.1:5000/api/stores/${P1_ID}`, config)
           this.stores = response.data
         } else {
           if (P1_ID === '') {

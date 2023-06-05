@@ -10,9 +10,9 @@ import random
 from datetime import datetime, timedelta
 
 
-# password = quote_plus("xX@0180368905")
+password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-password = quote_plus("221003red")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -430,18 +430,33 @@ def get_stores_PID(P_ID, foodType, stationID):
         }
         
         # 檢查是否存在於FavoriteList中
-        is_Fav = db.session.query(FavoriteList).filter_by(PersonID=P_ID, StoreID=store.Store.StoreID).first() is not None
-        store_dict['is_Fav'] = is_Fav
+        isFav = db.session.query(FavoriteList).filter_by(PersonID=P_ID, StoreID=store.Store.StoreID).first() is not None
+        store_dict['isFav'] = isFav
         stores_list.append(store_dict)
         
     return jsonify(stores_list)
 
 # getStores API, without foodType and stationID
-@app.route('/api/stores', methods=['GET'])
-def get_stores_top4():
+@app.route('/api/stores/<P_ID>', methods=['GET'])
+def get_stores_top4(P_ID):
     stores = db.session.query(Store, Station.Name.label('StationName')).join(Station, Store.StationID==Station.StationID).limit(4)
-    stores_list = [{'Name': store.Store.Name, 'Location': store.Store.Location, 'Category': store.Store.Category, 'URL': store.Store.URL, 'Distance': store.Store.Distance, 'StationName': store.StationName} for store in stores]
-    # print(stores_list)
+    stores_list = []
+    
+    for store in stores:
+        store_dict = {
+            'Name': store.Store.Name,
+            'Location': store.Store.Location,
+            'Category': store.Store.Category,
+            'URL': store.Store.URL,
+            'Distance': store.Store.Distance,
+            'StationName': store.StationName
+        }
+        
+        # 檢查是否存在於FavoriteList中
+        isFav = db.session.query(FavoriteList).filter_by(PersonID=P_ID, StoreID=store.Store.StoreID).first() is not None
+        store_dict['isFav'] = isFav
+        stores_list.append(store_dict)
+        
     return jsonify(stores_list)
 
 @app.route('/api/storeID/<storeName>', methods=['GET'])
