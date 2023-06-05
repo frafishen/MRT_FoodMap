@@ -25,15 +25,6 @@
                       <input type="time" name="time" v-model="time" class="input input-bordered w-full"/>
                     </div>
                   </div>
-                  <!-- <div class="sm:col-span-2">
-                    <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
-                    <select name="types" id="types" class="flex justify-end select select-bordered w-full">
-                      <option disabled selected class="text-primary">What do .u. want to go today?</option>
-                      <option v-for="[key, value] in Object.entries(stationList)" :key="key">
-                        {{ value }}
-                      </option>
-                    </select>
-                  </div> -->
                   <div class="sm:col-span-2">
                     <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
                     <select id="station" v-model="station" class="flex justify-end select select-bordered w-full">
