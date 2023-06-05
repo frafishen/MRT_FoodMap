@@ -50,6 +50,7 @@ class Store(db.Model):
     Category = db.Column(db.String(50), nullable=False)
     URL = db.Column(db.String(50), nullable=False)
     Distance = db.Column(db.String(50), nullable=False)
+    StationID = db.Column(db.String(50), nullable=False)
 
 class Event(db.Model):
     __tablename__ = 'Event'
@@ -91,7 +92,7 @@ class Comment(db.Model):
     CommentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     PersonID = db.Column(db.String(50), nullable=False)
     StoreID = db.Column(db.String(50), nullable=False)
-    Content = db.Column(db.String(50), nullable=False)
+    Content = db.Column(db.String(150), nullable=False)
 
 
 # login function with id, password
@@ -412,20 +413,35 @@ def add_history():
         app.logger.error(str(e))
         return jsonify(response_object)
 
-# getStores API with foodType and stationID
-@app.route('/api/store/<foodType>/<stationID>', methods=['GET'])
-def get_stores(foodType,stationID):
-    stores = db.session.query(Store).filter_by(Category=foodType).filter(Store.StationID==stationID).join(Station, Store.StationID==Station.StationID).all()
-    stores = db.session.query(Store).join(Station, Store.StationID==Station.StationID).limit(4)
-    stores_list = [{'Name': store.Name, 'Location': store.Location, 'Category': store.Category, 'URL': store.URL, 'Distance': store.Distance, 'StationName': store.StationName} for store in stores]
-    stores_list = [{'StoreID': store.Store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Category': store.Category, 'URL': store.URL, 'Distance': store.Distance, 'StationID': store.StationID} for store in stores]
+# getStores API with personID, foodType and stationID
+@app.route('/api/stores/<P_ID>/<foodType>/<stationID>', methods=['GET'])
+def get_stores_PID(P_ID, foodType, stationID):
+    stores = db.session.query(Store, Station.Name.label('StationName')).filter_by(Category=foodType).filter(Store.StationID==stationID).join(Station, Store.StationID==Station.StationID).limit(4)
+    stores_list = []
+    
+    for store in stores:
+        store_dict = {
+            'Name': store.Store.Name,
+            'Location': store.Store.Location,
+            'Category': store.Store.Category,
+            'URL': store.Store.URL,
+            'Distance': store.Store.Distance,
+            'StationName': store.StationName
+        }
+        
+        # 檢查是否存在於FavoriteList中
+        is_Fav = db.session.query(FavoriteList).filter_by(PersonID=P_ID, StoreID=store.Store.StoreID).first() is not None
+        store_dict['is_Fav'] = is_Fav
+        stores_list.append(store_dict)
+        
     return jsonify(stores_list)
 
 # getStores API, without foodType and stationID
-@app.route('/api/store', methods=['GET'])
+@app.route('/api/stores', methods=['GET'])
 def get_stores_top4():
     stores = db.session.query(Store, Station.Name.label('StationName')).join(Station, Store.StationID==Station.StationID).limit(4)
     stores_list = [{'Name': store.Store.Name, 'Location': store.Store.Location, 'Category': store.Store.Category, 'URL': store.Store.URL, 'Distance': store.Store.Distance, 'StationName': store.StationName} for store in stores]
+    # print(stores_list)
     return jsonify(stores_list)
 
 @app.route('/api/storeID/<storeName>', methods=['GET'])
