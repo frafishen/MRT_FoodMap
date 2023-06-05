@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <div>
     <div class="hero min-h-[80vh] bg-base-200">
       <div class=" w-5/6 hero-content flex-col lg:flex-row-reverse">
         <div class="px-6 w-4/5 lg:w-2/5">
@@ -22,14 +22,17 @@
                   <div>
                     <label for="time" class="block text-sm font-semibold leading-6 text-gray-900">Time</label>
                     <div class="mt-2.5">
-                      <input type="time" name="time" class="input input-bordered w-full"/>
+                      <input type="time" name="time" class="input input-bordered w-full" />
                     </div>
                   </div>
                   <div class="sm:col-span-2">
                     <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
-                    <div class="mt-2.5">
-                      <input type="text" name="station" placeholder="Taipei Main Station" class="input input-bordered w-full" />
-                    </div>
+                    <select name="types" id="types" class="flex justify-end select select-bordered w-full">
+                      <option disabled selected class="text-primary">What do .u. want to go today?</option>
+                      <option v-for="[key, value] in Object.entries(stationList)" :key="key">
+                        {{ value }}
+                      </option>
+                    </select>
                   </div>
                   <div class="sm:col-span-2">
                     <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
@@ -43,81 +46,85 @@
                     </div>
                   </div>
                 </div>
-                  <div class="my-12 py-6 flex flex-row justify-center">
-                    <button class="flex btn btn-outline btn-error mx-12" @click="goMealpal">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>Cancel
-                    </button>
-                    <button type="submit" class="flex btn btn-outline btn-warning mx-12" @click="submitForm">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>Search
-                    </button>
-                  </div>
+                <div class="my-12 py-6 flex flex-row justify-center">
+                  <button class="flex btn btn-outline btn-error mx-12" @click="goMealpal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>Cancel
+                  </button>
+                  <button type="submit" class="flex btn btn-outline btn-warning mx-12" @click="submitForm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>Search
+                  </button>
+                </div>
               </form>
             </div>
             <!-- ========== invitation success! ========== -->
             <div class="isolate bg-white px-12 py-4 rounded-3xl" v-if="!showcontent">
               <div class="p-6">
-      <div class="p-4">
-        <h3 class="text-3xl text-center font-semibold leading-7 text-primary"> Invitation Success! </h3>
-      </div>
-      <div class="mt-6 border-t border-gray-100">
-        <dl class="divide-y divide-gray-100">
-          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/05' }}</dd>
-          </div>
-          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Time</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '01:00 PM' }}</dd>
-          </div>
-          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Hot Pot' }}</dd>
-          </div>
-          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">MRT Station</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Taipei Main Station' }}</dd>
-          </div>
-          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Comments for This Restaurant</dt>
-            <!-- <dd class="mt-1 leading-6 sm:col-span-2 sm:mt-0"> -->
-              <!-- <div>Add a comment</div> -->
-            <!-- </dd> -->
-          </div>
-          <!-- ========== carousel component - Comment ========== -->
-          <div class="max-w-full">
-            <div class="carousel carousel-center p-2 space-x-4 bg-primary rounded-box">
-              <div class="carousel-item">
-                <div class="card w-96 bg-base-100 shadow-xl">
-                  <div class="card-body">
-                    <h2 class="card-title">{{ 'David Wilson' }}</h2>
-                    <p>{{ 'The hotpot at this place is amazing! Highly recommended.'  }}</p>
-                  </div>
+                <div class="p-4">
+                  <h3 class="text-3xl text-center font-semibold leading-7 text-primary"> Invitation Success! </h3>
+                </div>
+                <div class="mt-6 border-t border-gray-100">
+                  <dl class="divide-y divide-gray-100">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/05' }}</dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt class="text-sm font-medium leading-6 text-gray-900">Time</dt>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '01:00 PM' }}</dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Hot Pot' }}</dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt class="text-sm font-medium leading-6 text-gray-900">MRT Station</dt>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Taipei Main Station' }}
+                      </dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt class="text-sm font-medium leading-6 text-gray-900"> Restaurant <br> .u. may like</dt>
+                      <!-- <dd class="mt-1 leading-6 sm:col-span-2 sm:mt-0"> -->
+                      <!-- <div>Add a comment</div> -->
+                      <!-- </dd> -->
+                    </div>
+                    <!-- ========== carousel component - Comment ========== -->
+                    <div class="max-w-full">
+                      <div class="carousel carousel-center p-2 space-x-4 bg-primary rounded-box">
+                        <div class="carousel-item">
+                          <div class="card w-96 bg-base-100 shadow-xl">
+                            <div class="card-body">
+                              <h2 class="card-title">{{ 'Hot Pot Paradise' }}</h2>
+                              <p>{{ 'Address 1' }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="carousel-item">
+                          <div class="card w-96 bg-base-100 shadow-xl">
+                            <div class="card-body">
+                              <h2 class="card-title">{{ 'Spicy Hotpot' }}</h2>
+                              <p>{{ 'Address 2' }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="carousel-item">
+                          <div class="card w-96 bg-base-100 shadow-xl">
+                            <div class="card-body">
+                              <h2 class="card-title cursor-pointer" @click="goFindFood"> See More! </h2>
+                              <p> Go to our f.o^o.d map <br> to find more tasty food! </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </dl>
                 </div>
               </div>
-              <div class="carousel-item">
-                <div class="card w-96 bg-base-100 shadow-xl">
-                  <div class="card-body">
-                    <h2 class="card-title">{{ 'John Doe' }}</h2>
-                    <p>{{ 'The hotpot ingredients are fresh, and the broth is rich in flavor.'  }}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="card w-96 bg-base-100 shadow-xl">
-                  <div class="card-body">
-                    <h2 class="card-title"> &#10133; Add a comment </h2>
-                    <p> Write down <br> your comments right now! </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </dl>
-      </div>
-    </div>
             </div>
           </div>
         </div>
@@ -140,6 +147,11 @@ export default {
         BBQ: 'BBQ',
         hotpot: 'Hot Pot',
         ramen: 'Ramen'
+      },
+      stationList: {
+        R10: 'Taipei Main Station',
+        R11: 'Zhongshan Station',
+        G16: 'Nanjing Fuxing Station'
       },
       showcontent: true
     }
@@ -171,6 +183,9 @@ export default {
     },
     goMealpal () {
       this.$router.push('/findMealPal')
+    },
+    goFindFood () {
+      this.$router.push('/findTastyFood')
     },
     randomPair: async function () {
       const data = {
@@ -204,5 +219,4 @@ export default {
   }
 }
 </script>
-<style>
-</style>
+<style></style>

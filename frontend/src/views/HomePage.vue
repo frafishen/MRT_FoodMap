@@ -8,9 +8,9 @@
           <p class="py-4 md-6 text-natural">Enjoy your f.o^o.d trip with meal:Pals in Taipei city!</p>
         </div>
         <div class="flex flex-col w-full my-8 lg:flex-row">
-          <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" @click="goFindFood">Find F.o^o.d</div>
+          <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goFindFood">Find F.o^o.d</div>
           <div class="divider lg:divider-horizontal">OR</div>
-          <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" @click="goMealpal">Find Meal:Pal</div>
+          <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goMealpal">Find Meal:Pal</div>
         </div>
       </div>
     </div>

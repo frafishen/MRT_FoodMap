@@ -27,9 +27,12 @@
                   </div>
                   <div class="sm:col-span-2">
                     <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
-                    <div class="mt-2.5">
-                      <input type="text" name="station" placeholder="Taipei Main Station" class="input input-bordered w-full" />
-                    </div>
+                    <select name="types" id="types" class="flex justify-end select select-bordered w-full">
+                      <option disabled selected class="text-primary">What do .u. want to go today?</option>
+                      <option v-for="[key, value] in Object.entries(stationList)" :key="key">
+                        {{ value }}
+                      </option>
+                    </select>
                   </div>
                   <div class="sm:col-span-2">
                     <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
@@ -78,6 +81,11 @@ export default {
         BBQ: 'BBQ',
         hotpot: 'Hot Pot',
         ramen: 'Ramen'
+      },
+      stationList: {
+        R10: 'Taipei Main Station',
+        R11: 'Zhongshan Station',
+        G16: 'Nanjing Fuxing Station'
       }
     }
   },

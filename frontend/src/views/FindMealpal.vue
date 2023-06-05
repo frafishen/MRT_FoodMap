@@ -15,9 +15,9 @@
             </div>
           </div>
           <div class="flex flex-col w-full my-8 lg:flex-row">
-              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" @click="goToNewEvent">New Event</div>
+              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goToNewEvent">New Event</div>
               <div class="divider lg:divider-horizontal">OR</div>
-              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center" @click="goToRandomPair">Random Pair</div>
+              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goToRandomPair">Random Pair</div>
             </div>
         </div>
         <div class="px-6 w-full py-4 lg:w-1/2">

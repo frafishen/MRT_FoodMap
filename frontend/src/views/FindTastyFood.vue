@@ -26,13 +26,6 @@
                     <div class="flex items-center space-x-3">
                       <div>
                         <div class="font-bold">{{ row.storeName }}</div>
-                        <div class="rating rating-xs">
-                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" checked />
-                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                          <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                        </div>
                       </div>
                     </div>
                   </td>
