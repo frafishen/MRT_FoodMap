@@ -119,6 +119,8 @@ export default {
         // 設定日期格式選項
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
         this.date = currentDate.toLocaleDateString(undefined, options)
+        this.date = this.date.replaceAll('/', '-')
+        console.log(this.date)
       } catch (error) {
         console.error('An error occurred:', error)
       }
