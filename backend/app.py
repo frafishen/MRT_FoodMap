@@ -10,9 +10,9 @@ import random
 from datetime import datetime, timedelta
 
 
-# password = quote_plus("xX@0180368905")
+password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-password = quote_plus("221003red")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -240,11 +240,12 @@ def add_event():
     try:
         _json = request.json
         _P1_ID = _json['P1_ID']
-        _P2_ID = "00000000"
+        _P2_ID = "0"
         _Time = _json['Time']
         _FoodType = _json['FoodType']
         _StationID = _json['StationID']
 
+        print(_P1_ID, _P2_ID, _Time, _FoodType, _StationID)
         if _P1_ID and _Time and _FoodType and _StationID and request.method == 'POST':
             sql = text("INSERT INTO Event(P1_ID, P2_ID, Time, FoodType, StationID) VALUES(:P1_ID, :P2_ID, :Time, :FoodType, :StationID)")
             data = {"P1_ID": _P1_ID, "P2_ID": _P2_ID, "Time": _Time, "FoodType": _FoodType, "StationID": _StationID}

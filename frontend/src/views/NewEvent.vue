@@ -22,14 +22,23 @@
                   <div>
                     <label for="time" class="block text-sm font-semibold leading-6 text-gray-900">Time</label>
                     <div class="mt-2.5">
-                      <input type="time" name="time" class="input input-bordered w-full"/>
+                      <input type="time" name="time" v-model="time" class="input input-bordered w-full"/>
                     </div>
                   </div>
-                  <div class="sm:col-span-2">
+                  <!-- <div class="sm:col-span-2">
                     <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
                     <select name="types" id="types" class="flex justify-end select select-bordered w-full">
                       <option disabled selected class="text-primary">What do .u. want to go today?</option>
                       <option v-for="[key, value] in Object.entries(stationList)" :key="key">
+                        {{ value }}
+                      </option>
+                    </select>
+                  </div> -->
+                  <div class="sm:col-span-2">
+                    <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
+                    <select id="station" v-model="station" class="flex justify-end select select-bordered w-full">
+                      <option disabled value="">What do .u. want to go today?</option>
+                      <option v-for="[key, value] in Object.entries(stationList)" :key="key" :value="key">
                         {{ value }}
                       </option>
                     </select>
@@ -107,7 +116,7 @@ export default {
       try {
         const config = { headers: { 'Content-Type': 'application/json' } }
         const timeDate = this.date + ' ' + this.time + ':00'
-        const response = await axios.post('http://127.0.0.1:5000/api/addEvent', { EventID: '10002', P1_ID: P1_ID, P2_ID: '00000000', Time: timeDate, FoodType: this.type, StationID: this.station }, config)
+        const response = await axios.post('http://127.0.0.1:5000/api/addEvent', { P1_ID: P1_ID, Time: timeDate, FoodType: this.type, StationID: this.station }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
