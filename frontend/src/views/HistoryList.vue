@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
-      <div class=" w-5/6 hero-content flex-col lg:flex-row-reverse">
+      <div class=" w-5/6 hero-content flex-col lg:flex-row">
         <div class="px-6 w-4/5 lg:w-1/2">
-          <h1 class="text-5xl font-bold py-6 h-1/3"><span class="text-primary">H.i.story </span> List </h1>
-          <p class="py-4 md-6 text-natural h-2/3">People who love to eat are always the best people :></p>
+          <h1 class="text-5xl font-bold py-6 h-1/3 text-center"><span class="text-primary">H.i.story </span> List </h1>
+          <p class="py-4 md-6 text-natural h-2/3 text-center">People who love to eat are always the best people :></p>
         </div>
         <div class="px-6 w-4/5 lg:w-1/2">
           <!-- left component -->
@@ -86,14 +86,4 @@ export default {
 }
 </script>
 <style>
-.listItem {
-  width: 700px;
-  text-align: left;
-  padding-left: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 30px;
-  /* background-color: rgb(255, 239, 186); */
-  margin: 0px;
-}
 </style>

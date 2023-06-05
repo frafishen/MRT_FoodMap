@@ -1,10 +1,10 @@
 <template>
 <div>
   <div class="hero min-h-[80vh] bg-base-200">
-    <div class="hero-content text-center lg: w-2/3">
-      <div class="max-w-md my-8 ld: w-full">
+    <div class="hero-content text-center ">
+      <div class="my-8 ld: w-full">
         <div class="my-8">
-          <h1 class="text-5xl font-bold mt-6">MRT <span class="text-primary"> F.o^o.d</span> Map</h1>
+          <h1 class="text-5xl font-bold my-6">MRT <span class="text-primary"> F.o^o.d</span> Map</h1>
           <p class="py-4 md-6 text-natural">Enjoy your f.o^o.d trip with meal:Pals in Taipei city!</p>
         </div>
         <div class="flex flex-col w-full my-8 lg:flex-row">

@@ -126,11 +126,6 @@ export default {
           storeName: 'Store 3',
           address: 'Address 3',
           isClicked: false
-        },
-        {
-          storeName: 'Store 4',
-          address: 'Address 4',
-          isClicked: false
         }
       ],
       modifyFavoriteStatus: null

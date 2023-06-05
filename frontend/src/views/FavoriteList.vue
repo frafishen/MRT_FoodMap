@@ -1,36 +1,25 @@
 <template>
-  <div class="favorite">
-    Favorite List
-    <div class="favorite-list">
-      <table>
-        <tbody>
-          <tr v-for="favorite in this.favoriteList" :key="favorite.FListID">
-            <td class="listItem">{{ favorite.Name }}</td>
-            <button
-                name="add fav"
-                type="submit"
-                class="btn btn-sm mask mask-heart transition-colors duration-200"
-                :class="{ 'bg-red-400': this.buttonStatus[key]}"
-                @click="toggleColor(favorite.FListID)"
-              ></button>
-              <!-- :class="{ 'bg-red-400': this.buttonStatus[key], 'bg-gray-400': this.buttonStatus[key] }" -->
-          </tr>
-        </tbody>
-      </table>
-      <!-- <div v-for="favorite in favorites" :key="favorite.id">
-        <span class="favorite-name">{{ favorite.name }}</span>
-        <button
-          class="heart-button"
-          :class="{ 'active': favorite.isFavorite }"
-          @click="toggleFavorite(favorite)"
-        ></button>
-      </div> -->
+    <div>
+    <div class="hero min-h-[80vh] bg-base-200">
+      <div class="w-5/6 hero-content flex-col lg:flex-row-reverse">
+        <div class="px-6 w-4/5 lg:w-1/2">
+          <h1 class="text-5xl font-bold py-6 h-1/3 text-center"><span class="text-primary">Favor.i.te </span> List </h1>
+          <p class="py-4 md-6 text-natural h-2/3 text-center">Food tastes even better <br> when shared with whose u love :></p>
+        </div>
+        <div class="px-6 w-4/5 lg:w-1/2">
+          <!-- left component -->
+          <div class="max-w-full">
+            <!-- ========== table component ========== -->
+            <StoreTable />
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- <button @click="goTo">添加最愛</button> -->
   </div>
 </template>
 
 <script>
+import StoreTable from '@/components/StoreTable.vue'
 import axios from 'axios'
 // import { computed } from 'vue'
 // import { useStore } from 'vuex'
@@ -42,6 +31,9 @@ export default {
       favoriteList: null,
       buttonStatus: null
     }
+  },
+  components: {
+    StoreTable
   },
   methods: {
     fetchFavoriteList: async function () {
