@@ -10,7 +10,26 @@
           <!-- left component -->
           <div class="max-w-full">
             <!-- ========== table component ========== -->
-            <StoreTable />
+            <table class="table w-full">
+            <!-- head -->
+            <tbody>
+                <!-- row 1 -->
+                <tr v-for="(history, index) in historyList" :key="index">
+                    <td>
+                        <div class="flex items-center space-x-3">
+                            <div>
+                                <div class="font-bold">{{ history.Name }}</div>
+                                <div>Loc. {{ history.Location }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <th>
+                        <a role="button" class="btn btn-ghost btn-xs" @click="toggleMap(index)">Go to Map</a>
+                    </th>
+                </tr>
+                <!-- row end -->
+            </tbody>
+          </table>
           </div>
         </div>
       </div>
@@ -18,42 +37,17 @@
   </div>
 </template>
 <script>
-import StoreTable from '@/components/StoreTable.vue'
 import axios from 'axios'
-// import { computed } from 'vue'
-// import { useStore } from 'vuex'
 
 export default {
   name: 'HistoryList',
   data () {
     return {
-      // todo: get data from db
-      tableRows: [
-        {
-          storeName: 'Store 1',
-          address: 'Address 1',
-          isClicked: false
-        },
-        {
-          storeName: 'Store 2',
-          address: 'Address 2',
-          isClicked: false
-        },
-        {
-          storeName: 'Store 3',
-          address: 'Address 3',
-          isClicked: false
-        },
-        {
-          storeName: 'Store 4',
-          address: 'Address 4',
-          isClicked: false
-        }
-      ]
+      historyList: null,
+      buttonStatus: null
     }
   },
   components: {
-    StoreTable
   },
   methods: {
     fetchHistoryList: async function () {
@@ -64,25 +58,20 @@ export default {
         const response = await axios.get(`http://127.0.0.1:5000/api/history/${P1_ID}`)
         console.log('get response')
         this.historyList = response.data
+        console.log(this.historyList)
       } catch (error) {
         console.error(error)
         this.historyList = null
       }
+    },
+    toggleMap (index) {
+      // console.log(this.historyList[index])
+      window.open(this.historyList[index].URL)
     }
   },
   async mounted () {
     await this.fetchHistoryList()
   }
-  // setup () {
-  //   const store = useStore()
-  //   const histories = computed(() => store.getters.histories)
-
-  //   return {
-  //     histories
-  //   }
-  // },
-  // methods: {
-  // }
 }
 </script>
 <style>

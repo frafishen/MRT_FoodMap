@@ -10,9 +10,9 @@ import random
 from datetime import datetime, timedelta
 
 
-password = quote_plus("xX@0180368905")
+# password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-# password = quote_plus("221003red")
+password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -316,8 +316,7 @@ def get_favorite(person_id):
     for favorite in favorite_list:
         store = db.session.query(Store).get(favorite.StoreID)
         if store is not None:
-            favorites.append({'FListID': favorite.FListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
-    
+            favorites.append({'FListID': favorite.FListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance, 'URL': store.URL })
     return jsonify(favorites)
 
 # add Favorite
@@ -386,11 +385,32 @@ def get_history(person_id):
     for history in history_list:
         store = db.session.query(Store).get(history.StoreID)
         if store is not None:
-            histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
-    
+            histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance, 'URL': store.URL})
     return jsonify(histories)
 
-
+@app.route('/api/addHistory', methods=['POST'])
+def add_history():
+    response_object = {'status': 'success'}
+    try:
+        _json = request.json
+        _StoreID = _json['StoreID']['data'][0]['StoreID'] #為甚麼回傳的json這麼複雜...
+        _P1_ID = _json['P1_ID']
+        if _StoreID and request.method == 'POST':
+            sql = text("INSERT INTO HistoryList(PersonID, StoreID) VALUES(:PersonID, :StoreID)")
+            data = {"PersonID": _P1_ID, "StoreID": _StoreID}
+            db.session.execute(sql, data)
+            db.session.commit()
+            response_object['message'] = 'Station added!'
+            return jsonify(response_object)
+        else:
+            response_object['message'] = 'Invalid data'
+            response_object['status'] = 'failed'
+            return jsonify(response_object)
+    except Exception as e:
+        response_object['error'] = str(e)
+        response_object['status'] = 'failed'
+        app.logger.error(str(e))
+        return jsonify(response_object)
 
 # getStores API with foodType and stationID
 @app.route('/api/store/<foodType>/<stationID>', methods=['GET'])

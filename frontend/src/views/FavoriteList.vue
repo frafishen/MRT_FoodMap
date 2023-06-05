@@ -10,7 +10,33 @@
           <!-- left component -->
           <div class="max-w-full">
             <!-- ========== table component ========== -->
-            <StoreTable />
+            <table class="table w-full">
+            <!-- head -->
+            <tbody>
+                <!-- row 1 -->
+                <tr v-for="(favorite, index) in favoriteList" :key="index">
+                    <td>
+                        <div class="flex items-center space-x-3">
+                            <div>
+                                <div class="font-bold">{{ favorite.Name }}</div>
+                                <div>Loc. {{ favorite.Location }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <th>
+                        <a role="button" class="btn btn-ghost btn-xs" @click="toggleMap(index)">Go to Map</a>
+                    </th>
+                    <th>
+                        <button name="add fav" type="submit"
+                            class="btn btn-sm mask mask-heart transition-colors duration-200"
+                            :class="{ 'bg-red-400': buttonStatus[index], 'bg-gray-400': !buttonStatus[index] }"
+                            @click="toggleColor(index)"></button>
+                    </th>
+                </tr>
+                <!-- row end -->
+            </tbody>
+        </table>
+            <!-- <StoreTable /> -->
           </div>
         </div>
       </div>
@@ -19,10 +45,7 @@
 </template>
 
 <script>
-import StoreTable from '@/components/StoreTable.vue'
 import axios from 'axios'
-// import { computed } from 'vue'
-// import { useStore } from 'vuex'
 
 export default {
   name: 'FavoriteList',
@@ -33,16 +56,14 @@ export default {
     }
   },
   components: {
-    StoreTable
+    // StoreTable
   },
   methods: {
     fetchFavoriteList: async function () {
       const P1_ID = this.$store.state.P1_ID
-      // console.log(P1_ID)
+
       try {
-        console.log('start fetching', P1_ID)
         const response = await axios.get(`http://127.0.0.1:5000/api/favorite/${P1_ID}`)
-        console.log('get response')
         this.favoriteList = response.data
         const len = this.favoriteList.length
         this.buttonStatus = new Array(len)
@@ -56,53 +77,40 @@ export default {
       }
     },
     toggleColor (index) {
-      this.buttonStatus[index] = !this.tableRows[index]
-      if (this.tableRows[index]) { // 被按喜歡
-        this.addFavorite(this.tableRows[index].storeName)
+      this.buttonStatus[index] = !this.buttonStatus[index]
+      if (this.buttonStatus[index]) { // 被按喜歡
+        this.addFavorite(this.favoriteList[index].StoreID)
       } else {
-        this.deleteFavorite(this.tableRows[index].storeName)
+        this.deleteFavorite(this.favoriteList[index].StoreID)
       }
     },
-    addFavorite: async function (storeName) {
+    addFavorite: async function (storeID) {
       const config = { headers: { 'Content-Type': 'application/json' } }
       const P1_ID = this.$store.state.P1_ID
-      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/addFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
+        const response = await axios.post('http://127.0.0.1:5000/api/addFavorite', { StoreID: storeID, P1_ID: P1_ID }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
       }
     },
-    deleteFavorite: async function (storeName) {
+    deleteFavorite: async function (storeID) {
       const config = { headers: { 'Content-Type': 'application/json' } }
       const P1_ID = this.$store.state.P1_ID
-      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/deleteFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
+        const response = await axios.post('http://127.0.0.1:5000/api/deleteFavorite', { StoreID: storeID, P1_ID: P1_ID }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
       }
+    },
+    toggleMap (index) {
+      window.open(this.favoriteList[index].URL)
     }
   },
   async mounted () {
     await this.fetchFavoriteList()
   }
-  // setup () {
-  //   const store = useStore()
-  //   const favorites = computed(() => store.getters.favorites)
-  //   console.log(store.Name)
-  //   const toggleFavorite = (favorite) => {
-  //     favorite.isFavorite = !favorite.isFavorite
-  //     store.dispatch('removeFavorite', favorite.id)
-  //   }
-
-  //   return {
-  //     favorites,
-  //     toggleFavorite
-  //   }
-  // }
 }
 </script>
 
