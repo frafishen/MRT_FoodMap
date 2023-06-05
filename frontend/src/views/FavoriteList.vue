@@ -10,9 +10,10 @@
                 name="add fav"
                 type="submit"
                 class="btn btn-sm mask mask-heart transition-colors duration-200"
-                :class="{ 'bg-red-400': this.buttonStatus[key], 'bg-gray-400': this.buttonStatus[key] }"
+                :class="{ 'bg-red-400': this.buttonStatus[key]}"
                 @click="toggleColor(favorite.FListID)"
               ></button>
+              <!-- :class="{ 'bg-red-400': this.buttonStatus[key], 'bg-gray-400': this.buttonStatus[key] }" -->
           </tr>
         </tbody>
       </table>
