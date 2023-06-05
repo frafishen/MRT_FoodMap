@@ -293,7 +293,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      person_input: '00001002',
+      person_input: 'P001',
       person: null,
       people: [],
 

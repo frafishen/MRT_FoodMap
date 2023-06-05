@@ -9,23 +9,15 @@
                         <div class="flex items-center space-x-3">
                             <div>
                                 <div class="font-bold">{{ row.storeName }}</div>
-                                <div class="rating rating-xs">
-                                    <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                                    <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" checked />
-                                    <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                                    <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                                    <input type="radio" name="rating-5" class="mask mask-star-2 bg-secondary" />
-                                </div>
                             </div>
                         </div>
                     </td>
                     <td>
                         {{ row.address }}
                         <br />
-                        <a role="button" class="badge badge-ghost badge-sm" href="https://www.google.com/">Go to Map</a>
                     </td>
                     <th>
-                        <button class="btn btn-ghost btn-xs" @click="toggleMap">Details</button>
+                        <a role="button" class="btn btn-ghost btn-xs" @click="toggleMap">Go to Map</a>
                     </th>
                     <th>
                         <button name="add fav" type="submit"

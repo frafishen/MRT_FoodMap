@@ -1,10 +1,12 @@
 <template>
   <div>
-    <nav class =" mx-auto max-w-7xl justify-between p-2 lg:px-8">
+    <nav class =" mx-auto max-w-7xl justify-between py-2 lg:px-4">
       <router-link to="/homepage" class="p-6">MRT Food Map System</router-link>|
       <router-link to="/testpage" class="p-6">Test Page</router-link> |
-      <router-link to="/findTastyFood" class="p-6">Find Tasty Food</router-link> |
-      <router-link to="/findMealPal" class="p-6">Find MealPal</router-link>
+      <router-link to="/findTastyFood" class="p-6">Find Food</router-link> |
+      <router-link to="/findMealPal" class="p-6">Find MealPal</router-link> |
+      <router-link to="/newEvent" class="p-6">New Event</router-link> |
+      <router-link to="/randomPair" class="p-6">Random Pair</router-link>
       <!-- vendor NavBar component -->
       <NavBar />
     </nav>

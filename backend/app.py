@@ -31,20 +31,16 @@ def handle_500(error):
 
 # ========== create tables ========== 
 class Person(db.Model):
-    __tablename__ = 'Person'  # 確保table name與你的SQL table相同
+    __tablename__ = 'Person'
     PersonID = db.Column(db.String(50), primary_key=True)
     Name = db.Column(db.String(50), nullable=False)
     Password = db.Column(db.String(12), nullable=False)
     Location = db.Column(db.String(50))
 
 class Station(db.Model):
-    __tablename__ = 'Station'  # 確保table name與你的SQL table相同
+    __tablename__ = 'Station'
     StationID = db.Column(db.String(50), primary_key=True)
     Name = db.Column(db.String(50), nullable=False)
-
-    def __init__(self, StationID, Name):
-        self.StationID = StationID
-        self.Name = Name
 
 class Store(db.Model):
     __tablename__ = 'Store'
@@ -54,14 +50,6 @@ class Store(db.Model):
     Category = db.Column(db.String(50), nullable=False)
     URL = db.Column(db.String(50), nullable=False)
     Distance = db.Column(db.String(50), nullable=False)
-    
-    def __init__(self, StoreID, Name, Location, Category, URL, Distance):
-        self.StoreID = StoreID
-        self.Name = Name
-        self.Location = Location
-        self.Category = Category
-        self.URL = URL
-        self.Distance = Distance
 
 class Event(db.Model):
     __tablename__ = 'Event'
@@ -71,13 +59,6 @@ class Event(db.Model):
     Time = db.Column(db.DateTime, nullable=False)
     FoodType = db.Column(db.String(50), nullable=False)
     StationID = db.Column(db.String(50), nullable=False)
-
-    def __init__(self, P1_ID, P2_ID, Time, FoodType, StationID):
-        self.P1_ID = P1_ID
-        self.P2_ID = P2_ID
-        self.Time = Time
-        self.FoodType = FoodType
-        self.StationID = StationID
 
 class MealPal(db.Model):
     __tablename__ = 'MealPal'
@@ -90,10 +71,6 @@ class FavoriteList(db.Model):
     FListID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     PersonID = db.Column(db.String(50), nullable=False)
     StoreID = db.Column(db.String(50), nullable=False)
-
-    def __init__(self, PersonID, StoreID):
-        self.PersonID = PersonID
-        self.StoreID = StoreID
 
 class ChatRecord(db.Model):
     __tablename__ = 'ChatRecord'
@@ -109,10 +86,6 @@ class HistoryList(db.Model):
     PersonID = db.Column(db.String(50), nullable=False)
     StoreID = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, PersonID, StoreID):
-        self.PersonID = PersonID
-        self.StoreID = StoreID
-
 class Comment(db.Model):
     _tablename__ = 'Comment'
     CommentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -121,7 +94,7 @@ class Comment(db.Model):
     Content = db.Column(db.String(50), nullable=False)
 
 
-
+# login function with id, password
 @app.route("/api/login/<id>/<password>", methods=["GET"])
 def login(id, password):
     person = db.session.query(Person).filter_by(PersonID=id, Password=password).first()
@@ -130,12 +103,14 @@ def login(id, password):
     person_dict = {'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location}
     return jsonify(person_dict)
 
+# get all people
 @app.route('/api/person', methods=['GET'])
-def get_persons():
-    persons = db.session.query(Person).all()
-    persons_list = [{'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location} for person in persons]
-    return jsonify(persons_list)
+def get_people():
+    people = db.session.query(Person).all()
+    people_list = [{'PersonID': person.PersonID, 'Name': person.Name, 'Password': person.Password, 'Location': person.Location} for person in people]
+    return jsonify(people_list)
 
+# fetch a person by id
 @app.route('/api/person/<id>', methods=['GET'])
 def get_person(id):
     person = db.session.get(Person, id) 
@@ -145,12 +120,15 @@ def get_person(id):
     return jsonify(person_dict)
 
 
+
+# get all stores
 @app.route('/api/station', methods=['GET'])
 def get_stations():
     stations = db.session.query(Station).all()
     stations_list = [{'StationID': station.StationID, 'Name': station.Name} for station in stations]
     return jsonify(stations_list)
 
+# fetch a station by id (testpage)
 @app.route('/api/station/<id>', methods=['GET'])
 def get_station(id):
     station = db.session.get(Station, id) 
@@ -159,7 +137,7 @@ def get_station(id):
     station_dict = {'StationID': station.StationID, 'Name': station.Name} 
     return jsonify(station_dict)
 
-# add station, need to add stationID and name
+# add station, need to add stationID and name (testpage)
 @app.route('/api/addStation', methods=['POST'])
 def add_station():
     response_object = {'status': 'success'}
@@ -211,6 +189,7 @@ def delete_station():
 
 
 
+# sign up, need to add personID, name, password, location
 @app.route('/api/addPerson', methods=['POST'])
 def add_person():
     response_object = {'status': 'success'}
@@ -238,13 +217,14 @@ def add_person():
         return jsonify(response_object)
 
 
-
+# get all events
 @app.route('/api/event', methods=['GET'])
 def get_events():
     events = db.session.query(Event).all()
     events_list = [{'EventID': event.EventID, 'P1_ID': event.P1_ID, 'P2_ID': event.P2_ID, 'Time': event.Time, 'FoodType': event.FoodType, 'StationID':event.StationID} for event in events]
     return jsonify(events_list)
 
+# fetch event by id
 @app.route('/api/event/<id>', methods=['GET'])
 def get_event(id):
     event = db.session.get(Event, id) 
@@ -253,6 +233,7 @@ def get_event(id):
     event_dict = {'EventID': event.EventID, 'P1_ID': event.P1_ID, 'P2_ID': event.P2_ID, 'Time': event.Time, 'FoodType': event.FoodType, 'StationID':event.StationID}
     return jsonify(event_dict)
 
+# new event, need to add P1_ID, Time, FoodType, StationID
 @app.route('/api/addEvent', methods=['POST'])
 def add_event():
     response_object = {'status': 'success'}
@@ -281,6 +262,7 @@ def add_event():
 
     return jsonify(response_object)
 
+# random pair, need to add P2_ID
 @app.route('/api/randomPair', methods=['POST'])
 def pair_event():
     try:
@@ -318,6 +300,8 @@ def pair_event():
     except Exception as e:
         app.logger.error(str(e))
         return jsonify({"status": "failed", "message": str(e)}), 500
+
+
 
 # get fav list with specific personID
 @app.route('/api/favorite/<person_id>', methods=['GET'])
@@ -387,6 +371,8 @@ def delete_favorite():
         app.logger.error(str(e))
         return jsonify(response_object)
 
+
+
 # get histroy list with specific personID
 @app.route('/api/history/<person_id>', methods=['GET'])
 def get_history(person_id):
@@ -402,6 +388,8 @@ def get_history(person_id):
             histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance})
     
     return jsonify(histories)
+
+
 
 # getStores API with foodType and stationID
 @app.route('/api/store/<foodType>/<stationID>', methods=['GET'])

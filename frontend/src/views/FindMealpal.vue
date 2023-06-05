@@ -8,9 +8,9 @@
             <h3 class="text-gray-500 w-auto font-bold mx-8">Amount of People waiting to pair</h3>
             <div class="flex flex-row justify-end mx-8">
               <ul class="steps">
-                <li class="step step-neutral"  data-content=":>">few</li>
-                <li class="step step-warning" data-content=":|">a few</li>
-                <li class="step step-error" data-content=":<">many</li>
+                <li class="step step-neutral"  data-content=":)">few</li>
+                <li class="step step-warning" data-content=":>">a few</li>
+                <li class="step step-error" data-content=":O">many</li>
               </ul>
             </div>
           </div>

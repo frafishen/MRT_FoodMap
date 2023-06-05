@@ -1,45 +1,64 @@
 <template>
   <div>
-    <!-- <h2 class="head">Find Mealpal</h2> -->
-    <div class="text">
-      <p>New Event</p>
-    </div>
-    <div class="form">
-      <form class="form-text" name="event">
-        <div class="form-row">
-          <label for="date">Date: </label><span>{{this.date}}</span>
+    <div class="hero min-h-[80vh] bg-base-200">
+      <div class=" w-5/6 hero-content flex-col lg:flex-row">
+        <div class="px-6 w-4/5 lg:w-2/5">
+          <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> New <span class="text-primary">E.v.ent</span></h1>
+          <p class="py-4 md-6 text-natural h-2/3 text-center"> Start to make a new friend now!</p>
         </div>
-        <div class="form-row">
-          <label for="time">Time </label>
-          <input type="time" name="time" v-model="time">
+        <div class="px-6 w-4/5 lg:w-3/5">
+          <!-- left component -->
+          <div class="max-w-full">
+            <!-- ========== right component ========== -->
+            <div class="isolate bg-white px-12 py-4 rounded-3xl">
+              <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
+                <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                  <div>
+                    <label for="date" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
+                    <div class="mt-2.5 text-primary">
+                      <span>{{ this.date }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="time" class="block text-sm font-semibold leading-6 text-gray-900">Time</label>
+                    <div class="mt-2.5">
+                      <input type="time" name="time" class="input input-bordered w-full"/>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
+                    <div class="mt-2.5">
+                      <input type="text" name="station" placeholder="Taipei Main Station" class="input input-bordered w-full" />
+                    </div>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
+                    <div class="mt-2.5">
+                      <select name="types" id="types" class="flex justify-end select select-bordered w-full">
+                        <option disabled selected class="text-primary">What do .u. want to eat today?</option>
+                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+                          {{ value }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                  <div class="my-12 py-6 flex flex-row justify-center">
+                    <button class="flex btn btn-outline btn-error mx-12" @click="cancel">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>Cancel
+                    </button>
+                    <button type="submit" class="flex btn btn-outline btn-warning mx-12" @click="submit">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>Confrim
+                    </button>
+                  </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="form-row">
-          <label for="station">MRT Station </label>
-          <input type="text" name="station" v-model="station">
-        </div>
-        <div class="form-row">
-          <label for="types">Types </label>
-          <select name="types" id="types" v-model="type">
-            <option v-for="type in types" :key="type.value">
-              {{ type.text }}
-            </option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label for="gender">Gender </label>
-          <select name="gender" id="gender" v-model="gender">
-            <option v-for="gender in genders" :key="gender.value">
-              {{ gender.text }}
-            </option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label for="other">Other</label>
-          <input type="text" placeholder="Type something..." name="other" v-model="other">
-        </div>
-      </form>
-      <button class="button-container1" @click="cancel">Cancel</button>
-      <button class="button-container2" @click="submit">Confirm</button>
+      </div>
     </div>
   </div>
 </template>
@@ -54,19 +73,12 @@ export default {
       date: '',
       time: '',
       station: '',
-      type: 'BBQ',
-      gender: 'Male',
-      other: '',
-      types: [
-        { text: 'BBQ', value: 'BBQ' },
-        { text: 'Hot Pot', value: 'hotpot' },
-        { text: 'Ramen', value: 'ramen' }
-      ],
-      genders: [
-        { text: 'Male', value: 'Male' },
-        { text: 'Female', value: 'Female' },
-        { text: 'Other', value: 'Other' }
-      ]
+      type: 'hotpot',
+      foodTypes: {
+        BBQ: 'BBQ',
+        hotpot: 'Hot Pot',
+        ramen: 'Ramen'
+      }
     }
   },
   mounted () {
@@ -106,80 +118,4 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  div {
-    margin: 0 auto;
-  }
-  .head {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 64px;
-    line-height: 77px;
-    align-items: center;
-    text-align: center;
-    color: #363636;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  .text {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 48px;
-    line-height: 58px;
-    align-items: center;
-    text-align: center;
-    background-color: #FFEDED;
-    color: #363636;
-    margin-left: 25%;
-    margin-right: 25%;
-    border-radius: 10px;
-  }
-
-  .form {
-    width: 800px;
-    padding: 50px;
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 100px;
-  }
-
-  .form-text {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 58px;
-    color: #363636;
-  }
-
-  .form-row{
-    font-size: 32px;
-  }
-
-  input {
-    height: 40px;
-    width: 300px;
-    margin: 10px;
-    font-size: 24px;
-  }
-
-  .button-container1 {
-    margin-left: 100px;
-    margin-top: 30px;
-    font-size: 26px;
-    background-color: #FFEDED;
-    border-radius: 20px;
-    padding: 10px;
-  }
-  .button-container2 {
-    margin-left: 100px;
-    margin-top: 30px;
-    font-size: 26px;
-    background-color: #FFEDED;
-    border-radius: 20px;
-    padding: 10px;
-  }
-</style>
+<style></style>

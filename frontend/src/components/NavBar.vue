@@ -1,6 +1,6 @@
 <template>
     <header class="bg-white">
-        <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between pt-4" aria-label="Global">
             <div class="flex lg=justify-start">
                 <div class="p-4 flex lg:flex-1">
                     <a href="#" class="-m-1.5 p-1.5">

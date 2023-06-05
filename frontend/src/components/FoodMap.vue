@@ -2,12 +2,12 @@
     <div class="hero-overlay max-w-full relative">
         <img src="../assets/concentric_taipei_mrt_metro_map_60186.jpg"
             class="object-cover max-w-full h-auto rounded-sm shadow-2xl lg:h-4/5 lg:w-auto" alt="mrt metro map" />
-        <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">R10</button>
-        <button class="absolute pos-G13 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">G13</button>
-        <button class="absolute pos-G15 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">G15</button>
-        <button class="absolute pos-G12 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">G12</button>
-        <button class="absolute pos-G16 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">G16</button>
-        <button class="absolute pos-R05 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit">R05</button>
+        <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+        <button class="absolute pos-G13 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+        <button class="absolute pos-G15 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+        <button class="absolute pos-G12 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+        <button class="absolute pos-G16 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+        <button class="absolute pos-R05 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
     </div>
 </template>
 <script>
@@ -22,8 +22,8 @@ export default {
     left: 44.59%;
 }
 .pos-R05 {
-    top: 57.05%;
-    left: 62.25%;
+    top: 59.44%;
+    left: 66.25%;
 }
 .pos-G15 {
     top: 43.75%;

@@ -1,37 +1,130 @@
 <template>
-  <div>
-    <!-- <h2 class="head">Find Mealpal</h2> -->
-    <div class="text">
-      <p>Random Pair</p>
+    <div>
+    <div class="hero min-h-[80vh] bg-base-200">
+      <div class=" w-5/6 hero-content flex-col lg:flex-row-reverse">
+        <div class="px-6 w-4/5 lg:w-2/5">
+          <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> Random <span class="text-primary">:Pair</span></h1>
+          <p class="py-4 md-6 text-natural h-2/3 text-center"> Start to make a new friend now!</p>
+        </div>
+        <div class="px-6 w-4/5 lg:w-3/5">
+          <!-- left component -->
+          <div class="max-w-full">
+            <!-- ========== right component ========== -->
+            <div class="isolate bg-white px-12 py-4 rounded-3xl" v-if="showcontent">
+              <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
+                <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                  <div>
+                    <label for="data" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
+                    <div class="mt-2.5 text-primary">
+                      <span>{{ this.date }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="time" class="block text-sm font-semibold leading-6 text-gray-900">Time</label>
+                    <div class="mt-2.5">
+                      <input type="time" name="time" class="input input-bordered w-full"/>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
+                    <div class="mt-2.5">
+                      <input type="text" name="station" placeholder="Taipei Main Station" class="input input-bordered w-full" />
+                    </div>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
+                    <div class="mt-2.5">
+                      <select name="types" id="types" class="flex justify-end select select-bordered w-full">
+                        <option disabled selected class="text-primary">What do .u. want to eat today?</option>
+                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+                          {{ value }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                  <div class="my-12 py-6 flex flex-row justify-center">
+                    <button class="flex btn btn-outline btn-error mx-12" @click="goMealpal">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>Cancel
+                    </button>
+                    <button type="submit" class="flex btn btn-outline btn-warning mx-12" @click="submitForm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>Search
+                    </button>
+                  </div>
+              </form>
+            </div>
+            <!-- ========== invitation success! ========== -->
+            <div class="isolate bg-white px-12 py-4 rounded-3xl" v-if="!showcontent">
+              <div class="p-6">
+      <div class="p-4">
+        <h3 class="text-3xl text-center font-semibold leading-7 text-primary"> Invitation Success! </h3>
+      </div>
+      <div class="mt-6 border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/05' }}</dd>
+          </div>
+          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Time</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '01:00 PM' }}</dd>
+          </div>
+          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Hot Pot' }}</dd>
+          </div>
+          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">MRT Station</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Taipei Main Station' }}</dd>
+          </div>
+          <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Comments for This Restaurant</dt>
+            <!-- <dd class="mt-1 leading-6 sm:col-span-2 sm:mt-0"> -->
+              <!-- <div>Add a comment</div> -->
+            <!-- </dd> -->
+          </div>
+          <!-- ========== carousel component - Comment ========== -->
+          <div class="max-w-full">
+            <div class="carousel carousel-center p-2 space-x-4 bg-primary rounded-box">
+              <div class="carousel-item">
+                <div class="card w-96 bg-base-100 shadow-xl">
+                  <div class="card-body">
+                    <h2 class="card-title">{{ 'David Wilson' }}</h2>
+                    <p>{{ 'The hotpot at this place is amazing! Highly recommended.'  }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="card w-96 bg-base-100 shadow-xl">
+                  <div class="card-body">
+                    <h2 class="card-title">{{ 'John Doe' }}</h2>
+                    <p>{{ 'The hotpot ingredients are fresh, and the broth is rich in flavor.'  }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="card w-96 bg-base-100 shadow-xl">
+                  <div class="card-body">
+                    <h2 class="card-title"> &#10133; Add a comment </h2>
+                    <p> Write down <br> your comments right now! </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </dl>
+      </div>
     </div>
-    <div class="form">
-      <form class="form-text" name="event">
-        <div class="form-row">
-          <label for="date">Date: </label><span>{{this.date}}</span>
+            </div>
+          </div>
         </div>
-        <div class="form-row">
-          <label for="time">Time </label>
-          <input type="time" name="time" v-model="time">
-        </div>
-        <div class="form-row">
-          <label for="station">MRT Station </label>
-          <input type="text" name="station" v-model="station">
-        </div>
-        <div class="form-row">
-          <label for="types">Types </label>
-          <select name="types" id="types" v-model="type">
-            <option v-for="type in types" :key="type.value">
-              {{ type.text }}
-            </option>
-          </select>
-        </div>
-      </form>
-      <button class="button-container1" @click="goMealpal">Cancel</button>
-      <button class="button-container2" @click="submitForm">Confirm</button>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios'
 
@@ -42,12 +135,13 @@ export default {
       date: '',
       time: '',
       station: '',
-      type: 'BBQ',
-      types: [
-        { text: 'BBQ', value: 'BBQ' },
-        { text: 'Hot Pot', value: 'hotpot' },
-        { text: 'Ramen', value: 'ramen' }
-      ]
+      type: 'hotpot',
+      foodTypes: {
+        BBQ: 'BBQ',
+        hotpot: 'Hot Pot',
+        ramen: 'Ramen'
+      },
+      showcontent: true
     }
   },
   methods: {
@@ -64,15 +158,16 @@ export default {
     },
     submitForm () {
       this.randomPair()
-      this.$router.push({
-        path: '/invite',
-        query: {
-          date: this.date,
-          time: this.time,
-          station: this.station,
-          type: this.type
-        }
-      })
+      // this.$router.push({
+      //   path: '/invite',
+      //   query: {
+      //     date: this.date,
+      //     time: this.time,
+      //     station: this.station,
+      //     type: this.type
+      //   }
+      // })
+      this.showcontent = false
     },
     goMealpal () {
       this.$router.push('/findMealPal')
@@ -109,82 +204,5 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-div {
-  margin: 0 auto;
-}
-.head {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 64px;
-  line-height: 77px;
-  align-items: center;
-  text-align: center;
-  color: #363636;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.text {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 48px;
-  line-height: 58px;
-  align-items: center;
-  text-align: center;
-  background-color: #FFEDED;
-  color: #363636;
-  margin-left: 25%;
-  margin-right: 25%;
-  border-radius: 10px;
-}
-
-.form {
-  width: 800px;
-  padding: 50px;
-  background: #FFFFFF;
-  border: 1px solid #000000;
-  border-radius: 100px;
-}
-
-.form-text {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 58px;
-  color: #363636;
-}
-
-input {
-  height: 40px;
-  width: 300px;
-  margin: 10px;
-  font-size: 24px;
-}
-
-.button-container1 {
-    margin-left: 100px;
-    margin-top: 30px;
-    font-size: 26px;
-    background-color: #FFEDED;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.button-container2 {
-    margin-left: 100px;
-    margin-top: 30px;
-    font-size: 26px;
-    background-color: #FFEDED;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.form-row {
-  font-size: 32px;
-}
-
+<style>
 </style>
