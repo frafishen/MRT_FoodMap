@@ -35,7 +35,7 @@
                     <a role="button" class="badge badge-ghost badge-sm" :href="row.URL">Go to Map</a>
                   </td>
                   <th>
-                    <button class="btn btn-ghost btn-xs" @click="toggleMap">Details</button>
+                    <button class="btn btn-ghost btn-xs" @click="toggleMap(index)">Details</button>
                   </th>
                   <th>
                     <button
@@ -102,8 +102,17 @@ export default {
         this.deleteFavorite(this.stores[index].Name)
       }
     },
-    toggleMap () {
+    toggleMap: async function (index) {
       this.showMap = false
+      const P1_ID = this.$store.state.P1_ID
+      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${this.stores[index].Name}`)
+      const config = { headers: { 'Content-Type': 'application/json' } }
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/api/addHistory', { StoreID: StoreID, P1_ID: P1_ID }, config)
+        console.log(response.data)
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
       console.log(this.showMap)
     },
     setStation: async function (stationID) {

@@ -320,6 +320,20 @@ def get_favorite(person_id):
             favorites.append({'FListID': favorite.FListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance, 'URL': store.URL })
     return jsonify(favorites)
 
+# @app.route('/api/history/<person_id>', methods=['GET'])
+# def get_history(person_id):
+#     history_list = db.session.query(HistoryList).filter_by(PersonID=person_id).all()
+    
+#     if not history_list:
+#         return 'No history list found', 404
+    
+#     histories = []
+#     for history in history_list:
+#         store = db.session.query(Store).get(history.StoreID)
+#         if store is not None:
+#             histories.append({'HListID': history.HListID, 'StoreID': store.StoreID, 'Name': store.Name, 'Location': store.Location, 'Distance': store.Distance, 'URL': store.URL })
+#     return jsonify(histories)
+
 # add Favorite
 @app.route('/api/addFavorite', methods=['POST'])
 def add_favorite():
