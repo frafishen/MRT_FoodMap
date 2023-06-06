@@ -10,8 +10,8 @@ import random
 from datetime import datetime, timedelta
 
 
-# password = quote_plus("xX@0180368905")
-password = quote_plus("00000")
+password = quote_plus("xX@0180368905")
+# password = quote_plus("00000")
 # password = quote_plus("221003red")
 
 app = Flask(__name__)

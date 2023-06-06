@@ -48,7 +48,7 @@
                     <div class="mt-2.5">
                       <select name="types" id="types" v-model="type" class="flex justify-end select select-bordered w-full font-normal">
                         <option disabled selected class="text-primary">What do .u. want to eat today?</option>
-                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key" :value="key">
                           {{ value }}
                         </option>
                       </select>
