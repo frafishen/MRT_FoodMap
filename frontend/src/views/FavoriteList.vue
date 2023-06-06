@@ -79,26 +79,28 @@ export default {
     toggleColor (index) {
       this.buttonStatus[index] = !this.buttonStatus[index]
       if (this.buttonStatus[index]) { // 被按喜歡
-        this.addFavorite(this.favoriteList[index].StoreID)
+        this.addFavorite(this.favoriteList[index].Name)
       } else {
-        this.deleteFavorite(this.favoriteList[index].StoreID)
+        this.deleteFavorite(this.favoriteList[index].Name)
       }
     },
-    addFavorite: async function (storeID) {
+    addFavorite: async function (storeName) {
       const config = { headers: { 'Content-Type': 'application/json' } }
       const P1_ID = this.$store.state.P1_ID
+      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/addFavorite', { StoreID: storeID, P1_ID: P1_ID }, config)
+        const response = await axios.post('http://127.0.0.1:5000/api/addFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
       }
     },
-    deleteFavorite: async function (storeID) {
+    deleteFavorite: async function (storeName) {
       const config = { headers: { 'Content-Type': 'application/json' } }
       const P1_ID = this.$store.state.P1_ID
+      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${storeName}`)
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/deleteFavorite', { StoreID: storeID, P1_ID: P1_ID }, config)
+        const response = await axios.post('http://127.0.0.1:5000/api/deleteFavorite', { StoreID: StoreID, P1_ID: P1_ID }, config)
         console.log(response.data)
       } catch (error) {
         console.error('An error occurred:', error)
