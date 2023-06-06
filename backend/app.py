@@ -10,8 +10,8 @@ import random
 from datetime import datetime, timedelta
 
 
-password = quote_plus("xX@0180368905")
-# password = quote_plus("00000")
+# password = quote_plus("xX@0180368905")
+password = quote_plus("00000")
 # password = quote_plus("221003red")
 
 app = Flask(__name__)
@@ -453,7 +453,7 @@ def get_stores_PID(P_ID, foodType, stationID):
 # getStores API, without foodType and stationID
 @app.route('/api/stores/<P_ID>', methods=['GET'])
 def get_stores_top4(P_ID):
-    stores = db.session.query(Store, Station.Name.label('StationName')).join(Station, Store.StationID==Station.StationID).limit(4)
+    stores = db.session.query(Store, Station.Name.label('StationName')).join(Station, Store.StationID==Station.StationID).limit(50)
     stores_list = []
     
     for store in stores:

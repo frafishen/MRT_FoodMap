@@ -16,32 +16,26 @@
             </select>
           </div>
           <!-- ========== table component ========== -->
-          <div class="overflow-x-auto w-full mt-4">
-            <table class="table w-full">
+          <div class="h-80 overflow-y-auto w-full mt-4 bg-white rounded-lg py-2">
+            <table class="table table-auto w-full whitespace-normal">
               <!-- head -->
               <tbody>
                 <!-- row 1 -->
                 <tr v-for="(row, index) in stores" :key="index">
                   <td>
-                    <div class="flex items-center space-x-3">
-                      <div>
-                        <div class="font-bold">{{ row.Name }}</div>
+                    <div class="flex-row mx-2">
+                      <div class="flex items-center space-x-3">
+                        <div class="font-bold cursor-pointer" @click="toggleMap(index)">{{ row.Name }}</div>
+                        <a role="button" class="btn btn-ghost btn-xs" :href="row.URL">Map</a>
                       </div>
+                      <div class="text-sm">Loc. {{ row.Location }}</div>
                     </div>
                   </td>
-                  <td>
-                    {{ row.Location }}
-                    <br />
-                    <a role="button" class="badge badge-ghost badge-sm" :href="row.URL">Go to Map</a>
-                  </td>
-                  <th>
-                    <button class="btn btn-ghost btn-xs" @click="toggleMap(index)">Details</button>
-                  </th>
-                  <th>
+                  <th class="text-right">
                     <button
                       name="add fav"
                       type="submit"
-                      class="btn btn-sm mask mask-heart transition-colors duration-200"
+                      class="btn btn-sm mask mask-heart transition-colors duration-200 mx-2"
                       :class="{ 'bg-red-400': row.isFav, 'bg-gray-400': !row.isFav }"
                       @click="toggleColor(index)"
                     ></button>
@@ -55,10 +49,10 @@
         </div>
         <div class="px-6 w-full py-4 lg:w-1/2">
           <!-- left conponent -->
-          <div class="max-w-full" v-if="showMap">
+          <div class="max-w-full rounded-lg" v-if="showMap">
             <FoodMap @clickStation="setStation"></FoodMap>
           </div>
-          <div class="max-w-full" v-if="!showMap">
+          <div class="max-w-full rounded-lg" v-if="!showMap">
             <StoreDetailArea />
           </div>
         </div>
