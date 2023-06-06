@@ -27,7 +27,7 @@
                   </div>
                   <div class="sm:col-span-2">
                     <label for="station" class="block text-sm font-semibold leading-6 text-gray-900">MRT Station</label>
-                    <select id="station" v-model="station" class="flex justify-end select select-bordered w-full">
+                    <select id="station" v-model="station" class="flex justify-end select select-bordered w-full font-normal">
                       <option disabled value="">What do .u. want to go today?</option>
                       <option v-for="[key, value] in Object.entries(stationList)" :key="key" :value="key">
                         {{ value }}
@@ -37,7 +37,7 @@
                   <div class="sm:col-span-2">
                     <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
                     <div class="mt-2.5">
-                      <select name="types" id="types" class="flex justify-end select select-bordered w-full">
+                      <select name="types" id="types" class="flex justify-end select select-bordered w-full font-normal">
                         <option disabled selected class="text-primary">What do .u. want to eat today?</option>
                         <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
                           {{ value }}

@@ -30,7 +30,7 @@
                         <button name="add fav" type="submit"
                             class="btn btn-sm mask mask-heart transition-colors duration-200"
                             :class="{ 'bg-red-400': buttonStatus[index], 'bg-gray-400': !buttonStatus[index] }"
-                            @click="toggleColor(index)"></button>
+                            @click="toggleColor(favorite.Name, index)"></button>
                     </th>
                 </tr>
                 <!-- row end -->
@@ -76,7 +76,8 @@ export default {
         this.favoriteList = null
       }
     },
-    toggleColor (index) {
+    toggleColor: async function (name, index) {
+      const storeID = await axios.get(`http://127.0.0.1:5000/api/storeID/${name}`)
       this.buttonStatus[index] = !this.buttonStatus[index]
       if (this.buttonStatus[index]) { // 被按喜歡
         this.addFavorite(this.favoriteList[index].Name)

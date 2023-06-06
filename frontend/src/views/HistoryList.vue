@@ -43,8 +43,8 @@ export default {
   name: 'HistoryList',
   data () {
     return {
-      historyList: null,
-      buttonStatus: null
+      historyList: null
+      // buttonStatus: null
     }
   },
   components: {
@@ -52,16 +52,19 @@ export default {
   methods: {
     fetchHistoryList: async function () {
       const P1_ID = this.$store.state.P1_ID
-      // console.log(P1_ID)
+
       try {
-        console.log('start fetching', P1_ID)
         const response = await axios.get(`http://127.0.0.1:5000/api/history/${P1_ID}`)
-        console.log('get response')
         this.historyList = response.data
-        console.log(this.historyList)
+      //   const len = this.historyList.length
+      //   this.buttonStatus = new Array(len)
+      //   for (let i = 0; i < len; i++) {
+      //     this.buttonStatus[i] = true
+      //   }
+      //   console.log(this.buttonStatus)
       } catch (error) {
         console.error(error)
-        this.historyList = null
+        this.favoriteList = null
       }
     },
     toggleMap (index) {

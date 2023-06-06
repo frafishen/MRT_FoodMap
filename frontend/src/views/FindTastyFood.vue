@@ -8,9 +8,9 @@
             <!-- button with a arror point to left -->
             <button class="flex justify-start btn btn-ghost hover:bg-primary hover:text-white" @click="showMap = true"><p>&larr;</p></button>
             <!-- selection bar -->
-            <select class="flex justify-end select select-primary w-full max-w-xs">
-              <option disabled selected class="text-primary">What do .u. want to eat today?</option>
-              <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+            <select v-model="foodType" class="flex justify-end font-normal select select-primary w-full max-w-xs">
+              <option disabled value="">What do .u. want to eat today?</option>
+              <option v-for="[key, value] in Object.entries(foodTypes)" :key="key" :value="key">
                 {{ value }}
               </option>
             </select>
@@ -21,28 +21,28 @@
               <!-- head -->
               <tbody>
                 <!-- row 1 -->
-                <tr v-for="(row, index) in tableRows" :key="index">
+                <tr v-for="(row, index) in stores" :key="index">
                   <td>
                     <div class="flex items-center space-x-3">
                       <div>
-                        <div class="font-bold">{{ row.storeName }}</div>
+                        <div class="font-bold">{{ row.Name }}</div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    {{ row.address }}
+                    {{ row.Location }}
                     <br />
-                    <a role="button" class="badge badge-ghost badge-sm" href="https://www.google.com/">Go to Map</a>
+                    <a role="button" class="badge badge-ghost badge-sm" :href="row.URL">Go to Map</a>
                   </td>
                   <th>
-                    <button class="btn btn-ghost btn-xs" @click="toggleMap">Details</button>
+                    <button class="btn btn-ghost btn-xs" @click="toggleMap(index)">Details</button>
                   </th>
                   <th>
                     <button
                       name="add fav"
                       type="submit"
                       class="btn btn-sm mask mask-heart transition-colors duration-200"
-                      :class="{ 'bg-red-400': row.isClicked, 'bg-gray-400': !row.isClicked }"
+                      :class="{ 'bg-red-400': row.isFav, 'bg-gray-400': !row.isFav }"
                       @click="toggleColor(index)"
                     ></button>
                   </th>
@@ -56,7 +56,7 @@
         <div class="px-6 w-full py-4 lg:w-1/2">
           <!-- left conponent -->
           <div class="max-w-full" v-if="showMap">
-            <FoodMap />
+            <FoodMap @clickStation="setStation"></FoodMap>
           </div>
           <div class="max-w-full" v-if="!showMap">
             <StoreDetailArea />
@@ -71,32 +71,12 @@
 import FoodMap from '@/components/FoodMap.vue'
 import StoreDetailArea from '@/components/StoreDetailArea.vue'
 import axios from 'axios'
-
-// async function modifyFavorite (id, isClicked) {
-//   try {
-//     var config = { headers: { 'Content-Type': 'application/json' } }
-//     if(isClicked) { // already in fav list
-//       // delete from fav list
-//       const response = await axios.delete('http://localhost:5000/api/deleteFavorite', { PersonID: this.personID, StationID: this.stationName }, config)
-//       console.log(response.data)
-//       this.modifyFavoriteStatus = response.data
-//     } else  {// not in fav list
-//       // add to fav list
-//       const response = await axios.post('http://localhost:5000/api/addFavorite', { PersonID: this.personID, StationID: this.stationName }, config)
-//       console.log(response.data)
-//       this.modifyFavoriteStatus = response.data
-//     }
-//   } catch (error) {
-//     console.error('An error occurred:', error)
-//   }
-// }
-
-// get store with food type
-
 export default {
   name: 'findTastyFood',
   data () {
     return {
+      stationID: '',
+      foodType: '',
       foodTypes: {
         BBQ: 'BBQ',
         hotpot: 'Hot Pot',
@@ -104,23 +84,7 @@ export default {
       },
       showMap: true,
       // todo: get data from db
-      tableRows: [
-        {
-          storeName: '麵屋武藏',
-          address: 'Address 1',
-          isClicked: false
-        },
-        {
-          storeName: 'Store 2',
-          address: 'Address 2',
-          isClicked: false
-        },
-        {
-          storeName: 'Store 3',
-          address: 'Address 3',
-          isClicked: false
-        }
-      ],
+      stores: [],
       modifyFavoriteStatus: null
     }
   },
@@ -130,16 +94,32 @@ export default {
   },
   methods: {
     toggleColor (index) {
-      this.tableRows[index].isClicked = !this.tableRows[index].isClicked
-      if (this.tableRows[index].isClicked) { // 被按喜歡
-        this.addFavorite(this.tableRows[index].storeName)
+      // this.tableRows[index].isClicked = !this.tableRows[index].isClicked
+      this.stores[index].isFav = !this.stores[index].isFav
+      if (this.stores[index].isFav) { // 被按喜歡
+        this.addFavorite(this.stores[index].Name)
       } else {
-        this.deleteFavorite(this.tableRows[index].storeName)
+        this.deleteFavorite(this.stores[index].Name)
       }
     },
-    toggleMap () {
+    toggleMap: async function (index) {
       this.showMap = false
+      const P1_ID = this.$store.state.P1_ID
+      const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${this.stores[index].Name}`)
+      const config = { headers: { 'Content-Type': 'application/json' } }
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/api/addHistory', { StoreID: StoreID, P1_ID: P1_ID }, config)
+        console.log(response.data)
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
       console.log(this.showMap)
+    },
+    setStation: async function (stationID) {
+      this.stationID = stationID
+      console.log('Find Tasty Food: ', this.stationID)
+      console.log('Find Tasty Food: ', this.foodType)
+      this.getStores(this.foodType, this.stationID)
     },
     addFavorite: async function (storeName) {
       const config = { headers: { 'Content-Type': 'application/json' } }
@@ -162,7 +142,32 @@ export default {
       } catch (error) {
         console.error('An error occurred:', error)
       }
+    },
+    // get stores
+    getStores: async function (foodType, stationID) {
+      console.log('---getStores start---')
+      const config = { headers: { 'Content-Type': 'application/json' } }
+      try {
+        let P1_ID = this.$store.state.P1_ID
+        console.log('P1_ID: ', P1_ID)
+        if (this.stationID === '' | this.foodType === '') {
+          const response = await axios.get(`http://127.0.0.1:5000/api/stores/${P1_ID}`, config)
+          this.stores = response.data
+        } else {
+          if (P1_ID === '') {
+            P1_ID = '00000000'
+          }
+          const response = await axios.get(`http://127.0.0.1:5000/api/stores/${P1_ID}/${foodType}/${stationID}`, config)
+          this.stores = response.data
+        }
+      } catch (error) {
+        console.error('An error occurred:', error)
+      }
+      console.log('---getStores end---')
     }
+  },
+  mounted () {
+    this.getStores(this.foodType, this.stationID)
   }
 }
 </script>
