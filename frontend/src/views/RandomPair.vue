@@ -81,15 +81,15 @@
                   <dl class="divide-y divide-gray-100">
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/05' }}</dd>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/06' }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Time</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '01:00 PM' }}</dd>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '06:00 PM' }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Hot Pot' }}</dd>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Ramen' }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">MRT Station</dt>
@@ -108,16 +108,16 @@
                         <div class="carousel-item">
                           <div class="card w-96 bg-base-100 shadow-xl">
                             <div class="card-body">
-                              <h2 class="card-title">{{ 'Hot Pot Paradise' }}</h2>
-                              <p>{{ 'Address 1' }}</p>
+                              <h2 class="card-title">{{ '麵屋武藏' }}</h2>
+                              <p>{{ '台北市中正區忠孝西路一段36號B1' }}</p>
                             </div>
                           </div>
                         </div>
                         <div class="carousel-item">
                           <div class="card w-96 bg-base-100 shadow-xl">
                             <div class="card-body">
-                              <h2 class="card-title">{{ 'Spicy Hotpot' }}</h2>
-                              <p>{{ 'Address 2' }}</p>
+                              <h2 class="card-title">{{ '太陽蕃茄拉麵 站前本店' }}</h2>
+                              <p>{{ '台北市中正區忠孝西路一段38號凱撤飯店B1F' }}</p>
                             </div>
                           </div>
                         </div>

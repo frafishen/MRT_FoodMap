@@ -2,7 +2,7 @@
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
       <div class="hero-content flex-col lg:flex-row">
-        <img src="../assets/personalPage/person_img_sample.png" class="max-w-sm rounded-lg shadow-2xl" />
+        <img src="../assets/personalPage/personal_image_sample.jpg" class="max-w-sm rounded-lg shadow-2xl" />
         <div class="px-6">
           <h1 class="text-5xl font-bold py-6"><span class="text-primary" v-if="person">{{person.Name}}</span>'s Page</h1>
           <div class="py-6">
