@@ -10,8 +10,13 @@
       <!-- vendor NavBar component -->
       <NavBar />
     </nav>
+    <!-- add backgound -->
+    <!-- todo: img not showed -->
+    <!-- <div>
+      <img src="assets/backgound/rainy.jpg" alt="background" class="absolute object-cover w-full h-full"/>
+    </div>
+    <div class="hero min-h-screen bg-cover bg-center" style="background-image: url('./assets/backgound/rainy.jpg');"></div>-->
     <router-view></router-view>
-
     <!-- vendor Footer component -->
     <AppFooter />
   </div>

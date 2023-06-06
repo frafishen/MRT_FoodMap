@@ -8,17 +8,33 @@
             <h3 class="text-gray-500 w-auto font-bold mx-8">Amount of People waiting to pair</h3>
             <div class="flex flex-row justify-end mx-8">
               <ul class="steps">
-                <li class="step step-neutral"  data-content=":)">few</li>
+                <li class="step step-neutral" data-content=":)">few</li>
                 <li class="step step-warning" data-content=":>">a few</li>
                 <li class="step step-error" data-content=":O">many</li>
               </ul>
             </div>
           </div>
           <div class="flex flex-col w-full my-8 lg:flex-row">
-              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goToNewEvent">New Event</div>
-              <div class="divider lg:divider-horizontal">OR</div>
-              <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goToRandomPair">Random Pair</div>
+            <div class="grid flex-grow h-52 w-24 card bg-base-300 rounded-box place-items-center cursor-pointer"
+              @click="goFindFood">
+              <div class="h-24 w-24 mt-8">
+                <img src="../assets/mealpal/newEvent.png" class="h-24 w-auto" alt="mealpal">
+              </div>
+              <div class="my-6">
+                New E.v.ent
+              </div>
             </div>
+            <div class="divider lg:divider-horizontal">OR</div>
+            <div class="grid flex-grow h-52 w-24 card bg-base-300 rounded-box place-items-center cursor-pointer"
+              @click="goToRandomPair">
+              <div class="h-24 w-24 mt-8">
+                <img src="../assets/mealpal/randomPair.png" class="h-24 w-auto" alt="mealpal">
+              </div>
+              <div class="my-6">
+                Random :Pair
+              </div>
+            </div>
+          </div>
         </div>
         <div class="px-6 w-full py-4 lg:w-1/2">
           <!-- left conponent -->
@@ -47,5 +63,4 @@ export default {
   }
 }
 </script>
-<style>
-</style>
+<style></style>
