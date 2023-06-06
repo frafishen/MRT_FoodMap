@@ -35,6 +35,7 @@
               </tbody>
             </table>
           </div>
+          <!-- ========== table component end ========== -->
         </div>
       </div>
     </div>

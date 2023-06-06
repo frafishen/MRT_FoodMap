@@ -6,7 +6,8 @@
       <router-link to="/findTastyFood" class="p-6">Find Food</router-link> |
       <router-link to="/findMealPal" class="p-6">Find MealPal</router-link> |
       <router-link to="/newEvent" class="p-6">New Event</router-link> |
-      <router-link to="/randomPair" class="p-6">Random Pair</router-link>
+      <router-link to="/randomPair" class="p-6">Random Pair</router-link> |
+      <rounter-link to="/chatRoom" class="p-6">Chat Room</rounter-link>
       <!-- vendor NavBar component -->
       <NavBar />
     </nav>
