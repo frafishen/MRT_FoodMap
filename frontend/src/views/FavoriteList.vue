@@ -81,6 +81,7 @@ export default {
     },
     toggleColor: async function (name, index) {
       const storeID = await axios.get(`http://127.0.0.1:5000/api/storeID/${name}`)
+      console.log(storeID)
       this.buttonStatus[index] = !this.buttonStatus[index]
       if (this.buttonStatus[index]) { // 被按喜歡
         this.addFavorite(this.favoriteList[index].Name)
