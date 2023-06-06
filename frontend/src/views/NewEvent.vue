@@ -37,9 +37,9 @@
                   <div class="sm:col-span-2">
                     <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
                     <div class="mt-2.5">
-                      <select name="types" id="types" class="flex justify-end select select-bordered w-full font-normal">
+                      <select name="types" id="types" v-model="type" class="flex justify-end select select-bordered w-full font-normal">
                         <option disabled selected class="text-primary">What do .u. want to eat today?</option>
-                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key">
+                        <option v-for="[key, value] in Object.entries(foodTypes)" :key="key" :value="key">
                           {{ value }}
                         </option>
                       </select>
@@ -76,7 +76,7 @@ export default {
       date: '',
       time: '',
       station: '',
-      type: 'hotpot',
+      type: '',
       foodTypes: {
         BBQ: 'BBQ',
         hotpot: 'Hot Pot',
