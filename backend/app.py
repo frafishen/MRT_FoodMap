@@ -10,15 +10,16 @@ import random
 from datetime import datetime, timedelta
 
 
-password = quote_plus("xX@0180368905")
-# password = quote_plus("00000")
+# password = quote_plus("xX@0180368905")
+password = quote_plus("00000")
 # password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 # CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@127.0.0.1:3307/mrt_foodmap'
 app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
@@ -88,7 +89,7 @@ class HistoryList(db.Model):
     StoreID = db.Column(db.String(50), nullable=False)
 
 class Comment(db.Model):
-    _tablename__ = 'Comment'
+    __tablename__ = 'Comment'
     CommentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     PersonID = db.Column(db.String(50), nullable=False)
     StoreID = db.Column(db.String(50), nullable=False)
@@ -348,7 +349,7 @@ def add_favorite():
             data = {"PersonID": _P1_ID, "StoreID": _StoreID}
             db.session.execute(sql, data)
             db.session.commit()
-            response_object['message'] = 'Station added!'
+            response_object['message'] = 'Favorite added!'
             return jsonify(response_object)
         else:
             response_object['message'] = 'Invalid data'
@@ -415,7 +416,7 @@ def add_history():
             data = {"PersonID": _P1_ID, "StoreID": _StoreID}
             db.session.execute(sql, data)
             db.session.commit()
-            response_object['message'] = 'Station added!'
+            response_object['message'] = 'History added!'
             return jsonify(response_object)
         else:
             response_object['message'] = 'Invalid data'
@@ -435,6 +436,7 @@ def get_stores_PID(P_ID, foodType, stationID):
     
     for store in stores:
         store_dict = {
+            'StoreID': store.Store.StoreID,
             'Name': store.Store.Name,
             'Location': store.Store.Location,
             'Category': store.Store.Category,
@@ -458,6 +460,7 @@ def get_stores_top4(P_ID):
     
     for store in stores:
         store_dict = {
+            'StoreID': store.Store.StoreID,
             'Name': store.Store.Name,
             'Location': store.Store.Location,
             'Category': store.Store.Category,
@@ -472,6 +475,24 @@ def get_stores_top4(P_ID):
         stores_list.append(store_dict)
         
     return jsonify(stores_list)
+
+# getCommentsAPI, with StoreID
+@app.route('/api/comments/<StoreID>', methods=['GET'])
+def get_comments(StoreID):
+    comments = db.session.query(Comment, Person.Name.label('PersonName')).filter_by(StoreID=StoreID).join(Person, Comment.PersonID==Person.PersonID).all()
+    
+    comments_list = []
+    
+    for comment, person_name in comments:
+        comment_dict = {
+            'PersonName': person_name,
+            'Content': comment.Content
+        }
+        comments_list.append(comment_dict)
+        
+    return jsonify(comments_list)
+
+
 
 @app.route('/api/storeID/<storeName>', methods=['GET'])
 def get_storeID(storeName):

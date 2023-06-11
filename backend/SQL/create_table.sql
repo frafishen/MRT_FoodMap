@@ -79,7 +79,7 @@ CREATE TABLE Comment(
 	CommentID int NOT NULL AUTO_INCREMENT,
     PersonID varchar(50) NOT NULL,
     StoreID varchar(50) NOT NULL,
-    Content varchar(50) NOT NULL,
+    Content varchar(150) NOT NULL,
     PRIMARY KEY (CommentID),
     FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
     FOREIGN KEY (StoreID) REFERENCES Store(StoreID)

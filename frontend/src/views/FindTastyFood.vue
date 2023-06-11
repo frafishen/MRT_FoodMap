@@ -25,7 +25,7 @@
                   <td>
                     <div class="flex-row mx-2">
                       <div class="flex items-center space-x-3">
-                        <div class="font-bold cursor-pointer" @click="toggleMap(index)">{{ row.Name }}</div>
+                        <div class="font-bold cursor-pointer" @click="toggleMap(index, row)">{{ row.Name }}</div>
                         <a role="button" class="btn btn-ghost btn-xs" :href="row.URL">Map</a>
                       </div>
                       <div class="text-sm">Loc. {{ row.Location }}</div>
@@ -53,7 +53,7 @@
             <FoodMap @clickStation="setStation"></FoodMap>
           </div>
           <div class="max-w-full rounded-lg" v-if="!showMap">
-            <StoreDetailArea />
+            <StoreDetailArea :selectedStore="selectedStore"></StoreDetailArea>
           </div>
         </div>
       </div>
@@ -79,7 +79,16 @@ export default {
       showMap: true,
       // todo: get data from db
       stores: [],
-      modifyFavoriteStatus: null
+      selectedStore: {
+        Category: 'ramen',
+        Distance: '450m',
+        Location: '\u53f0\u5317\u5e02\u4e2d\u6b63\u5340\u5fe0\u5b5d\u897f\u8def\u4e00\u6bb536\u865fB1',
+        Name: '\u9eb5\u5c4b\u6b66\u85cf \u672c\u5e97',
+        StationName: 'Taipei Main Station',
+        StoreID: 'S031',
+        URL: 'https://reurl.cc/GAmgmd',
+        isFav: false
+      }
     }
   },
   components: {
@@ -96,9 +105,11 @@ export default {
         this.deleteFavorite(this.stores[index].Name)
       }
     },
-    toggleMap: async function (index) {
+    toggleMap: async function (index, store) {
       this.showMap = false
       const P1_ID = this.$store.state.P1_ID
+      this.selectedStore = store
+      console.log('selectedStore: ', this.selectedStore)
       const StoreID = await axios.get(`http://127.0.0.1:5000/api/storeID/${this.stores[index].Name}`)
       const config = { headers: { 'Content-Type': 'application/json' } }
       try {
@@ -107,7 +118,7 @@ export default {
       } catch (error) {
         console.error('An error occurred:', error)
       }
-      console.log(this.showMap)
+      console.log('toggleMap: ', this.showMap)
     },
     setStation: async function (stationID) {
       this.stationID = stationID
@@ -137,20 +148,20 @@ export default {
         console.error('An error occurred:', error)
       }
     },
-    // get stores
+    // get stores arr
     getStores: async function (foodType, stationID) {
       console.log('---getStores start---')
       const config = { headers: { 'Content-Type': 'application/json' } }
       try {
         let P1_ID = this.$store.state.P1_ID
+        if (P1_ID === '') {
+          P1_ID = '00000000'
+        }
         console.log('P1_ID: ', P1_ID)
         if (this.stationID === '' | this.foodType === '') {
           const response = await axios.get(`http://127.0.0.1:5000/api/stores/${P1_ID}`, config)
           this.stores = response.data
         } else {
-          if (P1_ID === '') {
-            P1_ID = '00000000'
-          }
           const response = await axios.get(`http://127.0.0.1:5000/api/stores/${P1_ID}/${foodType}/${stationID}`, config)
           this.stores = response.data
         }
