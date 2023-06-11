@@ -10,9 +10,9 @@ import random
 from datetime import datetime, timedelta
 
 
-password = quote_plus("xX@0180368905")
+# password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-# password = quote_plus("221003red")
+password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -241,7 +241,7 @@ def add_event():
     try:
         _json = request.json
         _P1_ID = _json['P1_ID']
-        _P2_ID = "0"
+        _P2_ID = "00000000"
         _Time = _json['Time']
         _FoodType = _json['FoodType']
         _StationID = _json['StationID']
@@ -273,7 +273,7 @@ def pair_event():
 
         query = text("""
             SELECT EventID, P1_ID, P2_ID, Time, FoodType, StationID FROM Event
-            WHERE P2_ID = "0"
+            WHERE P2_ID = "00000000"
             AND ABS(TIMESTAMPDIFF(MINUTE, Time, :Time)) <= 60
             AND FoodType = :FoodType
             AND StationID = :StationID
@@ -284,26 +284,42 @@ def pair_event():
         # Execute the query
         result = db.session.execute(query, data).fetchone()
         result_dict = dict(result._asdict())  # Convert the result tuple to a dictionary
-        # print(data)
-        
-
+        # print(data) 
         if result:
-            # Change the P2_ID of the selected event to the passed P2_ID
-            update_query = text("""
-                UPDATE Event SET P2_ID = :P2_ID WHERE EventID = :id
-            """)
-            db.session.execute(update_query, {"P2_ID": data['P2_ID'], "id": result_dict['EventID']})
+            # # Change the P2_ID of the selected event to the passed P2_ID
+            # update_query = text("""
+            #     UPDATE Event SET P2_ID = :P2_ID WHERE EventID = :id
+            # """)
+            # db.session.execute(update_query, {"P2_ID": data['P2_ID'], "id": result_dict['EventID']})
             
-            db.session.commit()
+            # db.session.commit()
             return jsonify({"status": "success", "event": result_dict}), 200
         else:
-            return jsonify({"status": "failed", "message": "No available pair"}), 404
+            return jsonify({"status": "failed", "message": "No available pair"}), 200
 
     except Exception as e:
         app.logger.error(str(e))
-        return jsonify({"status": "failed", "message": str(e)}), 500
+        return jsonify({"status": "failed", "message": str(e)}), 200
+        # return jsonify({"status": "failed", "message": str(e)}), 500
 
+@app.route('/api/pairSuccess', methods=['POST'])
+def pair_success():
+    try:
+        data = request.get_json()
+        print(data)
+        # Change the P2_ID of the selected event to the passed P2_ID
+        update_query = text("""
+            UPDATE Event SET P2_ID = :P2_ID WHERE EventID = :id
+        """)
+        db.session.execute(update_query, {"P2_ID": data['P2_ID'], "id": data['EventID']})
+        
+        db.session.commit()
+        return jsonify({"status": "success"}), 200
 
+    except Exception as e:
+        app.logger.error(str(e))
+        return jsonify({"status": "failed", "message": str(e)}), 200
+        # return jsonify({"status": "failed", "message": str(e)}), 500
 
 # get fav list with specific personID
 @app.route('/api/favorite/<person_id>', methods=['GET'])
