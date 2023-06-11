@@ -15,8 +15,8 @@
             </div>
           </div>
           <div class="flex flex-col w-full my-8 lg:flex-row">
-            <div class="grid flex-grow h-52 w-24 card bg-base-300 rounded-box place-items-center cursor-pointer"
-              @click="goFindFood">
+            <div class="grid flex-grow h-52 w-auto card bg-base-300 rounded-box place-items-center cursor-pointer"
+              @click="goToNewEvent">
               <div class="h-24 w-24 mt-8">
                 <img src="../assets/mealpal/newEvent.png" class="h-24 w-auto" alt="mealpal">
               </div>
@@ -25,7 +25,7 @@
               </div>
             </div>
             <div class="divider lg:divider-horizontal">OR</div>
-            <div class="grid flex-grow h-52 w-24 card bg-base-300 rounded-box place-items-center cursor-pointer"
+            <div class="grid flex-grow h-52 w-auto card bg-base-300 rounded-box place-items-center cursor-pointer"
               @click="goToRandomPair">
               <div class="h-24 w-24 mt-8">
                 <img src="../assets/mealpal/randomPair.png" class="h-24 w-auto" alt="mealpal">

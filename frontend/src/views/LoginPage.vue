@@ -6,7 +6,7 @@
           <img class="h-40 w-auto md-4" src="../assets/login_logo.png" alt="logo" />
         </div>
         <h1 class="text-5xl font-bold">Log in now!</h1>
-        <p class="py-6">Sign in to your account and start your f.o^o.d trip!</p>
+        <p class="py-6">Log in to your account and start your f.o^o.d trip!</p>
         <div class="mt-2 text-center text-sm text-gray-500 lg:text-left">
           Don't have an account?
           {{ '   ' }}

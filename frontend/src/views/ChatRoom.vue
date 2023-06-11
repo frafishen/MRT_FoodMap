@@ -2,7 +2,7 @@
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
       <div class=" w-5/6 hero-content flex-col lg:flex-row">
-        <div class="px-6 w-4/5 lg:w-1/3">
+        <div class="px-6 w-full lg:w-1/3">
           <h1 class="text-5xl font-bold py-6 h-1/3 text-center"><span class="text-primary">Ch.a.troom</span></h1>
           <p class="md-6 text-natural h-2/3 text-center"> Start to chat with your friends!</p>
           <!-- ========== table component =========== -->
@@ -20,7 +20,7 @@
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="mx-2 text-warning">New</p>
+                    <p class="mx-4 text-warning">New</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -33,20 +33,20 @@
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="mx-2 text-warning">New</p>
+                    <p class="mx-4 text-warning">New</p>
                   </th>
                 </tr>
                 <!-- row end -->
-                <tr>
-                  <td>
+                <tr class="bg-secondary">
+                  <td class="bg-secondary">
                     <div class="flex-row mx-2">
                         <div class="flex items-center space-x-3">
                           <div class="font-bold cursor-pointer" >Joe</div>
                         </div>
                     </div>
                   </td>
-                  <th class="text-right">
-                    <p class="text-gray-400 font-normal">OK, let's go!</p>
+                  <th class="text-right bg-secondary">
+                    <p class="mx-4 text-gray-400 font-normal">Sure, it works...</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -59,7 +59,7 @@
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="text-gray-400 font-normal">Let's meet at 6!</p>
+                    <p class="mx-4 text-gray-400 font-normal">Let's meet at 6!</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -72,7 +72,7 @@
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="text-gray-400 font-normal">OK! I got it.</p>
+                    <p class="mx-4 text-gray-400 font-normal">OK! I got it.</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -81,7 +81,7 @@
           </div>
         </div>
         <!-- left component -->
-        <div class="px-6 w-4/5 lg:w-2/3 bg-white rounded-2xl">
+        <div class="px-6 w-full lg:w-2/3 bg-white rounded-2xl">
             <!-- ========== info component ========== -->
             <div class="p-6">
                 <div class="chat chat-start py-4">
@@ -103,7 +103,7 @@
                     </div>
                     <div class="chat-bubble bg-primary text-black">Sounds good! What time should we meet?</div>
                 </div>
-                <div class="chat chat-end py-4">
+                <div class="chat chat-end">
                     <div class="chat-bubble bg-secondary text-black">Let's meet at 5:50 PM.</div>
                 </div>
                 <div class="chat chat-start py-4">

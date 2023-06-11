@@ -6,7 +6,7 @@
           <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> New <span class="text-primary">E.v.ent</span></h1>
           <p class="py-4 md-6 text-natural h-2/3 text-center"> Start to make a new friend now!</p>
         </div>
-        <div class="px-6 w-4/5 lg:w-3/5">
+        <div class="px-6 w-full lg:w-3/5">
           <!-- left component -->
           <div class="max-w-full">
             <!-- ========== right component ========== -->
@@ -38,7 +38,7 @@
                     <label for="foodtype" class="block text-sm font-semibold leading-6 text-gray-900">Food Type</label>
                     <div class="mt-2.5">
                       <select name="types" id="types" v-model="type" class="flex justify-end select select-bordered w-full font-normal">
-                        <option disabled selected class="text-primary">What do .u. want to eat today?</option>
+                        <option disabled value="">What do .u. want to eat today?</option>
                         <option v-for="[key, value] in Object.entries(foodTypes)" :key="key" :value="key">
                           {{ value }}
                         </option>
@@ -46,12 +46,12 @@
                     </div>
                   </div>
                 </div>
-                  <div class="my-12 py-6 flex flex-row justify-center">
+                  <div class="my-12 py-6 flex flex-row justify-between">
                     <button class="flex btn btn-outline btn-error mx-12" @click="cancel">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>Cancel
                     </button>
-                    <button type="submit" class="flex btn btn-outline btn-warning mx-12" @click="submit">
+                    <button type="submit" class="flex btn btn-outline btn-success mx-12" @click="submit">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                       </svg>Confrim
