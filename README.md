@@ -10,7 +10,7 @@ Contributors:
 ## Development Framework
 - Frontend: 
   - vue.js: javascript framework 
-  - Taiwind/ DaisyUI: appearence of our GUI
+  - Tailwind/ DaisyUI: appearence of our GUI
 - Backend: 
   - Flask: 
     - a light web application framework written in Python 
