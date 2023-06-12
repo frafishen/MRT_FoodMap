@@ -13,15 +13,15 @@ from datetime import datetime, timedelta
 
 
 # password = quote_plus("xX@0180368905")
-password = quote_plus("00000")
-# password = quote_plus("221003red")
+# password = quote_plus("00000")
+password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 # CORS(app)
-# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@127.0.0.1:3307/mrt_foodmap'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@127.0.0.1:3307/mrt_foodmap'
 app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
