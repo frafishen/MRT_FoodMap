@@ -79,21 +79,21 @@
                 </div>
                 <div class="mt-6 border-t border-gray-100 max-w-full">
                   <dl class="divide-y divide-gray-100">
-                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <!-- <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
                       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '2023/06/06' }}</dd>
-                    </div>
+                    </div> -->
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Time</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ '06:00 PM' }}</dd>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ this.time }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Ramen' }}</dd>
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ this.type }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt class="text-sm font-medium leading-6 text-gray-900">MRT Station</dt>
-                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'Taipei Main Station' }}
+                      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ this.station }}
                       </dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
@@ -133,6 +133,17 @@
                     </div>
                   </dl>
                 </div>
+                <div class="my-12 py-6 flex flex-row justify-between">
+                    <button class="flex btn btn-outline btn-error mx-12" @click="cancel">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>Cancel
+                    </button>
+                    <button type="submit" class="flex btn btn-outline btn-success mx-12" @click="confirm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>Confirm
+                    </button>
+                  </div>
               </div>
             </div>
           </div>
@@ -148,6 +159,7 @@ export default {
   name: 'RandomPair',
   data () {
     return {
+      eventId: '',
       date: '',
       time: '',
       station: '',
@@ -162,7 +174,8 @@ export default {
         R11: 'Zhongshan Station',
         G16: 'Nanjing Fuxing Station'
       },
-      showcontent: true
+      showcontent: true,
+      person: ''
     }
   },
   methods: {
@@ -179,15 +192,6 @@ export default {
     },
     submitForm () {
       this.randomPair()
-      // this.$router.push({
-      //   path: '/invite',
-      //   query: {
-      //     date: this.date,
-      //     time: this.time,
-      //     station: this.station,
-      //     type: this.type
-      //   }
-      // })
       this.showcontent = false
     },
     goMealpal () {
@@ -207,8 +211,15 @@ export default {
       const response = await axios.post('http://localhost:5000/api/randomPair', data)
       if (response.data.status === 'success') {
         console.log(response.data.event)
+        this.eventId = response.data.event.EventID
+        this.getStation(response.data.event.StationID)
+        this.date = response.data.event.Time
+        this.time = response.data.event.Time
+        this.type = response.data.event.FoodType
       } else {
-        console.error(response.data.message)
+        this.showcontent = true
+        alert('Unsuccessfully pair\nMaybe you can try other station, food type, or time')
+        // console.error(response.data.message)
       }
     },
     getDate: function () {
@@ -220,6 +231,34 @@ export default {
         this.date = this.date.replaceAll('/', '-')
       } catch (error) {
         console.error('An error occurred:', error)
+      }
+    },
+    getStation: async function (id) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000//api/station/${id}`)
+        console.log('get station', response)
+        this.station = response.data.Name
+        console.log(this.station)
+      } catch (error) {
+        console.error(error)
+        this.station = null
+      }
+    },
+    cancel () {
+      this.showcontent = true
+      this.getDate()
+    },
+    confirm: async function () {
+      const pairData = {
+        P2_ID: this.$store.state.P1_ID,
+        EventID: this.eventId
+      }
+      console.log('event id', this.EventID)
+      console.log(pairData)
+      const response = await axios.post('http://localhost:5000/api/pairSuccess', pairData)
+      console.log('pair success', response)
+      if (response.data.status === 'success') {
+        this.$router.push('/chatroom')
       }
     }
   },
