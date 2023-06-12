@@ -8,6 +8,7 @@
           <div class="py-6">
             <span class="font-bold mr-2">User's id: </span><span v-if="person"> {{ person.PersonID }} </span><br>
             <span class="font-bold mr-2">Location: </span> <span v-if="person"> {{ person.Location }} </span><br>
+            <span class="mr-2"><router-link to="/chatroom">Meal:Pal List </router-link> </span><br>
           </div>
           <div class="flex justify-between py-6">
             <div class="flex mx-2">
@@ -25,7 +26,9 @@
           </div>
         </div>
       </div>
+      <!-- mealpals -->
     </div>
+    <!-- hero end -->
   </div>
 </template>
 <script>

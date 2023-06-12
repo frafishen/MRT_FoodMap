@@ -1,7 +1,7 @@
 <template>
    <div class="hero min-h-[80vh] bg-base-200">
-    <div class="hero-content flex-col lg:flex-row-reverse w-2/3">
-      <div class="text-center p-8 lg:text-left">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+      <div class="text-center p-8 lg:text-left lg:w-1/2">
         <div class="flex justify-center lg:justify-start">
           <img class="h-40 w-auto md-4" src="../assets/login_logo.png" alt="logo" />
         </div>

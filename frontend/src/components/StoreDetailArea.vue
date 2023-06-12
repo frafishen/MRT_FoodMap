@@ -1,11 +1,11 @@
 <template>
-  <div class="hero-overlay bg-white shadow-2xl rounded-2xl">
+  <div class="hero-overlay min-w-full max-w-full bg-white shadow-lg rounded-2xl">
     <!-- ========== info component ========== -->
-    <div class="p-6">
+    <div class="p-6 w-full">
       <div class="p-4">
         <h3 class="text-3xl text-center font-semibold leading-7 text-primary">{{ selectedStore.Name}}</h3>
       </div>
-      <div class="mt-6 border-t border-gray-100">
+      <div class="mt-6">
         <dl class="divide-y divide-gray-100">
           <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-gray-900">Food Type</dt>
@@ -26,7 +26,7 @@
             <!-- </dd> -->
           </div>
           <!-- ========== carousel component - Comment ========== -->
-          <div class="max-w-full">
+          <div class=" overflow-hidden max-w-full min-w-full">
             <div class="carousel carousel-center p-2 space-x-4 bg-primary rounded-box" style="display: flex; align-items: stretch;">
               <!-- card 1 -->
               <div v-for="comment in comments" :key="comment.PersonName">

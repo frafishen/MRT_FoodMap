@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
-      <div class=" w-5/6 hero-content flex-col lg:flex-row">
+      <div class="w-5/6 hero-content flex-col lg:flex-row">
         <div class="px-6 w-4/5 lg:w-2/5">
           <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> New <span class="text-primary">E.v.ent</span></h1>
           <p class="py-4 md-6 text-natural h-2/3 text-center"> Start to make a new friend now!</p>
@@ -15,7 +15,7 @@
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div>
                     <label for="date" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
-                    <div class="mt-2.5 text-primary">
+                    <div class="mt-6 text-primary">
                       <span>{{ this.date }}</span>
                     </div>
                   </div>

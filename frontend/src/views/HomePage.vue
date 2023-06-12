@@ -9,7 +9,7 @@
           <p class="py-4 md-6 text-natural">Enjoy your f.o^o.d trip with meal:Pals in Taipei city!</p>
         </div>
         <div class="flex flex-col w-full my-8 lg:flex-row">
-          <div class="grid flex-grow h-52 w-auto card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goFindFood">
+          <div class="grid flex-grow h-52 w-auto card bg-white shadow-lg rounded-box place-items-center cursor-pointer" @click="goFindFood">
             <div class="h-24 w-24 mt-8">
               <img src="../assets/mainpage/findfood2.png" class="h-24 w-auto" alt="f.o^o.d">
             </div>
@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="divider lg:divider-horizontal">OR</div>
-          <div class="grid flex-grow h-52 w-auto card bg-base-300 rounded-box place-items-center cursor-pointer" @click="goMealpal">
+          <div class="grid flex-grow h-52 w-auto card bg-white shadow-lg rounded-box place-items-center cursor-pointer" @click="goMealpal">
             <div class="h-24 w-24 mt-8">
               <img src="../assets/mainpage/malpals2.png" class="h-24 w-auto" alt="meal:Pal">
             </div>

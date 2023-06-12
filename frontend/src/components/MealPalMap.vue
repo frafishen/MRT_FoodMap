@@ -1,19 +1,28 @@
 <template>
-    <div class=" hero-overlay relative">
+    <div class="hero-overlay relative rounded-2xl shadow-lg">
         <img src="../assets/concentric_taipei_mrt_metro_map_60186.jpg"
-            class="object-cover w-full h-auto shadow-2xl lg:h-4/5 lg:w-auto" alt="mrt metro map" />
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-error absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-warning absolute pos-G13 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-warning absolute pos-G15 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-warning absolute pos-G12 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-error absolute pos-G16 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
-        <button class="rounded-full bg-opacity-90 hover:bg-opacity-50 btn-error absolute pos-R05 transform -translate-x-1/2 -translate-y-1/2 h-4 w-4" type="submit"></button>
+            class="object-cover w-full h-auto rounded-2xl lg:h-4/5 lg:w-auto" alt="mrt metro map" />
+        <button v-for="station in amountofpeople" :key="station.StationID" :class="['rounded-full bg-opacity-90 hover:bg-opacity-50', 'btn-'+ station.Status, 'absolute', 'pos-' + station.StationID, 'transform -translate-x-1/2 -translate-y-1/2 h-4 w-4']" type="submit"></button>
     </div>
 </template>
 <script>
 export default {
   name: 'MealPalMap',
-  methods: {}
+  data () {
+    return {
+      amountofpeople: []
+    }
+  },
+  methods: {
+    getAmountofPeople: async function () {
+      const response = await fetch('http://127.0.0.1:5000/api/amountofpeople')
+      this.amountofpeople = await response.json()
+      console.log(this.amountofpeople)
+    }
+  },
+  mounted () {
+    this.getAmountofPeople()
+  }
 }
 </script>
 <style>
@@ -21,11 +30,11 @@ export default {
     top: 46.88%;
     left: 44.59%;
 }
-.pos-R05 {
+.pos-BR09 {
     top: 59.44%;
     left: 66.25%;
 }
-.pos-G15 {
+.pos-O08 {
     top: 43.75%;
     left: 60.78%;
 }
@@ -33,8 +42,12 @@ export default {
     top: 53.14%;
     left: 44.59%;
 }
-.pos-G16 {
+.pos-BR11 {
     top: 40.59%;
     left: 66.19%;
+}
+.pos-R10 {
+    top: 50%;
+    left: 50%;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
-      <div class="w-5/6 hero-content flex-col lg:flex-row-reverse">
+      <div class="hero-content flex-col lg:flex-row-reverse">
         <div class="px-6 w-full lg:w-1/2">
           <h1 class="text-center text-5xl font-bold py-6">Find Tasty <span class="text-primary">F.o^o.d </span></h1>
           <div class="w-full flex flex-row justify-between">

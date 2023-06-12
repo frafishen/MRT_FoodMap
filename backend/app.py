@@ -5,21 +5,23 @@ from sqlalchemy.sql.expression import between
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text, or_, and_
+from sqlalchemy import func
+
 
 import random
 from datetime import datetime, timedelta
 
 
 # password = quote_plus("xX@0180368905")
-# password = quote_plus("00000")
-password = quote_plus("221003red")
+password = quote_plus("00000")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 # CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
-# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@127.0.0.1:3307/mrt_foodmap'
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@localhost/mrt_foodmap'  # 你的資料庫URI
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{password}@127.0.0.1:3307/mrt_foodmap'
 app.config['DEBUG'] = True
 db = SQLAlchemy(app)
 
@@ -507,6 +509,8 @@ def get_stores_top4(P_ID):
         
     return jsonify(stores_list)
 
+
+
 # getCommentsAPI, with StoreID
 @app.route('/api/comments/<StoreID>', methods=['GET'])
 def get_comments(StoreID):
@@ -523,6 +527,34 @@ def get_comments(StoreID):
         
     return jsonify(comments_list)
 
+
+
+# getAmountofPeople API, return amount of new events with P2_ID='00000000' in each station
+@app.route('/api/amountofpeople', methods=['GET'])
+def get_amountofpeople():
+    # get all stations
+    stations = db.session.query(Station).all()
+    amount_list = []
+    for station in stations:
+        # count amount of new events with P2_ID='00000000' in a station
+        amount = db.session.query(func.count(Event.P2_ID)).filter_by(StationID=station.StationID, P2_ID='00000000').scalar()
+        status = ''
+        if amount <= 3:
+            status = 'success'
+        elif amount <= 5:
+            status = 'warning'
+        else:
+            status = 'error'
+            
+        amount_dict = {
+            'StationID': station.StationID,
+            'Amount': amount,
+            'Status': status
+        }
+        amount_list.append(amount_dict)
+        
+    return jsonify(amount_list)     
+    
 
 
 @app.route('/api/storeID/<storeName>', methods=['GET'])

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="hero min-h-[80vh] bg-base-200">
-      <div class=" w-5/6 hero-content flex-col lg:flex-row">
+      <div class="w-5/6 hero-content flex-col lg:flex-row">
         <div class="px-6 w-full lg:w-1/3">
           <h1 class="text-5xl font-bold py-6 h-1/3 text-center"><span class="text-primary">Ch.a.troom</span></h1>
           <p class="md-6 text-natural h-2/3 text-center"> Start to chat with your friends!</p>
@@ -33,7 +33,7 @@
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="mx-4 text-warning">New</p>
+                    <p class="mx-4 text-gray-400 font-normal">I got it. </p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -46,7 +46,7 @@
                     </div>
                   </td>
                   <th class="text-right bg-secondary">
-                    <p class="mx-4 text-gray-400 font-normal">Sure, it works...</p>
+                    <p class="mx-4 text-gray-400 font-normal">Sure, it w...</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -54,12 +54,12 @@
                   <td>
                     <div class="flex-row mx-2">
                         <div class="flex items-center space-x-3">
-                          <div class="font-bold cursor-pointer" >Pretty</div>
+                          <div class="font-bold cursor-pointer" >Betty</div>
                         </div>
                     </div>
                   </td>
                   <th class="text-right">
-                    <p class="mx-4 text-gray-400 font-normal">Let's meet at 6!</p>
+                    <p class="mx-4 text-gray-400 font-normal">Let's meet...</p>
                   </th>
                 </tr>
                 <!-- row end -->
@@ -128,7 +128,7 @@
 </template>
 <script>
 export default {
-  name: 'NewEvent',
+  name: 'ChatRoom',
   data () {
     return {
 
