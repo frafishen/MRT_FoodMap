@@ -85,7 +85,7 @@ export default {
       stationList: {
         R10: 'Taipei Main Station',
         R11: 'Zhongshan Station',
-        G16: 'Nanjing Fuxing Station'
+        G12: 'Ximen'
       }
     }
   },

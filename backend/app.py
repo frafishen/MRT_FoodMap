@@ -287,13 +287,6 @@ def pair_event():
         result_dict = dict(result._asdict())  # Convert the result tuple to a dictionary
         # print(data) 
         if result:
-            # # Change the P2_ID of the selected event to the passed P2_ID
-            # update_query = text("""
-            #     UPDATE Event SET P2_ID = :P2_ID WHERE EventID = :id
-            # """)
-            # db.session.execute(update_query, {"P2_ID": data['P2_ID'], "id": result_dict['EventID']})
-            
-            # db.session.commit()
             return jsonify({"status": "success", "event": result_dict}), 200
         else:
             return jsonify({"status": "failed", "message": "No available pair"}), 200
@@ -467,6 +460,28 @@ def get_stores_PID(P_ID, foodType, stationID):
         stores_list.append(store_dict)
         
     return jsonify(stores_list)
+
+@app.route('/api/stores/<foodType>/<stationID>', methods=['GET'])
+def get_stores(foodType, stationID):
+    stores = db.session.query(Store, Station.Name.label('StationName')).filter_by(Category=foodType).filter(Store.StationID==stationID).join(Station, Store.StationID==Station.StationID).limit(2)
+    stores_list = []
+    
+    for store in stores:
+        store_dict = {
+            'StoreID': store.Store.StoreID,
+            'Name': store.Store.Name,
+            'Location': store.Store.Location,
+            'Category': store.Store.Category,
+            'URL': store.Store.URL,
+            'Distance': store.Store.Distance,
+            'StationName': store.StationName
+        }
+        stores_list.append(store_dict)
+    
+    if len(stores_list) == 0:
+        return jsonify({"status": "failed", "message": "No available store"})
+    else:
+        return jsonify({"status": "success", "storeList": stores_list})
 
 # getStores API, without foodType and stationID
 @app.route('/api/stores/<P_ID>', methods=['GET'])

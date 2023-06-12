@@ -6,11 +6,16 @@
           <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> Random <span class="text-primary">:Pair</span></h1>
           <p class="py-4 md-6 text-natural h-2/3 text-center"> Start to make a new friend now!</p>
         </div>
+        <!-- <div class="px-6 w-4/5 lg:w-2/5" v-if="!pairstatus">
+          <h1 class="text-5xl font-bold py-6 h-1/3 text-center"> :( Pair <span class="text-primary">Unsuccessfully</span></h1>
+          <p class="py-4 md-6 text-natural h-2/3 text-center"> Try other conditions~ </p>
+        </div> -->
         <div class="px-6 w-full lg:w-3/5">
           <!-- left component -->
           <div class="max-w-full">
             <!-- ========== right component ========== -->
             <div class="isolate bg-white px-12 py-4 rounded-3xl" v-if="showcontent">
+              <!-- form begin -->
               <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div>
@@ -70,8 +75,9 @@
                   </button>
                 </div>
               </form>
+              <!-- form end -->
             </div>
-            <!-- ========== invitation success! ========== -->
+            <!-- ========== invitation part ========== -->
             <div class="isolate bg-white px-12 py-4 rounded-3xl" v-if="!showcontent">
               <div class="p-6">
                 <div class="p-4">
@@ -108,23 +114,23 @@
                         <div class="carousel-item">
                           <div class="card w-96 bg-base-100 shadow-xl">
                             <div class="card-body">
-                              <h2 class="card-title">{{ '麵屋武藏' }}</h2>
-                              <p>{{ '台北市中正區忠孝西路一段36號B1' }}</p>
+                              <h2 class="card-title">{{ this.storeList[0].Name }}</h2>
+                              <p>{{ this.storeList[0].Location }}</p>
                             </div>
                           </div>
                         </div>
                         <div class="carousel-item">
                           <div class="card w-96 bg-base-100 shadow-xl">
                             <div class="card-body">
-                              <h2 class="card-title">{{ '太陽蕃茄拉麵 站前本店' }}</h2>
-                              <p>{{ '台北市中正區忠孝西路一段38號凱撤飯店B1F' }}</p>
+                              <h2 class="card-title">{{ this.storeList[1].Name }}</h2>
+                              <p>{{ this.storeList[1].Location }}</p>
                             </div>
                           </div>
                         </div>
                         <div class="carousel-item">
                           <div class="card w-96 bg-base-100 shadow-xl">
                             <div class="card-body">
-                              <h2 class="card-title cursor-pointer" @click="goFindFood"> See More! </h2>
+                              <h2 class="card-title cursor-pointer"> See More! </h2>
                               <p> Go to our f.o^o.d map <br> to find more tasty food! </p>
                             </div>
                           </div>
@@ -146,6 +152,7 @@
                   </div>
               </div>
             </div>
+            <!-- invitation part end -->
           </div>
         </div>
       </div>
@@ -172,10 +179,12 @@ export default {
       stationList: {
         R10: 'Taipei Main Station',
         R11: 'Zhongshan Station',
-        G16: 'Nanjing Fuxing Station'
+        G12: 'Ximen'
       },
       showcontent: true,
-      person: ''
+      pairstatus: true,
+      person: '',
+      storeList: [{ Name: ' ', Location: ' ' }, { Name: ' ', Location: ' ' }]
     }
   },
   methods: {
@@ -211,6 +220,7 @@ export default {
       const response = await axios.post('http://localhost:5000/api/randomPair', data)
       if (response.data.status === 'success') {
         console.log(response.data.event)
+        this.getStores(response.data.event.FoodType, response.data.event.StationID)
         this.eventId = response.data.event.EventID
         this.getStation(response.data.event.StationID)
         this.date = response.data.event.Time
@@ -218,6 +228,7 @@ export default {
         this.type = response.data.event.FoodType
       } else {
         this.showcontent = true
+        // this.pairstatus = false
         alert('Unsuccessfully pair\nMaybe you can try other station, food type, or time')
         // console.error(response.data.message)
       }
@@ -235,10 +246,23 @@ export default {
     },
     getStation: async function (id) {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000//api/station/${id}`)
+        const response = await axios.get(`http://127.0.0.1:5000/api/station/${id}`)
         console.log('get station', response)
         this.station = response.data.Name
         console.log(this.station)
+      } catch (error) {
+        console.error(error)
+        this.station = null
+      }
+    },
+    getStores: async function (type, stationId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000//api/stores/${type}/${stationId}`)
+        console.log('get store', response)
+        if (response.data.status === 'success') {
+          this.storeList = response.data.storeList
+        }
+        console.log('stroeList', this.storeList[0])
       } catch (error) {
         console.error(error)
         this.station = null
