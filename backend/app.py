@@ -12,9 +12,9 @@ import random
 from datetime import datetime, timedelta
 
 
-# password = quote_plus("xX@0180368905")
+password = quote_plus("xX@0180368905")
 # password = quote_plus("00000")
-password = quote_plus("221003red")
+# password = quote_plus("221003red")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -244,7 +244,7 @@ def add_event():
     try:
         _json = request.json
         _P1_ID = _json['P1_ID']
-        _P2_ID = "00000000"
+        _P2_ID = "0"
         _Time = _json['Time']
         _FoodType = _json['FoodType']
         _StationID = _json['StationID']
@@ -276,7 +276,7 @@ def pair_event():
 
         query = text("""
             SELECT EventID, P1_ID, P2_ID, Time, FoodType, StationID FROM Event
-            WHERE P2_ID = "00000000"
+            WHERE P2_ID = "0"
             AND ABS(TIMESTAMPDIFF(MINUTE, Time, :Time)) <= 60
             AND FoodType = :FoodType
             AND StationID = :StationID
@@ -537,7 +537,7 @@ def get_amountofpeople():
     amount_list = []
     for station in stations:
         # count amount of new events with P2_ID='00000000' in a station
-        amount = db.session.query(func.count(Event.P2_ID)).filter_by(StationID=station.StationID, P2_ID='00000000').scalar()
+        amount = db.session.query(func.count(Event.P2_ID)).filter_by(StationID=station.StationID, P2_ID='0').scalar()
         status = ''
         if amount <= 3:
             status = 'success'

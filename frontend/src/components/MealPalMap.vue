@@ -26,28 +26,51 @@ export default {
 }
 </script>
 <style>
-.pos-G13 {
-    top: 46.88%;
-    left: 44.59%;
-}
 .pos-BR09 {
     top: 59.44%;
     left: 66.25%;
 }
-.pos-O08 {
-    top: 43.75%;
-    left: 60.78%;
-}
-.pos-G12 {
-    top: 53.14%;
-    left: 44.59%;
+.pos-BR10 {
+    top: 50%;
+    left: 68.72%;
 }
 .pos-BR11 {
     top: 40.59%;
     left: 66.19%;
 }
+
+.pos-G12 {
+    top: 53.14%;
+    left: 44.59%;
+}
+.pos-G13 {
+    top: 46.88%;
+    left: 44.59%;
+}
+
+.pos-O06 {
+    top: 61%;
+    left: 56.2%;
+}
+.pos-O07 {
+    top: 50%;
+    left: 62.45%;
+}
+.pos-O08 {
+    top: 43.75%;
+    left: 60.78%;
+}
+
+.pos-R08 {
+    top: 56.41%;
+    left: 50%;
+}
 .pos-R10 {
     top: 50%;
+    left: 50%;
+}
+.pos-R11 {
+    top: 43.84%;
     left: 50%;
 }
 </style>
